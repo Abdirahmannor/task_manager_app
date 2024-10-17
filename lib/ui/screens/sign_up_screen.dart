@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import '../widgets/custom_button.dart'; // Import your custom button
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../widgets/auth_card.dart';
+import '../widgets/auth_text_field.dart'; // Import AuthTextField
+import '../widgets/custom_button.dart'; // Import CustomButton
+import '../widgets/remember_me_forgot_password.dart'; // Import RememberMeForgotPassword
+import '../widgets/social_media_icons.dart'; // Import SocialMediaIcons
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -77,7 +81,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Row(
                   children: [
                     Expanded(child: MoveWindow()),
-                    // WindowButtons(),
                   ],
                 ),
               ),
@@ -86,99 +89,80 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   alignment: Alignment.centerRight,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 60.0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        double containerWidth = constraints.maxWidth < 800
-                            ? constraints.maxWidth * 0.85
-                            : 400.0;
-
-                        return SingleChildScrollView(
-                          child: Container(
-                            width: containerWidth,
-                            constraints: BoxConstraints(
-                              minWidth: 300,
-                              maxWidth: 400,
-                              minHeight: 500,
-                              maxHeight:
-                                  MediaQuery.of(context).size.height * 0.9,
+                    child: SingleChildScrollView(
+                      child: AuthCard(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Sign up Text
+                            const Text(
+                              "Create an Account",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
                             ),
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 40),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18),
+                            SizedBox(height: 16),
+                            // Social Media Icons
+                            SocialMediaIcons(),
+                            SizedBox(height: 24),
+                            // Name TextField
+                            AuthTextField(
+                              controller: _nameController,
+                              hint: "Name",
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            SizedBox(height: 16),
+                            // Email TextField
+                            AuthTextField(
+                              controller: _emailController,
+                              hint: "Email",
+                            ),
+                            SizedBox(height: 16),
+                            // Password TextField
+                            AuthTextField(
+                              controller: _passwordController,
+                              hint: "Password",
+                              obscureText: true,
+                            ),
+                            SizedBox(height: 16),
+                            // Confirm Password TextField
+                            AuthTextField(
+                              controller: _confirmPasswordController,
+                              hint: "Confirm Password",
+                              obscureText: true,
+                            ),
+                            SizedBox(height: 24),
+                            // Sign Up Button
+                            CustomButton(
+                              text: "Sign Up",
+                              isSelected: true,
+                              onPressed: _signUp,
+                            ),
+                            SizedBox(height: 16),
+                            // Privacy Policy and Terms
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // Sign up Text
-                                const Text(
-                                  "Create an Account",
+                                Text(
+                                  "privacy policy",
                                   style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
-                                  ),
+                                      color: Colors.brown, fontSize: 12),
                                 ),
-                                SizedBox(height: 16),
-                                // Name TextField
-                                _buildTextField(
-                                  controller: _nameController,
-                                  hint: "Name",
+                                SizedBox(
+                                  width: 40,
                                 ),
-                                SizedBox(height: 16),
-                                // Email TextField
-                                _buildTextField(
-                                  controller: _emailController,
-                                  hint: "Email",
-                                ),
-                                SizedBox(height: 16),
-                                // Password TextField
-                                _buildTextField(
-                                  controller: _passwordController,
-                                  hint: "Password",
-                                  obscureText: true,
-                                ),
-                                SizedBox(height: 16),
-                                // Confirm Password TextField
-                                _buildTextField(
-                                  controller: _confirmPasswordController,
-                                  hint: "Confirm Password",
-                                  obscureText: true,
-                                ),
-                                SizedBox(height: 24),
-                                // Sign Up Button
-                                CustomButton(
-                                  text: "Sign Up",
-                                  isSelected: true,
-                                  onPressed: _signUp,
-                                ),
-                                SizedBox(height: 16),
-                                // Privacy Policy and Terms
-                                const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "privacy policy",
-                                      style: TextStyle(
-                                          color: Colors.brown, fontSize: 12),
-                                    ),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    Text(
-                                      "terms and conditions",
-                                      style: TextStyle(
-                                          color: Colors.brown, fontSize: 12),
-                                    ),
-                                  ],
+                                Text(
+                                  "terms and conditions",
+                                  style: TextStyle(
+                                      color: Colors.brown, fontSize: 12),
                                 ),
                               ],
                             ),
-                          ),
-                        );
-                      },
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -208,26 +192,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hint,
-    bool obscureText = false,
-  }) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: Colors.grey[200],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
-        ),
       ),
     );
   }

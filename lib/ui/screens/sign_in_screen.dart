@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-
-import '../widgets/custom_button.dart'; // Import your custom button
+import '../widgets/custom_button.dart';
+import '../widgets/auth_card.dart';
+import '../widgets/auth_text_field.dart'; // Import AuthTextField
+import '../widgets/social_media_icons.dart'; // Import SocialMediaIcons
+import '../widgets/remember_me_forgot_password.dart'; // Import RememberMeForgotPassword
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -56,7 +59,6 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Row(
                   children: [
                     Expanded(child: MoveWindow()),
-                    // WindowButtons(),
                   ],
                 ),
               ),
@@ -65,126 +67,75 @@ class _SignInScreenState extends State<SignInScreen> {
                   alignment: Alignment.centerRight,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 60.0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        double containerWidth = constraints.maxWidth < 800
-                            ? constraints.maxWidth * 0.85
-                            : 400.0;
-
-                        return SingleChildScrollView(
-                          child: Container(
-                            width: containerWidth,
-                            constraints: const BoxConstraints(
-                                minWidth: 300,
-                                maxWidth: 400,
-                                minHeight: 500,
-                                maxHeight: double.infinity),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 40),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18),
+                    child: SingleChildScrollView(
+                      child: AuthCard(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            // Sign in Text
+                            const Text(
+                              "Sign in to Account",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.blue,
+                              ),
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                            SizedBox(height: 16),
+                            // Social Media Icons
+                            SocialMediaIcons(),
+                            SizedBox(height: 24),
+                            // Email TextField
+                            AuthTextField(
+                              controller: emailController,
+                              hint: "Gmail",
+                            ),
+                            SizedBox(height: 16),
+                            // Password TextField
+                            AuthTextField(
+                              controller: passwordController,
+                              hint: "Password",
+                              obscureText: true,
+                            ),
+                            const SizedBox(height: 16),
+                            // Remember Me and Forgot Password
+                            RememberMeForgotPassword(
+                              rememberMe: rememberMe,
+                              onRememberMeChanged: (value) {
+                                setState(() {
+                                  rememberMe = value!;
+                                });
+                              },
+                            ),
+                            SizedBox(height: 24),
+                            // Sign In Button
+                            CustomButton(
+                              text: "Sign In",
+                              isSelected: true,
+                              onPressed: signIn,
+                            ),
+                            SizedBox(height: 16),
+                            // Privacy Policy and Terms
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // Sign in Text
-                                const Text(
-                                  "Sign in to Account",
+                                Text(
+                                  "privacy policy",
                                   style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.blue,
-                                  ),
+                                      color: Colors.brown, fontSize: 12),
                                 ),
-                                SizedBox(height: 16),
-                                // Social Media Icons
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    _buildSocialIcon(Icons.facebook),
-                                    SizedBox(width: 13),
-                                    _buildSocialIcon(Icons.g_mobiledata),
-                                    SizedBox(width: 16),
-                                    _buildSocialIcon(Icons.call),
-                                  ],
-                                ),
-                                SizedBox(height: 24),
-                                // Email TextField
-                                _buildTextField(
-                                  controller: emailController,
-                                  hint: "Gmail",
-                                ),
-                                SizedBox(height: 16),
-                                // Password TextField
-                                _buildTextField(
-                                  controller: passwordController,
-                                  hint: "Password",
-                                  obscureText: true,
-                                ),
-                                const SizedBox(height: 16),
-                                // Remember Me and Forgot Password
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                          value: rememberMe,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              rememberMe = value!;
-                                            });
-                                          },
-                                        ),
-                                        Text("Remember me"),
-                                      ],
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        // Forgot Password Logic
-                                      },
-                                      child: const Text(
-                                        "Forgot password",
-                                        style: TextStyle(color: Colors.blue),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 24),
-                                // Sign In Button
-                                CustomButton(
-                                  text: "Sign In",
-                                  isSelected: true,
-                                  onPressed: signIn,
-                                ),
-                                SizedBox(height: 16),
-                                // Privacy Policy and Terms
-                                const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "privacy policy",
-                                      style: TextStyle(
-                                          color: Colors.brown, fontSize: 12),
-                                    ),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    Text(
-                                      "terms and conditions",
-                                      style: TextStyle(
-                                          color: Colors.brown, fontSize: 12),
-                                    ),
-                                  ],
+                                SizedBox(width: 40),
+                                Text(
+                                  "terms and conditions",
+                                  style: TextStyle(
+                                      color: Colors.brown, fontSize: 12),
                                 ),
                               ],
                             ),
-                          ),
-                        );
-                      },
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -217,50 +168,4 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
-
-  Widget _buildTextField(
-      {required TextEditingController controller,
-      required String hint,
-      bool obscureText = false}) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: Colors.grey[200],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialIcon(IconData icon) {
-    return Container(
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.grey[300],
-      ),
-      padding: EdgeInsets.all(12),
-      child: Icon(
-        icon,
-        color: Colors.black,
-      ),
-    );
-  }
 }
-
-// class WindowButtons extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         // MinimizeWindowButton(),
-//         // MaximizeWindowButton(),
-//         // CloseWindowButton(),
-//       ],
-//     );
-//   }
-// }
