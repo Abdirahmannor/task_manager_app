@@ -23,7 +23,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     if (email.isNotEmpty && password.isNotEmpty) {
       // Perform the sign-in action
-      print("Signing in with email: \$email and password: \$password");
+      print("Signing in with email: $email and password: $password");
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       // Show error if fields are empty
@@ -38,8 +38,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       body: Stack(
         children: [
@@ -107,30 +105,25 @@ class _SignInScreenState extends State<SignInScreen> {
                                     },
                                   ),
                                 ),
-                                const SizedBox(height: 16),
+                                SizedBox(height: 16),
                                 // Remember Me and Forgot Password
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Row(
-                                      children: [
-                                        Checkbox(
-                                          value: rememberMe,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              rememberMe = value!;
-                                            });
-                                          },
-                                        ),
-                                        Text("Remember me"),
-                                      ],
+                                    Checkbox(
+                                      value: rememberMe,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          rememberMe = value!;
+                                        });
+                                      },
                                     ),
+                                    Text("Remember me"),
+                                    Spacer(),
                                     TextButton(
                                       onPressed: () {
-                                        // Forgot Password Logic
+                                        // Forgot password action
                                       },
-                                      child: const Text(
+                                      child: Text(
                                         "Forgot password",
                                         style: TextStyle(color: Colors.blue),
                                       ),
@@ -145,18 +138,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                   onPressed: signIn,
                                 ),
                                 SizedBox(height: 16),
-                                // Sign Up Text Button for Small Screens
-                                if (screenWidth < 800)
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pushReplacementNamed(
-                                          context, '/signUp');
-                                    },
-                                    child: const Text(
-                                      "Don't have an account? Sign Up",
-                                      style: TextStyle(color: Colors.blue),
-                                    ),
-                                  ),
                                 // Privacy Policy and Terms
                                 const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -185,19 +166,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              // Bottom Navigation Buttons for Large Screens
-              if (screenWidth >= 800)
-                Positioned(
-                  bottom: 30,
-                  left: 150,
-                  child: AuthNavigationButtons(
-                    onSignInPressed: () {},
-                    onSignUpPressed: () {
-                      Navigator.pushReplacementNamed(context, '/signUp');
-                    },
-                    isSignInSelected: true,
-                  ),
+              // Bottom Navigation Buttons
+              Positioned(
+                bottom: 30,
+                left: 150,
+                child: AuthNavigationButtons(
+                  onSignInPressed: () {},
+                  onSignUpPressed: () {
+                    Navigator.pushReplacementNamed(context, '/signUp');
+                  },
+                  isSignInSelected: true,
                 ),
+              ),
             ],
           ),
         ],

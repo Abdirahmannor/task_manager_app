@@ -89,10 +89,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.only(right: 60.0),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        double containerWidth = constraints.maxWidth < 800
-                            ? constraints.maxWidth * 0.85
-                            : 400.0;
-
                         return SingleChildScrollView(
                           child: AuthCard(
                             child: Column(
