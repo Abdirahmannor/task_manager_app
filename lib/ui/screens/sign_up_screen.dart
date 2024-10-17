@@ -1,6 +1,7 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import '../widgets/auth_header.dart';
+import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
@@ -57,38 +58,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image with Dark Overlay
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('lib/assets/img1.jpg'),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.6),
-                  BlendMode.darken,
-                ),
-              ),
-            ),
-          ),
-          Column(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double screenWidth = constraints.maxWidth;
+          return Stack(
             children: [
-              WindowTitleBarBox(
-                child: Row(
-                  children: [
-                    Expanded(child: MoveWindow()),
-                  ],
+              // Background Image with Dark Overlay
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('lib/assets/img1.jpg'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.6),
+                      BlendMode.darken,
+                    ),
+                  ),
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 60.0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return AuthCard(
+              Column(
+                children: [
+                  WindowTitleBarBox(
+                    child: Row(
+                      children: [
+                        Expanded(child: MoveWindow()),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 60.0),
+                        child: AuthCard(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -158,17 +160,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 onPressed: signUp,
                               ),
                               SizedBox(height: 16),
-                              // Sign In Text Button
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/signIn');
-                                },
-                                child: Text(
-                                  "Already have an account? Sign in",
-                                  style: TextStyle(color: Colors.blue),
+                              if (screenWidth < 800)
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, '/signIn');
+                                  },
+                                  child: Text(
+                                    "Or Sign in now?",
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
                                 ),
-                              ),
                               SizedBox(height: 16),
                               // Privacy Policy and Terms
                               const Row(
@@ -191,15 +193,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                             ],
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                  // Bottom Navigation Buttons
+                  if (screenWidth > 800)
+                    Positioned(
+                      bottom: 30,
+                      left: 150,
+                      child: AuthNavigationButtons(
+                        onSignInPressed: () {
+                          Navigator.pushReplacementNamed(context, '/signIn');
+                        },
+                        onSignUpPressed: () {},
+                        isSignInSelected: false,
+                      ),
+                    ),
+                ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }

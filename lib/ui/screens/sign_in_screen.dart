@@ -1,11 +1,11 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
-import 'package:task_manager_app/ui/widgets/remember_me_forgot_password.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
+import '../widgets/remember_me_forgot_password.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -40,38 +40,39 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Background Image with Dark Overlay
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('lib/assets/img1.jpg'),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.6),
-                  BlendMode.darken,
-                ),
-              ),
-            ),
-          ),
-          Column(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double screenWidth = constraints.maxWidth;
+          return Stack(
             children: [
-              WindowTitleBarBox(
-                child: Row(
-                  children: [
-                    Expanded(child: MoveWindow()),
-                  ],
+              // Background Image with Dark Overlay
+              Container(
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('lib/assets/img1.jpg'),
+                    fit: BoxFit.cover,
+                    colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.6),
+                      BlendMode.darken,
+                    ),
+                  ),
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                    padding: const EdgeInsets.only(right: 60.0),
-                    child: LayoutBuilder(
-                      builder: (context, constraints) {
-                        return AuthCard(
+              Column(
+                children: [
+                  WindowTitleBarBox(
+                    child: Row(
+                      children: [
+                        Expanded(child: MoveWindow()),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 60.0),
+                        child: AuthCard(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -115,7 +116,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   });
                                 },
                                 onForgotPassword: () {},
-                                screenWidth: constraints.maxWidth,
+                                screenWidth: screenWidth,
                               ),
                               SizedBox(height: 24),
                               // Sign In Button
@@ -125,17 +126,17 @@ class _SignInScreenState extends State<SignInScreen> {
                                 onPressed: signIn,
                               ),
                               SizedBox(height: 16),
-                              // Sign Up Text Button
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(
-                                      context, '/signUp');
-                                },
-                                child: Text(
-                                  "Or Sign up now?",
-                                  style: TextStyle(color: Colors.blue),
+                              if (screenWidth < 800)
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, '/signUp');
+                                  },
+                                  child: Text(
+                                    "Or Sign up now?",
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
                                 ),
-                              ),
                               SizedBox(height: 16),
                               // Privacy Policy and Terms
                               const Row(
@@ -158,34 +159,28 @@ class _SignInScreenState extends State<SignInScreen> {
                               ),
                             ],
                           ),
-                        );
-                      },
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-              // Bottom Navigation Buttons
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  return constraints.maxWidth > 800
-                      ? Positioned(
-                          bottom: 30,
-                          left: 150,
-                          child: AuthNavigationButtons(
-                            onSignInPressed: () {},
-                            onSignUpPressed: () {
-                              Navigator.pushReplacementNamed(
-                                  context, '/signUp');
-                            },
-                            isSignInSelected: true,
-                          ),
-                        )
-                      : SizedBox();
-                },
+                  // Bottom Navigation Buttons
+                  if (screenWidth > 800)
+                    Positioned(
+                      bottom: 30,
+                      left: 150,
+                      child: AuthNavigationButtons(
+                        onSignInPressed: () {},
+                        onSignUpPressed: () {
+                          Navigator.pushReplacementNamed(context, '/signUp');
+                        },
+                        isSignInSelected: true,
+                      ),
+                    ),
+                ],
               ),
             ],
-          ),
-        ],
+          );
+        },
       ),
     );
   }

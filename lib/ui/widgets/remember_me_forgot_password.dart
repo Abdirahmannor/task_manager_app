@@ -6,52 +6,58 @@ class RememberMeForgotPassword extends StatelessWidget {
   final VoidCallback onForgotPassword;
   final double screenWidth;
 
-  const RememberMeForgotPassword({
-    Key? key,
+  RememberMeForgotPassword({
     required this.rememberMe,
     required this.onRememberMeChanged,
     required this.onForgotPassword,
     required this.screenWidth,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: CheckboxListTile(
+    if (screenWidth < 800) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Checkbox(
                 value: rememberMe,
                 onChanged: onRememberMeChanged,
-                title: Text('Remember me'),
-                controlAffinity: ListTileControlAffinity.leading,
               ),
-            ),
-            if (screenWidth > 800)
-              TextButton(
-                onPressed: onForgotPassword,
-                child: const Text(
-                  'Forgot password',
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
-          ],
-        ),
-        if (screenWidth <= 800)
+              Text('Remember me'),
+            ],
+          ),
           Align(
-            alignment: Alignment.centerRight,
+            alignment: Alignment.centerLeft,
             child: TextButton(
               onPressed: onForgotPassword,
-              child: const Text(
-                'Forgot password',
-                style: TextStyle(color: Colors.blue),
-              ),
+              child:
+                  Text('Forgot password', style: TextStyle(color: Colors.blue)),
             ),
           ),
-      ],
-    );
+        ],
+      );
+    } else {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Checkbox(
+                value: rememberMe,
+                onChanged: onRememberMeChanged,
+              ),
+              Text('Remember me'),
+            ],
+          ),
+          TextButton(
+            onPressed: onForgotPassword,
+            child:
+                Text('Forgot password', style: TextStyle(color: Colors.blue)),
+          ),
+        ],
+      );
+    }
   }
 }
