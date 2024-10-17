@@ -40,14 +40,14 @@ class MyApp extends StatelessWidget {
         return WindowTitleBarBox(
           child: Column(
             children: [
-              CustomTitleBar(),
+              CustomTitleBar(), // Use custom title bar
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        minWidth: 800,
-                        minHeight: 600,
+                      constraints: BoxConstraints(
+                        minWidth: 1024, // Ensure minimum width
+                        minHeight: 800, // Ensure minimum height
                       ),
                       child: child!,
                     );
