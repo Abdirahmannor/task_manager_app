@@ -2,36 +2,55 @@ import 'package:flutter/material.dart';
 
 class RememberMeForgotPassword extends StatelessWidget {
   final bool rememberMe;
-  final ValueChanged<bool?> onRememberMeChanged;
+  final void Function(bool?) onRememberMeChanged;
+  final VoidCallback onForgotPassword;
+  final double screenWidth;
 
-  RememberMeForgotPassword({
+  const RememberMeForgotPassword({
+    Key? key,
     required this.rememberMe,
     required this.onRememberMeChanged,
-  });
+    required this.onForgotPassword,
+    required this.screenWidth,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Checkbox(
-              value: rememberMe,
-              onChanged: onRememberMeChanged,
+            Expanded(
+              child: CheckboxListTile(
+                value: rememberMe,
+                onChanged: onRememberMeChanged,
+                title: Text('Remember me'),
+                controlAffinity: ListTileControlAffinity.leading,
+              ),
             ),
-            Text("Remember me"),
+            if (screenWidth > 800)
+              TextButton(
+                onPressed: onForgotPassword,
+                child: const Text(
+                  'Forgot password',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
           ],
         ),
-        TextButton(
-          onPressed: () {
-            // Forgot Password Logic
-          },
-          child: const Text(
-            "Forgot password",
-            style: TextStyle(color: Colors.blue),
+        if (screenWidth <= 800)
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: onForgotPassword,
+              child: const Text(
+                'Forgot password',
+                style: TextStyle(color: Colors.blue),
+              ),
+            ),
           ),
-        ),
       ],
     );
   }

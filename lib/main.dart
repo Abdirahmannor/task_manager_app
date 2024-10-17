@@ -21,6 +21,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     return ConstrainedBox(
-                      constraints: BoxConstraints(
+                      constraints: const BoxConstraints(
                         minWidth: 1024, // Ensure minimum width
                         minHeight: 800, // Ensure minimum height
                       ),

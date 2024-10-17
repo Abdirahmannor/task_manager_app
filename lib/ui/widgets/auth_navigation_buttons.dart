@@ -6,7 +6,8 @@ class AuthNavigationButtons extends StatefulWidget {
   final bool isSignInSelected;
   final EdgeInsetsGeometry margin;
 
-  AuthNavigationButtons({
+  const AuthNavigationButtons({
+    super.key,
     required this.onSignInPressed,
     required this.onSignUpPressed,
     required this.isSignInSelected,
@@ -51,7 +52,7 @@ class _AuthNavigationButtonsState extends State<AuthNavigationButtons> {
                   border: Border.all(color: Colors.white),
                   boxShadow: isSignInHovered
                       ? [
-                          BoxShadow(
+                          const BoxShadow(
                             color: Colors.black26,
                             offset: Offset(0, 4),
                             blurRadius: 6,
@@ -59,7 +60,8 @@ class _AuthNavigationButtonsState extends State<AuthNavigationButtons> {
                         ]
                       : [],
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 child: Text(
                   "Sign In",
                   style: TextStyle(
@@ -71,7 +73,7 @@ class _AuthNavigationButtonsState extends State<AuthNavigationButtons> {
               ),
             ),
           ),
-          SizedBox(width: 50),
+          const SizedBox(width: 50),
           MouseRegion(
             onEnter: (_) {
               setState(() {
@@ -96,7 +98,7 @@ class _AuthNavigationButtonsState extends State<AuthNavigationButtons> {
                   border: Border.all(color: Colors.white),
                   boxShadow: isSignUpHovered
                       ? [
-                          BoxShadow(
+                          const BoxShadow(
                             color: Colors.black26,
                             offset: Offset(0, 4),
                             blurRadius: 6,
@@ -104,7 +106,8 @@ class _AuthNavigationButtonsState extends State<AuthNavigationButtons> {
                         ]
                       : [],
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 child: Text(
                   "Sign Up",
                   style: TextStyle(

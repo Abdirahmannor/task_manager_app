@@ -8,7 +8,8 @@ class AuthScreenBase extends StatelessWidget {
   final String headerTitle;
   final Widget? bottomNavigation;
 
-  AuthScreenBase({
+  const AuthScreenBase({
+    super.key,
     required this.formContent,
     required this.headerTitle,
     this.bottomNavigation,
@@ -23,7 +24,7 @@ class AuthScreenBase extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('lib/assets/img1.jpg'),
+                image: const AssetImage('lib/assets/img1.jpg'),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(0.6),
@@ -56,7 +57,7 @@ class AuthScreenBase extends StatelessWidget {
 
                         return SingleChildScrollView(
                           child: AuthCard(
-                            child: Container(
+                            child: SizedBox(
                               width: cardWidth,
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -65,19 +66,19 @@ class AuthScreenBase extends StatelessWidget {
                                   // Header
                                   Text(
                                     headerTitle,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.blue,
                                     ),
                                   ),
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
                                   // Social Media Icons
                                   SocialMediaIcons(),
-                                  SizedBox(height: 24),
+                                  const SizedBox(height: 24),
                                   // Form Content
                                   formContent,
-                                  SizedBox(height: 16),
+                                  const SizedBox(height: 16),
                                   // Privacy Policy and Terms
                                   const Row(
                                     mainAxisAlignment: MainAxisAlignment.center,

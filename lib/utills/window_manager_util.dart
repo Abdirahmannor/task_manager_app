@@ -18,8 +18,8 @@ Future<void> configureWindow() async {
 
   doWhenWindowReady(() {
     final win = appWindow;
-    win.minSize = Size(600, 600); // Apply reduced minimum size
-    win.size = Size(1024, 768);
+    win.minSize = const Size(600, 600); // Apply reduced minimum size
+    win.size = const Size(1024, 768);
     win.alignment = Alignment.center;
     win.show();
   });

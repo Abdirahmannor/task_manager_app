@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter/material.dart';
 import '../widgets/auth_header.dart';
-import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
@@ -89,115 +88,113 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.only(right: 60.0),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        return SingleChildScrollView(
-                          child: AuthCard(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // Header
-                                AuthHeader(title: "Create an Account"),
-                                SizedBox(height: 16),
-                                // Name TextField
-                                AuthTextField(
-                                  controller: nameController,
-                                  hint: "Name",
-                                  suffixIcon: IconButton(
-                                    icon: Icon(Icons.person),
-                                    onPressed: null,
+                        return AuthCard(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Header
+                              AuthHeader(title: "Create an Account"),
+                              SizedBox(height: 16),
+                              // Name TextField
+                              AuthTextField(
+                                controller: nameController,
+                                hint: "Name",
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.person),
+                                  onPressed: null,
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              // Email TextField
+                              AuthTextField(
+                                controller: emailController,
+                                hint: "Email",
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.email),
+                                  onPressed: null,
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              // Password TextField
+                              AuthTextField(
+                                controller: passwordController,
+                                hint: "Password",
+                                obscureText: !isPasswordVisible,
+                                suffixIcon: IconButton(
+                                  icon: Icon(isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(() {
+                                      isPasswordVisible = !isPasswordVisible;
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              // Confirm Password TextField
+                              AuthTextField(
+                                controller: confirmPasswordController,
+                                hint: "Confirm Password",
+                                obscureText: !isConfirmPasswordVisible,
+                                suffixIcon: IconButton(
+                                  icon: Icon(isConfirmPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
+                                  onPressed: () {
+                                    setState(() {
+                                      isConfirmPasswordVisible =
+                                          !isConfirmPasswordVisible;
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(height: 24),
+                              // Sign Up Button
+                              CustomButton(
+                                text: "Sign Up",
+                                isSelected: true,
+                                onPressed: signUp,
+                              ),
+                              SizedBox(height: 16),
+                              // Sign In Text Button
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/signIn');
+                                },
+                                child: Text(
+                                  "Already have an account? Sign in",
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              // Privacy Policy and Terms
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "privacy policy",
+                                    style: TextStyle(
+                                        color: Colors.brown, fontSize: 12),
                                   ),
-                                ),
-                                SizedBox(height: 16),
-                                // Email TextField
-                                AuthTextField(
-                                  controller: emailController,
-                                  hint: "Email",
-                                  suffixIcon: IconButton(
-                                    icon: Icon(Icons.email),
-                                    onPressed: null,
+                                  SizedBox(
+                                    width: 40,
                                   ),
-                                ),
-                                SizedBox(height: 16),
-                                // Password TextField
-                                AuthTextField(
-                                  controller: passwordController,
-                                  hint: "Password",
-                                  obscureText: !isPasswordVisible,
-                                  suffixIcon: IconButton(
-                                    icon: Icon(isPasswordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off),
-                                    onPressed: () {
-                                      setState(() {
-                                        isPasswordVisible = !isPasswordVisible;
-                                      });
-                                    },
+                                  Text(
+                                    "terms and conditions",
+                                    style: TextStyle(
+                                        color: Colors.brown, fontSize: 12),
                                   ),
-                                ),
-                                SizedBox(height: 16),
-                                // Confirm Password TextField
-                                AuthTextField(
-                                  controller: confirmPasswordController,
-                                  hint: "Confirm Password",
-                                  obscureText: !isConfirmPasswordVisible,
-                                  suffixIcon: IconButton(
-                                    icon: Icon(isConfirmPasswordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off),
-                                    onPressed: () {
-                                      setState(() {
-                                        isConfirmPasswordVisible =
-                                            !isConfirmPasswordVisible;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                SizedBox(height: 24),
-                                // Sign Up Button
-                                CustomButton(
-                                  text: "Sign Up",
-                                  isSelected: true,
-                                  onPressed: signUp,
-                                ),
-                                SizedBox(height: 16),
-                                // Privacy Policy and Terms
-                                const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "privacy policy",
-                                      style: TextStyle(
-                                          color: Colors.brown, fontSize: 12),
-                                    ),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    Text(
-                                      "terms and conditions",
-                                      style: TextStyle(
-                                          color: Colors.brown, fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       },
                     ),
                   ),
-                ),
-              ),
-              // Bottom Navigation Buttons
-              Positioned(
-                bottom: 30,
-                left: 150,
-                child: AuthNavigationButtons(
-                  onSignInPressed: () {
-                    Navigator.pushReplacementNamed(context, '/signIn');
-                  },
-                  onSignUpPressed: () {},
-                  isSignInSelected: false,
                 ),
               ),
             ],

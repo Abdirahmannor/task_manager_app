@@ -6,7 +6,8 @@ class AuthTextField extends StatefulWidget {
   final bool obscureText;
   final IconButton suffixIcon;
 
-  AuthTextField({
+  const AuthTextField({
+    super.key,
     required this.controller,
     required this.hint,
     this.obscureText = false,

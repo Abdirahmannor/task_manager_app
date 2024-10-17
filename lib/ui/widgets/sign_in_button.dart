@@ -5,8 +5,8 @@ class SignInButton extends StatelessWidget {
 
   const SignInButton({
     required this.onPressed,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

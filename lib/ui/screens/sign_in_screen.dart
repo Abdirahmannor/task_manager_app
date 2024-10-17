@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:flutter/material.dart';
+import 'package:task_manager_app/ui/widgets/remember_me_forgot_password.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/auth_card.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -69,127 +71,117 @@ class _SignInScreenState extends State<SignInScreen> {
                     padding: const EdgeInsets.only(right: 60.0),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
-                        double containerWidth = constraints.maxWidth < 800
-                            ? constraints.maxWidth * 0.85
-                            : 400.0;
-
-                        return SingleChildScrollView(
-                          child: Container(
-                            width: containerWidth,
-                            constraints: const BoxConstraints(
-                                minWidth: 300,
-                                maxWidth: 400,
-                                minHeight: 500,
-                                maxHeight: double.infinity),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 40),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                // Header
-                                AuthHeader(title: "Sign in to Account"),
-                                SizedBox(height: 16),
-                                // Email TextField
-                                AuthTextField(
-                                  controller: emailController,
-                                  hint: "Gmail",
-                                  suffixIcon: IconButton(
-                                    icon: Icon(Icons.email),
-                                    onPressed: null,
-                                  ),
+                        return AuthCard(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Header
+                              AuthHeader(title: "Sign in to Account"),
+                              SizedBox(height: 16),
+                              // Email TextField
+                              AuthTextField(
+                                controller: emailController,
+                                hint: "Email",
+                                suffixIcon: IconButton(
+                                  icon: Icon(Icons.email),
+                                  onPressed: null,
                                 ),
-                                SizedBox(height: 16),
-                                // Password TextField
-                                AuthTextField(
-                                  controller: passwordController,
-                                  hint: "Password",
-                                  obscureText: !isPasswordVisible,
-                                  suffixIcon: IconButton(
-                                    icon: Icon(isPasswordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off),
-                                    onPressed: () {
-                                      setState(() {
-                                        isPasswordVisible = !isPasswordVisible;
-                                      });
-                                    },
-                                  ),
-                                ),
-                                SizedBox(height: 16),
-                                // Remember Me & Forgot Password
-                                Row(
-                                  children: [
-                                    Checkbox(
-                                      value: rememberMe,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          rememberMe = value!;
-                                        });
-                                      },
-                                    ),
-                                    Text("Remember me"),
-                                    Spacer(),
-                                    TextButton(
-                                      onPressed: () {},
-                                      child: Text(
-                                        "Forgot password",
-                                        style: TextStyle(color: Colors.blue),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 24),
-                                // Sign In Button
-                                CustomButton(
-                                  text: "Sign In",
-                                  isSelected: true,
-                                  onPressed: signIn,
-                                ),
-                                SizedBox(height: 16),
-                                // Sign Up Text Button
-                                TextButton(
+                              ),
+                              SizedBox(height: 16),
+                              // Password TextField
+                              AuthTextField(
+                                controller: passwordController,
+                                hint: "Password",
+                                obscureText: !isPasswordVisible,
+                                suffixIcon: IconButton(
+                                  icon: Icon(isPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off),
                                   onPressed: () {
-                                    Navigator.pushReplacementNamed(
-                                        context, '/signUp');
+                                    setState(() {
+                                      isPasswordVisible = !isPasswordVisible;
+                                    });
                                   },
-                                  child: Text(
-                                    "Or Sign up now?",
-                                    style: TextStyle(color: Colors.blue),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              // Remember Me & Forgot Password
+                              RememberMeForgotPassword(
+                                rememberMe: rememberMe,
+                                onRememberMeChanged: (value) {
+                                  setState(() {
+                                    rememberMe = value!;
+                                  });
+                                },
+                                onForgotPassword: () {},
+                                screenWidth: constraints.maxWidth,
+                              ),
+                              SizedBox(height: 24),
+                              // Sign In Button
+                              CustomButton(
+                                text: "Sign In",
+                                isSelected: true,
+                                onPressed: signIn,
+                              ),
+                              SizedBox(height: 16),
+                              // Sign Up Text Button
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushReplacementNamed(
+                                      context, '/signUp');
+                                },
+                                child: Text(
+                                  "Or Sign up now?",
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                              ),
+                              SizedBox(height: 16),
+                              // Privacy Policy and Terms
+                              const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "privacy policy",
+                                    style: TextStyle(
+                                        color: Colors.brown, fontSize: 12),
                                   ),
-                                ),
-                                SizedBox(height: 16),
-                                // Privacy Policy and Terms
-                                const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "privacy policy",
-                                      style: TextStyle(
-                                          color: Colors.brown, fontSize: 12),
-                                    ),
-                                    SizedBox(
-                                      width: 40,
-                                    ),
-                                    Text(
-                                      "terms and conditions",
-                                      style: TextStyle(
-                                          color: Colors.brown, fontSize: 12),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  SizedBox(
+                                    width: 40,
+                                  ),
+                                  Text(
+                                    "terms and conditions",
+                                    style: TextStyle(
+                                        color: Colors.brown, fontSize: 12),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         );
                       },
                     ),
                   ),
                 ),
+              ),
+              // Bottom Navigation Buttons
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  return constraints.maxWidth > 800
+                      ? Positioned(
+                          bottom: 30,
+                          left: 150,
+                          child: AuthNavigationButtons(
+                            onSignInPressed: () {},
+                            onSignUpPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, '/signUp');
+                            },
+                            isSignInSelected: true,
+                          ),
+                        )
+                      : SizedBox();
+                },
               ),
             ],
           ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AuthCard extends StatelessWidget {
   final Widget child;
 
-  AuthCard({required this.child});
+  const AuthCard({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
@@ -20,32 +20,34 @@ class AuthCard extends StatelessWidget {
           containerHeight = 400;
         }
 
-        return Container(
-          width: containerWidth,
-          height: containerHeight,
-          constraints: BoxConstraints(
-            minWidth: 300,
-            minHeight: 400,
-            maxWidth: 500,
-            maxHeight: 600,
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(18),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black12,
-                blurRadius: 10,
-                offset: Offset(0, 5),
+        return Center(
+          child: Container(
+            width: containerWidth,
+            height: containerHeight,
+            constraints: const BoxConstraints(
+              minWidth: 300,
+              minHeight: 400,
+              maxWidth: 500,
+              maxHeight: 600,
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(18),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 10,
+                  offset: Offset(0, 5),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(
+                  18), // Ensure rounded corners are applied to scrollable content
+              child: SingleChildScrollView(
+                child: child,
               ),
-            ],
-          ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(
-                18), // Ensure rounded corners are applied to scrollable content
-            child: SingleChildScrollView(
-              child: child,
             ),
           ),
         );

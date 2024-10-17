@@ -3,6 +3,8 @@ import '../../data/database/database_helper.dart';
 import '../../data/models/task_model.dart';
 
 class SchoolActivitiesScreen extends StatefulWidget {
+  const SchoolActivitiesScreen({super.key});
+
   @override
   _SchoolActivitiesScreenState createState() => _SchoolActivitiesScreenState();
 }
@@ -29,7 +31,7 @@ class _SchoolActivitiesScreenState extends State<SchoolActivitiesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('School Activities'),
+        title: const Text('School Activities'),
       ),
       body: ListView.builder(
         itemCount: _activities.length,

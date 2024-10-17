@@ -5,7 +5,8 @@ class CustomButton extends StatefulWidget {
   final bool isSelected;
   final VoidCallback onPressed;
 
-  CustomButton({
+  const CustomButton({
+    super.key,
     required this.text,
     required this.isSelected,
     required this.onPressed,
@@ -48,7 +49,7 @@ class _CustomButtonState extends State<CustomButton> {
                   ]
                 : [],
           ),
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           child: Text(
             widget.text,
             style: TextStyle(

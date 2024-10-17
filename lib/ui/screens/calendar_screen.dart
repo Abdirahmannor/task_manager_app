@@ -4,6 +4,8 @@ import '../../data/database/database_helper.dart';
 import '../../data/models/task_model.dart';
 
 class CalendarScreen extends StatefulWidget {
+  const CalendarScreen({super.key});
+
   @override
   _CalendarScreenState createState() => _CalendarScreenState();
 }
@@ -38,7 +40,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calendar'),
+        title: const Text('Calendar'),
       ),
       body: TableCalendar<Task>(
         focusedDay: _focusedDay,

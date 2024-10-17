@@ -6,6 +6,8 @@ import '../screens/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SidebarDrawer extends StatefulWidget {
+  const SidebarDrawer({super.key});
+
   @override
   _SidebarDrawerState createState() => _SidebarDrawerState();
 }
@@ -32,7 +34,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         children: [
           // Header with a collapsible button
           DrawerHeader(
-            decoration: BoxDecoration(color: Colors.blueGrey),
+            decoration: const BoxDecoration(color: Colors.blueGrey),
             child: Row(
               children: [
                 IconButton(
@@ -49,7 +51,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   },
                 ),
                 if (!isCollapsed)
-                  Expanded(
+                  const Expanded(
                     child: Text(
                       'FocusHub',
                       style: TextStyle(
@@ -68,14 +70,14 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
               child: TextField(
                 decoration: InputDecoration(
                   hintText: 'Search...',
-                  prefixIcon: Icon(Icons.search),
+                  prefixIcon: const Icon(Icons.search),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
                 ),
               ),
             ),
-          if (!isCollapsed) SizedBox(height: 10),
+          if (!isCollapsed) const SizedBox(height: 10),
           // Navigation options
           Expanded(
             child: ListView(
@@ -121,7 +123,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     ? Icons.brightness_4
                     : Icons.brightness_7,
               ),
-              title: Text('Toggle Theme'),
+              title: const Text('Toggle Theme'),
               onTap: () {
                 themeManager.toggleTheme();
               },
@@ -131,8 +133,9 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: ListTile(
-              leading: Icon(Icons.logout, color: Colors.white),
-              title: Text('Logout', style: TextStyle(color: Colors.white)),
+              leading: const Icon(Icons.logout, color: Colors.white),
+              title:
+                  const Text('Logout', style: TextStyle(color: Colors.white)),
               onTap: () {
                 _logout(context);
               },
@@ -151,7 +154,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
       leading: Icon(icon, color: Colors.white),
       title: isCollapsed
           ? null
-          : Text(label, style: TextStyle(color: Colors.white)),
+          : Text(label, style: const TextStyle(color: Colors.white)),
       onTap: onTap,
       hoverColor: Colors.blueGrey[800],
     );

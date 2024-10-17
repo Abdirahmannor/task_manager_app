@@ -67,7 +67,7 @@ class AppTheme {
       brightness: Brightness.light,
       primary: primaryColor,
       secondary: accentColor,
-      background: backgroundColor,
+      surface: backgroundColor,
     ),
   );
 
@@ -76,7 +76,7 @@ class AppTheme {
     brightness: Brightness.dark,
     primaryColor: primaryColor,
     scaffoldBackgroundColor: Colors.black,
-    cardColor: Color(0xFF1E1E1E),
+    cardColor: const Color(0xFF1E1E1E),
     textTheme: textTheme.apply(
       bodyColor: Colors.white,
       displayColor: Colors.white,
@@ -101,7 +101,7 @@ class AppTheme {
       brightness: Brightness.dark,
       primary: primaryColor,
       secondary: accentColor,
-      background: Colors.black,
+      surface: Colors.black,
     ),
   );
 }

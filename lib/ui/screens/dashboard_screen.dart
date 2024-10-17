@@ -3,6 +3,8 @@ import '../../data/database/database_helper.dart';
 import '../../data/models/task_model.dart';
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
@@ -27,7 +29,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Dashboard')),
+      appBar: AppBar(title: const Text('Dashboard')),
       body: ListView.builder(
         itemCount: _tasks.length,
         itemBuilder: (context, index) {
