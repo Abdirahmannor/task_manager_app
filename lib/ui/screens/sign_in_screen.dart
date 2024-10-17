@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:provider/provider.dart';
-import '../../theme/app_theme.dart';
+import '../widgets/auth_header.dart';
+import '../widgets/auth_navigation_buttons.dart';
+import '../widgets/auth_text_field.dart';
+import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
-import '../widgets/social_media_icons.dart';
-import '../widgets/remember_me_forgot_password.dart';
-import '../widgets/sign_in_button.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -13,6 +12,7 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  bool isPasswordVisible = false;
   bool rememberMe = false;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -30,7 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please enter both email and password.'),
-          backgroundColor: AppTheme.accentColor,
+          backgroundColor: Colors.red,
         ),
       );
     }
@@ -38,6 +38,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -76,45 +78,85 @@ class _SignInScreenState extends State<SignInScreen> {
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                // Sign in Text
-                                Text(
-                                  "Sign in to Account",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayLarge
-                                      ?.copyWith(color: AppTheme.primaryColor),
-                                ),
+                                // Header
+                                AuthHeader(title: "Sign in to Account"),
                                 SizedBox(height: 16),
-                                // Social Media Icons
-                                SocialMediaIcons(),
-                                SizedBox(height: 24),
                                 // Email TextField
-                                _buildTextField(
+                                AuthTextField(
                                   controller: emailController,
                                   hint: "Gmail",
+                                  suffixIcon: IconButton(
+                                    icon: Icon(Icons.email),
+                                    onPressed: null,
+                                  ),
                                 ),
                                 SizedBox(height: 16),
                                 // Password TextField
-                                _buildTextField(
+                                AuthTextField(
                                   controller: passwordController,
                                   hint: "Password",
-                                  obscureText: true,
+                                  obscureText: !isPasswordVisible,
+                                  suffixIcon: IconButton(
+                                    icon: Icon(isPasswordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off),
+                                    onPressed: () {
+                                      setState(() {
+                                        isPasswordVisible = !isPasswordVisible;
+                                      });
+                                    },
+                                  ),
                                 ),
                                 const SizedBox(height: 16),
                                 // Remember Me and Forgot Password
-                                RememberMeForgotPassword(
-                                  rememberMe: rememberMe,
-                                  onRememberMeChanged: (value) {
-                                    setState(() {
-                                      rememberMe = value!;
-                                    });
-                                  },
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          value: rememberMe,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              rememberMe = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text("Remember me"),
+                                      ],
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        // Forgot Password Logic
+                                      },
+                                      child: const Text(
+                                        "Forgot password",
+                                        style: TextStyle(color: Colors.blue),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-
                                 SizedBox(height: 24),
                                 // Sign In Button
-                                SignInButton(onPressed: signIn),
+                                CustomButton(
+                                  text: "Sign In",
+                                  isSelected: true,
+                                  onPressed: signIn,
+                                ),
                                 SizedBox(height: 16),
+                                // Sign Up Text Button for Small Screens
+                                if (screenWidth < 800)
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/signUp');
+                                    },
+                                    child: const Text(
+                                      "Don't have an account? Sign Up",
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                  ),
                                 // Privacy Policy and Terms
                                 const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -143,104 +185,23 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
+              // Bottom Navigation Buttons for Large Screens
+              if (screenWidth >= 800)
+                Positioned(
+                  bottom: 30,
+                  left: 150,
+                  child: AuthNavigationButtons(
+                    onSignInPressed: () {},
+                    onSignUpPressed: () {
+                      Navigator.pushReplacementNamed(context, '/signUp');
+                    },
+                    isSignInSelected: true,
+                  ),
+                ),
             ],
-          ),
-          // Bottom Navigation Buttons
-          Positioned(
-            bottom: 30,
-            left: 150,
-            child: Row(
-              children: [
-                _buildBottomButton(context, "Sign In", true, signIn),
-                SizedBox(width: 50),
-                _buildNavigationButton(context, "Sign Up", false, '/signUp'),
-              ],
-            ),
           ),
         ],
       ),
     );
   }
-
-  Widget _buildTextField(
-      {required TextEditingController controller,
-      required String hint,
-      bool obscureText = false}) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: InputDecoration(
-        hintText: hint,
-        filled: true,
-        fillColor: Colors.grey[200],
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(30),
-          borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomButton(BuildContext context, String text, bool isSelected,
-      VoidCallback onPressed) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.white,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavigationButton(
-      BuildContext context, String text, bool isSelected, String route) {
-    return GestureDetector(
-      onTap: () {
-        if (!isSelected) {
-          Navigator.pushReplacementNamed(context, route);
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: isSelected
-              ? const Color.fromARGB(157, 33, 149, 243)
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.white,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
 }
-
-// class WindowButtons extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         // MinimizeWindowButton(),
-//         // MaximizeWindowButton(),
-//         // CloseWindowButton(),
-//       ],
-//     );
-//   }
-// }

@@ -41,7 +41,13 @@ class AuthCard extends StatelessWidget {
               ),
             ],
           ),
-          child: child,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(
+                18), // Ensure rounded corners are applied to scrollable content
+            child: SingleChildScrollView(
+              child: child,
+            ),
+          ),
         );
       },
     );

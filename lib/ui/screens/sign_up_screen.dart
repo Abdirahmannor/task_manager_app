@@ -4,6 +4,7 @@ import '../widgets/auth_header.dart';
 import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
+import '../widgets/auth_card.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -93,19 +94,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             : 400.0;
 
                         return SingleChildScrollView(
-                          child: Container(
-                            width: containerWidth,
-                            constraints: const BoxConstraints(
-                                minWidth: 300,
-                                maxWidth: 400,
-                                minHeight: 500,
-                                maxHeight: double.infinity),
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 40),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(18),
-                            ),
+                          child: AuthCard(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
