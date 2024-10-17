@@ -4,7 +4,6 @@ import '../widgets/auth_header.dart';
 import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
-import '../widgets/auth_card.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -23,7 +22,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     if (email.isNotEmpty && password.isNotEmpty) {
       // Perform the sign-in action
-      print("Signing in with email: $email and password: $password");
+      print("Signing in with email: \$email and password: \$password");
       Navigator.pushReplacementNamed(context, '/home');
     } else {
       // Show error if fields are empty
@@ -70,8 +69,24 @@ class _SignInScreenState extends State<SignInScreen> {
                     padding: const EdgeInsets.only(right: 60.0),
                     child: LayoutBuilder(
                       builder: (context, constraints) {
+                        double containerWidth = constraints.maxWidth < 800
+                            ? constraints.maxWidth * 0.85
+                            : 400.0;
+
                         return SingleChildScrollView(
-                          child: AuthCard(
+                          child: Container(
+                            width: containerWidth,
+                            constraints: const BoxConstraints(
+                                minWidth: 300,
+                                maxWidth: 400,
+                                minHeight: 500,
+                                maxHeight: double.infinity),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 24, vertical: 40),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(18),
+                            ),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,7 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ),
                                 ),
                                 SizedBox(height: 16),
-                                // Remember Me and Forgot Password
+                                // Remember Me & Forgot Password
                                 Row(
                                   children: [
                                     Checkbox(
@@ -120,9 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                     Text("Remember me"),
                                     Spacer(),
                                     TextButton(
-                                      onPressed: () {
-                                        // Forgot password action
-                                      },
+                                      onPressed: () {},
                                       child: Text(
                                         "Forgot password",
                                         style: TextStyle(color: Colors.blue),
@@ -136,6 +149,18 @@ class _SignInScreenState extends State<SignInScreen> {
                                   text: "Sign In",
                                   isSelected: true,
                                   onPressed: signIn,
+                                ),
+                                SizedBox(height: 16),
+                                // Sign Up Text Button
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, '/signUp');
+                                  },
+                                  child: Text(
+                                    "Or Sign up now?",
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
                                 ),
                                 SizedBox(height: 16),
                                 // Privacy Policy and Terms
@@ -164,18 +189,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       },
                     ),
                   ),
-                ),
-              ),
-              // Bottom Navigation Buttons
-              Positioned(
-                bottom: 30,
-                left: 150,
-                child: AuthNavigationButtons(
-                  onSignInPressed: () {},
-                  onSignUpPressed: () {
-                    Navigator.pushReplacementNamed(context, '/signUp');
-                  },
-                  isSignInSelected: true,
                 ),
               ),
             ],
