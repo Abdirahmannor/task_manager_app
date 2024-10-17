@@ -1,7 +1,7 @@
-import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:bitsdojo_window/bitsdojo_window.dart';
+import '../widgets/custom_button.dart'; // Import your custom button
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:task_manager_app/ui/screens/sign_in_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -77,7 +77,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: Row(
                   children: [
                     Expanded(child: MoveWindow()),
-                    WindowButtons(),
+                    // WindowButtons(),
                   ],
                 ),
               ),
@@ -113,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 // Sign up Text
-                                Text(
+                                const Text(
                                   "Create an Account",
                                   style: TextStyle(
                                     fontSize: 24,
@@ -149,25 +149,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                                 SizedBox(height: 24),
                                 // Sign Up Button
-                                ElevatedButton(
+                                CustomButton(
+                                  text: "Sign Up",
+                                  isSelected: true,
                                   onPressed: _signUp,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 50, vertical: 15),
-                                  ),
-                                  child: Text(
-                                    "Sign Up",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
                                 ),
                                 SizedBox(height: 16),
                                 // Privacy Policy and Terms
-                                Row(
+                                const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
@@ -202,9 +191,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
             left: 150,
             child: Row(
               children: [
-                _buildNavigationButton(context, "Sign In", false, '/signIn'),
-                SizedBox(width: 50),
-                _buildBottomButton(context, "Sign Up", true, _signUp),
+                CustomButton(
+                  text: "Sign In",
+                  isSelected: false,
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/signIn');
+                  },
+                ),
+                const SizedBox(width: 50),
+                CustomButton(
+                  text: "Sign Up",
+                  isSelected: true,
+                  onPressed: _signUp,
+                ),
               ],
             ),
           ),
@@ -228,54 +227,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBottomButton(BuildContext context, String text, bool isSelected,
-      VoidCallback onPressed) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.white,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavigationButton(
-      BuildContext context, String text, bool isSelected, String route) {
-    return GestureDetector(
-      onTap: () {
-        if (!isSelected) {
-          Navigator.pushReplacementNamed(context, route);
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.white,
-            fontSize: 16,
-          ),
         ),
       ),
     );

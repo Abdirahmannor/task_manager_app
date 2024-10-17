@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 
+import '../widgets/custom_button.dart'; // Import your custom button
+
 class SignInScreen extends StatefulWidget {
   @override
   _SignInScreenState createState() => _SignInScreenState();
@@ -54,7 +56,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Row(
                   children: [
                     Expanded(child: MoveWindow()),
-                    WindowButtons(),
+                    // WindowButtons(),
                   ],
                 ),
               ),
@@ -72,12 +74,12 @@ class _SignInScreenState extends State<SignInScreen> {
                         return SingleChildScrollView(
                           child: Container(
                             width: containerWidth,
-                            constraints: BoxConstraints(
+                            constraints: const BoxConstraints(
                                 minWidth: 300,
                                 maxWidth: 400,
                                 minHeight: 500,
                                 maxHeight: double.infinity),
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 24, vertical: 40),
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -88,7 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 // Sign in Text
-                                Text(
+                                const Text(
                                   "Sign in to Account",
                                   style: TextStyle(
                                     fontSize: 24,
@@ -121,7 +123,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   hint: "Password",
                                   obscureText: true,
                                 ),
-                                SizedBox(height: 16),
+                                const SizedBox(height: 16),
                                 // Remember Me and Forgot Password
                                 Row(
                                   mainAxisAlignment:
@@ -144,7 +146,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       onPressed: () {
                                         // Forgot Password Logic
                                       },
-                                      child: Text(
+                                      child: const Text(
                                         "Forgot password",
                                         style: TextStyle(color: Colors.blue),
                                       ),
@@ -153,25 +155,14 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                                 SizedBox(height: 24),
                                 // Sign In Button
-                                ElevatedButton(
+                                CustomButton(
+                                  text: "Sign In",
+                                  isSelected: true,
                                   onPressed: signIn,
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(30),
-                                    ),
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 50, vertical: 15),
-                                  ),
-                                  child: Text(
-                                    "Sign In",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
                                 ),
                                 SizedBox(height: 16),
                                 // Privacy Policy and Terms
-                                Row(
+                                const Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text(
@@ -206,9 +197,19 @@ class _SignInScreenState extends State<SignInScreen> {
             left: 150,
             child: Row(
               children: [
-                _buildBottomButton(context, "Sign In", true, signIn),
+                CustomButton(
+                  text: "Sign In",
+                  isSelected: true,
+                  onPressed: signIn,
+                ),
                 SizedBox(width: 50),
-                _buildNavigationButton(context, "Sign Up", false, '/signUp'),
+                CustomButton(
+                  text: "Sign Up",
+                  isSelected: false,
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/signUp');
+                  },
+                ),
               ],
             ),
           ),
@@ -249,65 +250,17 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
-
-  Widget _buildBottomButton(BuildContext context, String text, bool isSelected,
-      VoidCallback onPressed) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.white,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildNavigationButton(
-      BuildContext context, String text, bool isSelected, String route) {
-    return GestureDetector(
-      onTap: () {
-        if (!isSelected) {
-          Navigator.pushReplacementNamed(context, route);
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.white,
-            fontSize: 16,
-          ),
-        ),
-      ),
-    );
-  }
 }
 
-class WindowButtons extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        MinimizeWindowButton(),
-        MaximizeWindowButton(),
-        CloseWindowButton(),
-      ],
-    );
-  }
-}
+// class WindowButtons extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       children: [
+//         // MinimizeWindowButton(),
+//         // MaximizeWindowButton(),
+//         // CloseWindowButton(),
+//       ],
+//     );
+//   }
+// }
