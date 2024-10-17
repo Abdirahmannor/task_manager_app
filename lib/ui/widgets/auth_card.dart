@@ -2,38 +2,48 @@ import 'package:flutter/material.dart';
 
 class AuthCard extends StatelessWidget {
   final Widget child;
-  final double? minWidth;
-  final double? maxWidth;
-  final double? minHeight;
-  final double? maxHeight;
 
-  AuthCard({
-    required this.child,
-    this.minWidth,
-    this.maxWidth,
-    this.minHeight,
-    this.maxHeight,
-  });
+  AuthCard({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double containerWidth = constraints.maxWidth * 0.4;
+        double containerHeight = constraints.maxHeight * 0.6;
 
-    return Container(
-      width: screenWidth < 800 ? screenWidth * 0.85 : maxWidth ?? 400.0,
-      constraints: BoxConstraints(
-        minWidth: minWidth ?? 300,
-        maxWidth: maxWidth ?? 400,
-        minHeight: minHeight ?? 500,
-        maxHeight: maxHeight ?? screenHeight * 0.9,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: child,
+        // Ensure the card doesn't shrink too much
+        if (containerWidth < 300) {
+          containerWidth = 300;
+        }
+        if (containerHeight < 400) {
+          containerHeight = 400;
+        }
+
+        return Container(
+          width: containerWidth,
+          height: containerHeight,
+          constraints: BoxConstraints(
+            minWidth: 300,
+            minHeight: 400,
+            maxWidth: 500,
+            maxHeight: 600,
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 10,
+                offset: Offset(0, 5),
+              ),
+            ],
+          ),
+          child: child,
+        );
+      },
     );
   }
 }
