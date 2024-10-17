@@ -16,12 +16,12 @@ void main() async {
 
   // Configure the window manager to use a frameless window
   windowManager.waitUntilReadyToShow().then((_) async {
-    await windowManager.setMinimumSize(const Size(1024, 768));
+    await windowManager.setMinimumSize(const Size(1024,
+        800)); // Reduced the minimum height constraint to allow resizing vertically
     await windowManager.show();
     await windowManager.setTitleBarStyle(TitleBarStyle.hidden,
         windowButtonVisibility: false); // Hide default title bar and buttons
   });
-
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeManager(),
@@ -31,7 +31,8 @@ void main() async {
 
   doWhenWindowReady(() {
     final win = appWindow;
-    win.minSize = Size(800, 700);
+    win.minSize = Size(800,
+        800); // Reduced height to allow for better resizing from the bottom
     win.size = Size(1024, 768);
     win.alignment = Alignment.center;
     win.show();

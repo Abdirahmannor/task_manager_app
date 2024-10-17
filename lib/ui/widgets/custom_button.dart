@@ -40,7 +40,7 @@ class _CustomButtonState extends State<CustomButton> {
             border: Border.all(color: Colors.white),
             boxShadow: isHovered
                 ? [
-                    BoxShadow(
+                    const BoxShadow(
                       color: Colors.black26,
                       offset: Offset(0, 4),
                       blurRadius: 6,
