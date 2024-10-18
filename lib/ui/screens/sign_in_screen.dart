@@ -1,5 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
@@ -16,19 +17,48 @@ class _SignInScreenState extends State<SignInScreen> {
   bool rememberMe = false;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final _userBox = Hive.box('userBox');
 
   void signIn() {
-    final email = emailController.text;
-    final password = passwordController.text;
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
 
     if (email.isNotEmpty && password.isNotEmpty) {
-      // Perform the sign-in action
-      print("Signing in with email: \$email and password: \$password");
-      Navigator.pushReplacementNamed(context, '/home');
+      if (_userBox.containsKey(email)) {
+        // Retrieve stored user data
+        final storedUser = _userBox.get(email);
+        final storedPassword = storedUser['password'];
+
+        if (storedPassword == password) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Sign In Successful!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          Navigator.pushReplacementNamed(context, '/home');
+        } else {
+          // Show error if password is incorrect
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Incorrect password!'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } else {
+        // Show error if email is not registered
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('No account found with this email!'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     } else {
       // Show error if fields are empty
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please fill in all fields.'),
           backgroundColor: Colors.red,
         ),
@@ -48,7 +78,7 @@ class _SignInScreenState extends State<SignInScreen> {
               Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('lib/assets/img1.jpg'),
+                    image: const AssetImage('lib/assets/img1.jpg'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.6),
@@ -78,18 +108,18 @@ class _SignInScreenState extends State<SignInScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Header
-                              AuthHeader(title: "Sign in to Account"),
-                              SizedBox(height: 16),
+                              const AuthHeader(title: "Sign in to Account"),
+                              const SizedBox(height: 16),
                               // Email TextField
                               AuthTextField(
                                 controller: emailController,
                                 hint: "Email",
-                                suffixIcon: IconButton(
+                                suffixIcon: const IconButton(
                                   icon: Icon(Icons.email),
                                   onPressed: null,
                                 ),
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Password TextField
                               AuthTextField(
                                 controller: passwordController,
@@ -106,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Remember Me and Forgot Password
                               if (screenWidth < 1000)
                                 Column(
@@ -127,12 +157,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                             });
                                           },
                                         ),
-                                        Text("Remember me"),
+                                        const Text("Remember me"),
                                       ],
                                     ),
                                     TextButton(
                                       onPressed: () {},
-                                      child: Text(
+                                      child: const Text(
                                         "Forgot password",
                                         style: TextStyle(color: Colors.blue),
                                       ),
@@ -154,38 +184,38 @@ class _SignInScreenState extends State<SignInScreen> {
                                             });
                                           },
                                         ),
-                                        Text("Remember me"),
+                                        const Text("Remember me"),
                                       ],
                                     ),
                                     TextButton(
                                       onPressed: () {},
-                                      child: Text(
+                                      child: const Text(
                                         "Forgot password",
                                         style: TextStyle(color: Colors.blue),
                                       ),
                                     ),
                                   ],
                                 ),
-                              SizedBox(height: 24),
+                              const SizedBox(height: 24),
                               // Sign In Button
                               CustomButton(
                                 text: "Sign In",
                                 isSelected: true,
                                 onPressed: signIn,
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               if (screenWidth < 800)
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pushReplacementNamed(
                                         context, '/signUp');
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     "Or Sign up now?",
                                     style: TextStyle(color: Colors.blue),
                                   ),
                                 ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Privacy Policy and Terms
                               const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

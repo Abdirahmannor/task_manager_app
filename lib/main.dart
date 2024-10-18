@@ -1,6 +1,8 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_manager.dart';
 import 'ui/screens/sign_in_screen.dart';
@@ -10,6 +12,12 @@ import 'ui/widgets/custom_title_bar.dart';
 import 'utills/window_manager_util.dart'; // Import the window manager utility
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Hive and open a box
+  await Hive.initFlutter();
+  await Hive.openBox('userBox'); // Box to store user data
+
   await configureWindow(); // Call the function to configure the window
 
   runApp(

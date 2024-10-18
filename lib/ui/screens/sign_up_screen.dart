@@ -1,5 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
@@ -19,26 +20,49 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
       TextEditingController();
+  final _userBox = Hive.box('userBox');
 
   void signUp() {
-    final name = nameController.text;
-    final email = emailController.text;
-    final password = passwordController.text;
-    final confirmPassword = confirmPasswordController.text;
+    final name = nameController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final confirmPassword = confirmPasswordController.text.trim();
 
     if (name.isNotEmpty &&
         email.isNotEmpty &&
         password.isNotEmpty &&
         confirmPassword.isNotEmpty) {
-      if (password == confirmPassword) {
-        // Perform the sign-up action
-        print(
-            "Signing up with name: \$name, email: \$email and password: \$password");
-        Navigator.pushReplacementNamed(context, '/signIn');
+      if (!email.contains('@')) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Please enter a valid email address.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      } else if (password == confirmPassword) {
+        // Check if the email already exists
+        if (_userBox.containsKey(email)) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Email already exists!'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        } else {
+          // Save new user data
+          _userBox.put(email, {'name': name, 'password': password});
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Account created successfully!'),
+              backgroundColor: Colors.green,
+            ),
+          );
+          Navigator.pushReplacementNamed(context, '/signIn');
+        }
       } else {
         // Show error if passwords do not match
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Passwords do not match.'),
             backgroundColor: Colors.red,
           ),
@@ -47,7 +71,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     } else {
       // Show error if fields are empty
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please fill in all fields.'),
           backgroundColor: Colors.red,
         ),
