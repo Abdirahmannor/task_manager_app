@@ -17,13 +17,19 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   bool isPasswordVisible = false;
   bool rememberMe = false;
+  bool isLoading = false;
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _userBox = Hive.box('userBox');
   final SessionManager _sessionManager = SessionManager();
-  final _sessionBox = Hive.box('sessionBox');
+  // final _sessionBox = Hive.box('sessionBox');
 
   void signIn() async {
+    setState(() {
+      isLoading = true; // Set loading to true when sign-in starts
+    });
+
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
@@ -37,13 +43,10 @@ class _SignInScreenState extends State<SignInScreen> {
           if (rememberMe) {
             // Use SessionManager to save user session
             _sessionManager.saveUserSession(email);
-            await _sessionBox.put('isLoggedIn', true);
-          } else {
-            await _sessionBox.put('isLoggedIn', false);
           }
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Sign In Successful!'),
               backgroundColor: Colors.green,
             ),
@@ -76,6 +79,10 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
       );
     }
+
+    setState(() {
+      isLoading = false; // Set loading to false when sign-in is complete
+    });
   }
 
   @override
@@ -212,12 +219,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                   ],
                                 ),
                               const SizedBox(height: 24),
-                              // Sign In Button
-                              CustomButton(
-                                text: "Sign In",
-                                isSelected: true,
-                                onPressed: signIn,
-                              ),
+                              // Original code for Sign In Button in the SignInScreen
+                              // Updated Sign In Button section
+                              isLoading
+                                  ? const CircularProgressIndicator() // Show loading indicator when isLoading is true
+                                  : CustomButton(
+                                      text: "Sign In",
+                                      isSelected: true,
+                                      onPressed: signIn,
+                                    ),
+
                               const SizedBox(height: 16),
                               if (screenWidth < 800)
                                 TextButton(
@@ -261,13 +272,16 @@ class _SignInScreenState extends State<SignInScreen> {
                     Positioned(
                       bottom: 30,
                       left: 150,
-                      child: AuthNavigationButtons(
-                        onSignInPressed: signIn,
-                        onSignUpPressed: () {
-                          Navigator.pushReplacementNamed(context, '/signUp');
-                        },
-                        isSignInSelected: true,
-                      ),
+                      child: isLoading
+                          ? const CircularProgressIndicator() // Show loading indicator when isLoading is true
+                          : AuthNavigationButtons(
+                              onSignInPressed: signIn,
+                              onSignUpPressed: () {
+                                Navigator.pushReplacementNamed(
+                                    context, '/signUp');
+                              },
+                              isSignInSelected: true,
+                            ),
                     ),
                 ],
               ),

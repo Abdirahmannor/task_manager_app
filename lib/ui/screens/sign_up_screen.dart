@@ -16,6 +16,8 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
+  bool isLoading = false;
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -23,7 +25,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       TextEditingController();
   final _userBox = Hive.box('userBox');
 
-  void signUp() {
+  void signUp() async {
+    setState(() {
+      isLoading = true; // Set loading to true when sign-up starts
+    });
+
     final name = nameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
@@ -33,15 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         email.isNotEmpty &&
         password.isNotEmpty &&
         confirmPassword.isNotEmpty) {
-      if (!email.contains('@')) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Please enter a valid email address.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      } else if (password == confirmPassword) {
-        // Check if the email already exists
+      if (password == confirmPassword) {
         if (_userBox.containsKey(email)) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -78,6 +76,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       );
     }
+
+    setState(() {
+      isLoading = false; // Set loading to false when sign-up is complete
+    });
   }
 
   @override
@@ -182,11 +184,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               const SizedBox(height: 24),
                               // Sign Up Button
-                              CustomButton(
-                                text: "Sign Up",
-                                isSelected: true,
-                                onPressed: signUp,
-                              ),
+                              // Updated Sign Up Button section
+                              isLoading
+                                  ? const CircularProgressIndicator() // Show loading indicator when isLoading is true
+                                  : CustomButton(
+                                      text: "Sign Up",
+                                      isSelected: true,
+                                      onPressed: signUp,
+                                    ),
+
                               const SizedBox(height: 16),
                               if (screenWidth < 800)
                                 TextButton(
@@ -230,13 +236,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Positioned(
                       bottom: 30,
                       left: 150,
-                      child: AuthNavigationButtons(
-                        onSignUpPressed: signUp,
-                        onSignInPressed: () {
-                          Navigator.pushReplacementNamed(context, '/signIn');
-                        },
-                        isSignInSelected: false,
-                      ),
+                      child: isLoading
+                          ? const CircularProgressIndicator() // Show loading indicator when isLoading is true
+                          : AuthNavigationButtons(
+                              onSignInPressed: signUp,
+                              onSignUpPressed: () {
+                                Navigator.pushReplacementNamed(
+                                    context, '/signIn');
+                              },
+                              isSignInSelected: false,
+                            ),
                     ),
                 ],
               ),
