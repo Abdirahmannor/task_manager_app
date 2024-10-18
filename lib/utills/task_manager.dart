@@ -14,7 +14,7 @@ class TaskManager {
       String projectId, String taskId, Map<String, dynamic> taskData) {
     final userEmail = _getCurrentUserEmail();
     if (userEmail != null) {
-      final taskKey = '\${userEmail}_\${projectId}_\${taskId}';
+      const taskKey = '\${userEmail}_\${projectId}_\${taskId}';
       _tasksBox.put(taskKey, taskData);
     }
   }
@@ -23,7 +23,7 @@ class TaskManager {
   Map<String, dynamic>? getTask(String projectId, String taskId) {
     final userEmail = _getCurrentUserEmail();
     if (userEmail != null) {
-      final taskKey = '\${userEmail}_\${projectId}_\${taskId}';
+      const taskKey = '\${userEmail}_\${projectId}_\${taskId}';
       return _tasksBox.get(taskKey);
     }
     return null;
@@ -46,7 +46,7 @@ class TaskManager {
   void deleteTask(String projectId, String taskId) {
     final userEmail = _getCurrentUserEmail();
     if (userEmail != null) {
-      final taskKey = '\${userEmail}_\${projectId}_\${taskId}';
+      const taskKey = '\${userEmail}_\${projectId}_\${taskId}';
       _tasksBox.delete(taskKey);
     }
   }

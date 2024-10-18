@@ -10,6 +10,8 @@ import '../widgets/auth_card.dart';
 import '../widgets/custom_title_bar.dart';
 
 class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
+
   @override
   _SignInScreenState createState() => _SignInScreenState();
 }
@@ -50,7 +52,7 @@ class _SignInScreenState extends State<SignInScreen> {
           }
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Sign In Successful!'),
               backgroundColor: Colors.green,
             ),

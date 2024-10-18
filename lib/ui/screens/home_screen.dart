@@ -19,6 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     // Load projects for the current user
     userProjects = _projectManager.getAllProjects();
+    // Update old projects without ID
+    for (var project in userProjects) {
+      if (project['id'] == null || project['id'] == 'Unknown ID') {
+        project['id'] = DateTime.now().millisecondsSinceEpoch.toString();
+        _projectManager.saveProject(project['id'], project);
+      }
+    }
   }
 
   void _createNewProject() {
@@ -62,9 +69,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 final String description = descriptionController.text.trim();
 
                 if (title.isNotEmpty) {
+                  final String projectId =
+                      DateTime.now().millisecondsSinceEpoch.toString();
                   _projectManager.saveProject(
-                    DateTime.now().toString(),
+                    projectId,
                     {
+                      'id': projectId,
                       'title': title,
                       'description': description,
                     },
@@ -72,6 +82,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() {
                     userProjects = _projectManager.getAllProjects();
                   });
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Project created successfully!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
                   Navigator.of(context).pop();
                 } else {
                   // Show error if title is empty
@@ -140,6 +156,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _projectManager.saveProject(
                       projectId,
                       {
+                        'id': projectId,
                         'title': updatedTitle,
                         'description': updatedDescription,
                       },
@@ -147,6 +164,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     setState(() {
                       userProjects = _projectManager.getAllProjects();
                     });
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Project updated successfully!'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
                     Navigator.of(context).pop();
                   } else {
                     // Show error if title is empty
@@ -183,17 +206,16 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             TextButton(
               onPressed: () {
-                // Debugging: Check if the correct projectId is being used
-                print('Attempting to delete project with ID: $projectId');
-
-                // Call the delete method
                 _projectManager.deleteProject(projectId);
-
-                // Update the UI after deletion
                 setState(() {
                   userProjects = _projectManager.getAllProjects();
                 });
-
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Project deleted successfully!'),
+                    backgroundColor: Colors.green,
+                  ),
+                );
                 Navigator.of(context).pop();
               },
               child: const Text("Delete"),
@@ -225,14 +247,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: userProjects.length,
                       itemBuilder: (context, index) {
                         final project = userProjects[index];
-                        final projectId =
-                            project['id'] ?? DateTime.now().toString();
+                        final projectId = project['id'] ?? 'Unknown ID';
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8.0),
                           child: ListTile(
                             title: Text(project['title'] ?? 'Unnamed Project'),
-                            subtitle: Text(project['description'] ??
-                                'No description available'),
+                            subtitle: Text(
+                                'ID: $projectId\n${project['description'] ?? 'No description available'}'),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
