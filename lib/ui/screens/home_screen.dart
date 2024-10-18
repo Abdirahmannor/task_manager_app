@@ -9,7 +9,8 @@ class HomeScreen extends StatelessWidget {
     return const Scaffold(
       body: Column(
         children: [
-          CustomTitleBar(), // Replace AppBar with CustomTitleBar
+          CustomTitleBar(
+              showIcons: true), // Show Back and Logout icons on Home screen
           Expanded(
             child: Center(
               child: Text(

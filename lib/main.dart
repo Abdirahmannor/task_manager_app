@@ -8,55 +8,44 @@ import 'theme/theme_manager.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/sign_up_screen.dart';
 import 'ui/screens/home_screen.dart';
-import 'ui/widgets/custom_title_bar.dart';
-import '../../utills/session_manager.dart'; // Import SessionManager
+import 'utills/window_manager_util.dart'; // Import the window manager utility
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Initialize Hive and open boxes
   await Hive.initFlutter();
-  await Hive.openBox('userBox');
+  await Hive.openBox('userBox'); // Box to store user data
   await Hive.openBox('sessionBox'); // Box to store session information
+
+  await configureWindow(); // Call the function to configure the window before running the app
+
+  final sessionBox = Hive.box('sessionBox');
+  final bool isLoggedIn = sessionBox.get('isLoggedIn', defaultValue: false);
 
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeManager(),
-      child: const MyApp(),
+      child: MyApp(isLoggedIn: isLoggedIn),
     ),
   );
-
-  // Configure the window
-  doWhenWindowReady(() {
-    final initialSize = Size(1024, 800);
-    appWindow
-      ..minSize = const Size(800, 600)
-      ..size = initialSize
-      ..alignment = Alignment.center
-      ..title = "Task Manager App"
-      ..show();
-
-    // Set the window to be frameless
-    appWindow.hide(); // Hides the system window temporarily
-    appWindow.show(); // Shows it again without the system title bar
-  });
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  bool isLoggedIn;
+
+  MyApp({super.key, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
-    final SessionManager sessionManager = SessionManager();
-
-    String initialRoute = sessionManager.isUserLoggedIn() ? '/home' : '/signIn';
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: themeManager.themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      initialRoute: initialRoute,
+      initialRoute: isLoggedIn ? '/home' : '/signIn',
       routes: {
         '/signIn': (context) => SignInScreen(),
         '/signUp': (context) => SignUpScreen(),
@@ -66,7 +55,6 @@ class MyApp extends StatelessWidget {
         return WindowTitleBarBox(
           child: Column(
             children: [
-              const CustomTitleBar(), // Use custom title bar
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {

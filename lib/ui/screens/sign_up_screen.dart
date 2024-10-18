@@ -6,6 +6,7 @@ import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
+import '../widgets/custom_title_bar.dart';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -102,6 +103,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               Column(
                 children: [
+                  const CustomTitleBar(
+                      showIcons:
+                          false), // Hide Back and Logout icons on Sign In screen
                   WindowTitleBarBox(
                     child: Row(
                       children: [

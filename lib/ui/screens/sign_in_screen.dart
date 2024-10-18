@@ -7,7 +7,7 @@ import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
-// Import SessionManager
+import '../widgets/custom_title_bar.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -21,8 +21,9 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController passwordController = TextEditingController();
   final _userBox = Hive.box('userBox');
   final SessionManager _sessionManager = SessionManager();
+  final _sessionBox = Hive.box('sessionBox');
 
-  void signIn() {
+  void signIn() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
 
@@ -36,6 +37,9 @@ class _SignInScreenState extends State<SignInScreen> {
           if (rememberMe) {
             // Use SessionManager to save user session
             _sessionManager.saveUserSession(email);
+            await _sessionBox.put('isLoggedIn', true);
+          } else {
+            await _sessionBox.put('isLoggedIn', false);
           }
 
           ScaffoldMessenger.of(context).showSnackBar(
@@ -97,6 +101,9 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               Column(
                 children: [
+                  const CustomTitleBar(
+                      showIcons:
+                          false), // Hide Back and Logout icons on Sign In screen
                   WindowTitleBarBox(
                     child: Row(
                       children: [

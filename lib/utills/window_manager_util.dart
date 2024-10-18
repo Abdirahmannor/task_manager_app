@@ -7,18 +7,17 @@ Future<void> configureWindow() async {
   await windowManager.ensureInitialized();
 
   windowManager.waitUntilReadyToShow().then((_) async {
-    await windowManager
-        .setMinimumSize(const Size(600, 600)); // Reduce minimum size
-    await windowManager.show();
+    await windowManager.setMinimumSize(const Size(600, 600));
     await windowManager.setTitleBarStyle(
-      TitleBarStyle.hidden,
+      TitleBarStyle.hidden, // Hide the default system title bar
       windowButtonVisibility: false,
     );
+    await windowManager.show();
   });
 
   doWhenWindowReady(() {
     final win = appWindow;
-    win.minSize = const Size(600, 600); // Apply reduced minimum size
+    win.minSize = const Size(600, 600);
     win.size = const Size(1024, 768);
     win.alignment = Alignment.center;
     win.show();
