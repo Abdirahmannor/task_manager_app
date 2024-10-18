@@ -24,6 +24,21 @@ void main() async {
       child: const MyApp(),
     ),
   );
+
+  // Configure the window
+  doWhenWindowReady(() {
+    final initialSize = Size(1024, 800);
+    appWindow
+      ..minSize = const Size(800, 600)
+      ..size = initialSize
+      ..alignment = Alignment.center
+      ..title = "Task Manager App"
+      ..show();
+
+    // Set the window to be frameless
+    appWindow.hide(); // Hides the system window temporarily
+    appWindow.show(); // Shows it again without the system title bar
+  });
 }
 
 class MyApp extends StatelessWidget {
