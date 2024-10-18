@@ -53,6 +53,7 @@ class ProjectManager {
     final userEmail = _getCurrentUserEmail();
     if (userEmail != null) {
       final projectKey = '${userEmail}_$projectId';
+      print('Deleting project with key: $projectKey'); // Debugging
       _projectsBox.delete(projectKey);
     }
   }

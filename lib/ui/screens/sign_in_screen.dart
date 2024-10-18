@@ -10,13 +10,11 @@ import '../widgets/auth_card.dart';
 import '../widgets/custom_title_bar.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
-
   @override
-  SignInScreenState createState() => SignInScreenState();
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends State<SignInScreen> {
   bool isPasswordVisible = false;
   bool rememberMe = false;
   bool isLoading = false;
@@ -24,8 +22,8 @@ class SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _userBox = Hive.box('userBox');
+  final _sessionBox = Hive.box('sessionBox'); // Corrected: Declare session box
   final SessionManager _sessionManager = SessionManager();
-  // final _sessionBox = Hive.box('sessionBox');
 
   void signIn() async {
     setState(() {
@@ -42,20 +40,23 @@ class SignInScreenState extends State<SignInScreen> {
         final storedPassword = storedUser['password'];
 
         if (storedPassword == password) {
+          // Save user email to session for project management
+          _sessionManager.saveUserSession(email);
+
           if (rememberMe) {
-            // Use SessionManager to save user session
-            _sessionManager.saveUserSession(email);
+            await _sessionBox.put('isLoggedIn', true);
+          } else {
+            await _sessionBox.put('isLoggedIn', false);
           }
 
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
+            SnackBar(
               content: Text('Sign In Successful!'),
               backgroundColor: Colors.green,
             ),
           );
           Navigator.pushReplacementNamed(context, '/home');
         } else {
-          // Show error if password is incorrect
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Incorrect password!'),
@@ -64,7 +65,6 @@ class SignInScreenState extends State<SignInScreen> {
           );
         }
       } else {
-        // Show error if email is not registered
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('No account found with this email!'),
@@ -73,7 +73,6 @@ class SignInScreenState extends State<SignInScreen> {
         );
       }
     } else {
-      // Show error if fields are empty
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please fill in all fields.'),

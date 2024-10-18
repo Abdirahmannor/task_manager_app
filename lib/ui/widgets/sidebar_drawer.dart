@@ -21,7 +21,7 @@ class SidebarDrawerState extends State<SidebarDrawer> {
     await prefs.remove('password');
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const SignInScreen()),
+      MaterialPageRoute(builder: (context) => SignInScreen()),
     );
   }
 

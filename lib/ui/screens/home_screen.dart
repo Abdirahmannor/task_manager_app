@@ -183,10 +183,17 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             TextButton(
               onPressed: () {
+                // Debugging: Check if the correct projectId is being used
+                print('Attempting to delete project with ID: $projectId');
+
+                // Call the delete method
                 _projectManager.deleteProject(projectId);
+
+                // Update the UI after deletion
                 setState(() {
                   userProjects = _projectManager.getAllProjects();
                 });
+
                 Navigator.of(context).pop();
               },
               child: const Text("Delete"),

@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       initialRoute: isLoggedIn ? '/home' : '/signIn',
       routes: {
-        '/signIn': (context) => const SignInScreen(),
+        '/signIn': (context) => SignInScreen(),
         '/signUp': (context) => const SignUpScreen(),
         '/home': (context) => const HomeScreen(),
       },
