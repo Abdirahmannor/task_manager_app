@@ -91,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Container(
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('lib/assets/img1.jpg'),
+                    image: const AssetImage('lib/assets/img1.jpg'),
                     fit: BoxFit.cover,
                     colorFilter: ColorFilter.mode(
                       Colors.black.withOpacity(0.6),
@@ -120,28 +120,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Header
-                              AuthHeader(title: "Sign in to Account"),
-                              SizedBox(height: 16),
+                              const AuthHeader(title: "Sign in to Account"),
+                              const SizedBox(height: 16),
                               // Name TextField
                               AuthTextField(
                                 controller: nameController,
                                 hint: "Name",
-                                suffixIcon: IconButton(
+                                suffixIcon: const IconButton(
                                   icon: Icon(Icons.person),
                                   onPressed: null,
                                 ),
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Email TextField
                               AuthTextField(
                                 controller: emailController,
                                 hint: "Email",
-                                suffixIcon: IconButton(
+                                suffixIcon: const IconButton(
                                   icon: Icon(Icons.email),
                                   onPressed: null,
                                 ),
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Password TextField
                               AuthTextField(
                                 controller: passwordController,
@@ -158,7 +158,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Confirm Password TextField
                               AuthTextField(
                                 controller: confirmPasswordController,
@@ -176,26 +176,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   },
                                 ),
                               ),
-                              SizedBox(height: 24),
+                              const SizedBox(height: 24),
                               // Sign Up Button
                               CustomButton(
                                 text: "Sign Up",
                                 isSelected: true,
                                 onPressed: signUp,
                               ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               if (screenWidth < 800)
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pushReplacementNamed(
                                         context, '/signIn');
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     "Or Sign in now?",
                                     style: TextStyle(color: Colors.blue),
                                   ),
                                 ),
-                              SizedBox(height: 16),
+                              const SizedBox(height: 16),
                               // Privacy Policy and Terms
                               const Row(
                                 mainAxisAlignment: MainAxisAlignment.center,

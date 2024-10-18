@@ -9,16 +9,14 @@ import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/sign_up_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'ui/widgets/custom_title_bar.dart';
-import 'utills/window_manager_util.dart'; // Import the window manager utility
+import '../../utills/session_manager.dart'; // Import SessionManager
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Hive and open a box
   await Hive.initFlutter();
-  await Hive.openBox('userBox'); // Box to store user data
-
-  await configureWindow(); // Call the function to configure the window
+  await Hive.openBox('userBox');
+  await Hive.openBox('sessionBox'); // Box to store session information
 
   runApp(
     ChangeNotifierProvider(
@@ -34,13 +32,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
+    final SessionManager sessionManager = SessionManager();
+
+    String initialRoute = sessionManager.isUserLoggedIn() ? '/home' : '/signIn';
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       themeMode: themeManager.themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      initialRoute: '/signIn',
+      initialRoute: initialRoute,
       routes: {
         '/signIn': (context) => SignInScreen(),
         '/signUp': (context) => SignUpScreen(),

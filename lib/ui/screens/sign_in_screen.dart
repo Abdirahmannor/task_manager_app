@@ -1,11 +1,13 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import '../../utills/session_manager.dart';
 import '../widgets/auth_header.dart';
 import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
+// Import SessionManager
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -18,6 +20,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final _userBox = Hive.box('userBox');
+  final SessionManager _sessionManager = SessionManager();
 
   void signIn() {
     final email = emailController.text.trim();
@@ -30,6 +33,11 @@ class _SignInScreenState extends State<SignInScreen> {
         final storedPassword = storedUser['password'];
 
         if (storedPassword == password) {
+          if (rememberMe) {
+            // Use SessionManager to save user session
+            _sessionManager.saveUserSession(email);
+          }
+
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Sign In Successful!'),
