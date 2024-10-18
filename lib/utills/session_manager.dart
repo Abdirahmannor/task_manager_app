@@ -16,6 +16,10 @@ class SessionManager {
     return _sessionBox.get('email');
   }
 
+  String? getLoggedInUserEmail() {
+    return _sessionBox.get('email');
+  }
+
   void clearUserSession() {
     _sessionBox.delete('isLoggedIn');
     _sessionBox.delete('email');
