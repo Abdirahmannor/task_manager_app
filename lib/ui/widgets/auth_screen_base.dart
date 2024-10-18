@@ -74,7 +74,7 @@ class AuthScreenBase extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 16),
                                   // Social Media Icons
-                                  SocialMediaIcons(),
+                                  const SocialMediaIcons(),
                                   const SizedBox(height: 24),
                                   // Form Content
                                   formContent,

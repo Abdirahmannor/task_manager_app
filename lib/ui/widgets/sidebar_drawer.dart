@@ -98,7 +98,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SchoolActivitiesScreen()),
+                          builder: (context) => const SchoolActivitiesScreen()),
                     );
                   },
                 ),

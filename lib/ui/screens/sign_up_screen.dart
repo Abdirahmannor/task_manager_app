@@ -96,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Header
-                              AuthHeader(title: "Create an Account"),
+                              AuthHeader(title: "Sign in to Account"),
                               SizedBox(height: 16),
                               // Name TextField
                               AuthTextField(
@@ -203,10 +203,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       bottom: 30,
                       left: 150,
                       child: AuthNavigationButtons(
+                        onSignUpPressed: signUp,
                         onSignInPressed: () {
                           Navigator.pushReplacementNamed(context, '/signIn');
                         },
-                        onSignUpPressed: () {},
                         isSignInSelected: false,
                       ),
                     ),

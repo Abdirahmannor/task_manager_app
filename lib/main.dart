@@ -15,7 +15,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeManager(),
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
 }
@@ -36,13 +36,13 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signIn': (context) => SignInScreen(),
         '/signUp': (context) => SignUpScreen(),
-        '/home': (context) => HomeScreen(),
+        '/home': (context) => const HomeScreen(),
       },
       builder: (context, child) {
         return WindowTitleBarBox(
           child: Column(
             children: [
-              CustomTitleBar(), // Use custom title bar
+              const CustomTitleBar(), // Use custom title bar
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {

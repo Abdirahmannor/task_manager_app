@@ -5,7 +5,6 @@ import '../widgets/auth_navigation_buttons.dart';
 import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
-import '../widgets/remember_me_forgot_password.dart';
 
 class SignInScreen extends StatefulWidget {
   @override
@@ -30,7 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
       // Show error if fields are empty
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Please enter both email and password.'),
+          content: Text('Please fill in all fields.'),
           backgroundColor: Colors.red,
         ),
       );
@@ -75,6 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: AuthCard(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               // Header
@@ -107,17 +107,65 @@ class _SignInScreenState extends State<SignInScreen> {
                                 ),
                               ),
                               SizedBox(height: 16),
-                              // Remember Me & Forgot Password
-                              RememberMeForgotPassword(
-                                rememberMe: rememberMe,
-                                onRememberMeChanged: (value) {
-                                  setState(() {
-                                    rememberMe = value!;
-                                  });
-                                },
-                                onForgotPassword: () {},
-                                screenWidth: screenWidth,
-                              ),
+                              // Remember Me and Forgot Password
+                              if (screenWidth < 1000)
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Checkbox(
+                                          value: rememberMe,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              rememberMe = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text("Remember me"),
+                                      ],
+                                    ),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        "Forgot password",
+                                        style: TextStyle(color: Colors.blue),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              else
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          value: rememberMe,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              rememberMe = value!;
+                                            });
+                                          },
+                                        ),
+                                        Text("Remember me"),
+                                      ],
+                                    ),
+                                    TextButton(
+                                      onPressed: () {},
+                                      child: Text(
+                                        "Forgot password",
+                                        style: TextStyle(color: Colors.blue),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               SizedBox(height: 24),
                               // Sign In Button
                               CustomButton(
@@ -169,7 +217,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       bottom: 30,
                       left: 150,
                       child: AuthNavigationButtons(
-                        onSignInPressed: () {},
+                        onSignInPressed: signIn,
                         onSignUpPressed: () {
                           Navigator.pushReplacementNamed(context, '/signUp');
                         },
