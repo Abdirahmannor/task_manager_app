@@ -16,6 +16,7 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox('userBox'); // Box to store user data
   await Hive.openBox('sessionBox'); // Box to store session information
+  await Hive.openBox('projectsBox'); // Box to store project information
 
   await configureWindow(); // Call the function to configure the window before running the app
 

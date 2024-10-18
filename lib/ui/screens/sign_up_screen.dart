@@ -234,6 +234,7 @@ class SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   // Bottom Navigation Buttons
+                  // Bottom Navigation Buttons
                   if (screenWidth > 800)
                     Positioned(
                       bottom: 30,
@@ -241,12 +242,14 @@ class SignUpScreenState extends State<SignUpScreen> {
                       child: isLoading
                           ? const CircularProgressIndicator() // Show loading indicator when isLoading is true
                           : AuthNavigationButtons(
-                              onSignInPressed: signUp,
-                              onSignUpPressed: () {
+                              onSignInPressed: () {
                                 Navigator.pushReplacementNamed(
                                     context, '/signIn');
                               },
-                              isSignInSelected: false,
+                              onSignUpPressed: signUp,
+
+                              isSignInSelected:
+                                  false, // Change this to match the correct state
                             ),
                     ),
                 ],

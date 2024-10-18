@@ -34,8 +34,15 @@ class ProjectManager {
     if (userEmail != null) {
       final userProjects = _projectsBox.keys
           .where((key) => key.startsWith(userEmail))
-          .map((key) => _projectsBox.get(key) as Map<String, dynamic>)
-          .toList();
+          .map((key) {
+        final dynamic project = _projectsBox.get(key);
+        if (project is Map) {
+          return project.map((key, value) => MapEntry(key.toString(), value));
+        } else {
+          return <String,
+              dynamic>{}; // return empty map if the value is not a map
+        }
+      }).toList();
       return userProjects;
     }
     return [];
