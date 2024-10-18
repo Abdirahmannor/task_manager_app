@@ -15,10 +15,10 @@ class AuthTextField extends StatefulWidget {
   });
 
   @override
-  _AuthTextFieldState createState() => _AuthTextFieldState();
+  AuthTextFieldState createState() => AuthTextFieldState();
 }
 
-class _AuthTextFieldState extends State<AuthTextField> {
+class AuthTextFieldState extends State<AuthTextField> {
   bool isPasswordVisible = false;
 
   @override

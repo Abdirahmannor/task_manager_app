@@ -13,10 +13,10 @@ class CustomButton extends StatefulWidget {
   });
 
   @override
-  _CustomButtonState createState() => _CustomButtonState();
+  CustomButtonState createState() => CustomButtonState();
 }
 
-class _CustomButtonState extends State<CustomButton> {
+class CustomButtonState extends State<CustomButton> {
   bool isHovered = false;
 
   @override

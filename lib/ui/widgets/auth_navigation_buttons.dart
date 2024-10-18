@@ -15,10 +15,10 @@ class AuthNavigationButtons extends StatefulWidget {
   });
 
   @override
-  _AuthNavigationButtonsState createState() => _AuthNavigationButtonsState();
+  AuthNavigationButtonsState createState() => AuthNavigationButtonsState();
 }
 
-class _AuthNavigationButtonsState extends State<AuthNavigationButtons> {
+class AuthNavigationButtonsState extends State<AuthNavigationButtons> {
   bool isSignInHovered = false;
   bool isSignUpHovered = false;
 

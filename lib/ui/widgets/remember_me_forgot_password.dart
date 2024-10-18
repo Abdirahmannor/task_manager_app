@@ -6,11 +6,11 @@ class RememberMeForgotPassword extends StatelessWidget {
   final VoidCallback onForgotPassword;
 
   const RememberMeForgotPassword({
-    Key? key,
+    super.key,
     required this.rememberMe,
     required this.onRememberMeChanged,
     required this.onForgotPassword,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +24,12 @@ class RememberMeForgotPassword extends StatelessWidget {
               value: rememberMe,
               onChanged: onRememberMeChanged,
             ),
-            Text("Remember me"),
+            const Text("Remember me"),
           ],
         ),
         TextButton(
           onPressed: onForgotPassword,
-          child: Text(
+          child: const Text(
             "Forgot password",
             style: TextStyle(color: Colors.blue),
           ),

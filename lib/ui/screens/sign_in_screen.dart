@@ -10,11 +10,13 @@ import '../widgets/auth_card.dart';
 import '../widgets/custom_title_bar.dart';
 
 class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
+
   @override
-  _SignInScreenState createState() => _SignInScreenState();
+  SignInScreenState createState() => SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class SignInScreenState extends State<SignInScreen> {
   bool isPasswordVisible = false;
   bool rememberMe = false;
   bool isLoading = false;

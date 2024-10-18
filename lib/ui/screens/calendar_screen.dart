@@ -7,10 +7,11 @@ class CalendarScreen extends StatefulWidget {
   const CalendarScreen({super.key});
 
   @override
-  _CalendarScreenState createState() => _CalendarScreenState();
+  @override
+  CalendarScreenState createState() => CalendarScreenState();
 }
 
-class _CalendarScreenState extends State<CalendarScreen> {
+class CalendarScreenState extends State<CalendarScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   Map<DateTime, List<Task>> _tasksByDate = {};
   CalendarFormat _calendarFormat = CalendarFormat.month;

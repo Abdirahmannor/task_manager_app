@@ -6,10 +6,10 @@ class SchoolActivitiesScreen extends StatefulWidget {
   const SchoolActivitiesScreen({super.key});
 
   @override
-  _SchoolActivitiesScreenState createState() => _SchoolActivitiesScreenState();
+  SchoolActivitiesScreenState createState() => SchoolActivitiesScreenState();
 }
 
-class _SchoolActivitiesScreenState extends State<SchoolActivitiesScreen> {
+class SchoolActivitiesScreenState extends State<SchoolActivitiesScreen> {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   List<Task> _activities = [];
 

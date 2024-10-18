@@ -1,7 +1,6 @@
 import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_manager.dart';
@@ -32,9 +31,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  bool isLoggedIn;
+  final bool isLoggedIn;
 
-  MyApp({super.key, required this.isLoggedIn});
+  const MyApp({super.key, required this.isLoggedIn});
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +46,8 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       initialRoute: isLoggedIn ? '/home' : '/signIn',
       routes: {
-        '/signIn': (context) => SignInScreen(),
-        '/signUp': (context) => SignUpScreen(),
+        '/signIn': (context) => const SignInScreen(),
+        '/signUp': (context) => const SignUpScreen(),
         '/home': (context) => const HomeScreen(),
       },
       builder: (context, child) {

@@ -9,11 +9,13 @@ import '../widgets/auth_card.dart';
 import '../widgets/custom_title_bar.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  SignUpScreenState createState() => SignUpScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreenState extends State<SignUpScreen> {
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
   bool isLoading = false;

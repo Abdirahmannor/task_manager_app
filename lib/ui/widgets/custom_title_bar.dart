@@ -20,7 +20,7 @@ class CustomTitleBar extends StatelessWidget {
           children: [
             if (showIcons) // Show Back Icon only when showIcons is true
               IconButton(
-                icon: Icon(Icons.arrow_back, color: Colors.white),
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
                 onPressed: () {
                   Navigator.pushReplacementNamed(context, '/signIn');
                 },
@@ -28,7 +28,7 @@ class CustomTitleBar extends StatelessWidget {
             Expanded(child: MoveWindow()), // Allows user to drag the window
             if (showIcons) // Show Logout Icon only when showIcons is true
               IconButton(
-                icon: Icon(Icons.logout, color: Colors.white),
+                icon: const Icon(Icons.logout, color: Colors.white),
                 onPressed: () {
                   // Clear the user session
                   final sessionManager = SessionManager();
