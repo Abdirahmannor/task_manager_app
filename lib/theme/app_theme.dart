@@ -11,9 +11,14 @@ class AppTheme {
   static const Color cardBackgroundColor =
       Colors.white; // Card Background Color
 
+  // Sidebar Colors
   static const Color sidebarBackgroundColor = Color(0xFF2E2E48);
+  static const Color sidebarProfileBackgroundColor =
+      Color(0xFF1C1C1C); // Profile section background
   static const Color sidebarSelectedColor = primaryColor;
   static const Color sidebarIconColor = Colors.white;
+  static const Color sidebarInactiveIconColor =
+      Colors.grey; // Inactive icon color
   static const Color sidebarTextColor = Colors.white;
 
   static final TextStyle sidebarTextStyle = GoogleFonts.openSans(
