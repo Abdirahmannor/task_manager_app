@@ -9,17 +9,18 @@ class AppTheme {
       Color.fromARGB(255, 27, 17, 85); // Accent Color
 
   // Light Mode Colors
-  static const Color backgroundColor = Color(0Xffccc0c8); // Light Background
+  static const Color backgroundColor =
+      Color.fromARGB(255, 82, 80, 81); // Light Background
   static const Color lightSidebarBackgroundColor =
-      Color.fromARGB(255, 240, 132, 8); // light Mode Sidebar Background
+      Color.fromARGB(255, 49, 47, 44); // light Mode Sidebar Background
   static const Color sidebarBackgroundColor =
       Color.fromARGB(255, 19, 168, 81); // Light Mode Sidebar Background
-  static const Color lightsidebarProfileBackgroundColor = Color.fromARGB(
-      255, 201, 15, 108); // Light Mode Profile section background
+  static const Color lightsidebarProfileBackgroundColor =
+      Color.fromARGB(255, 31, 28, 29); // Light Mode Profile section background
   static const Color sidebarSelectedColor =
       Color.fromARGB(255, 45, 69, 141); // Light Mode Active tab color (green)
   static const Color lightsidebarIconColor =
-      Colors.white; // Light Mode Icon color
+      Color.fromARGB(255, 129, 128, 128); // Light Mode Icon color
   static const Color sidebarInactiveIconColor =
       Color(0xFFB0BEC5); // Light Mode Inactive icon color
   static const Color sidebarTextColor =

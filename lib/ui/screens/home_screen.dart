@@ -319,6 +319,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Determine if dark mode is active
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Row(
         children: [
@@ -341,12 +343,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: selectedPage == 'Dashboard'
           ? FloatingActionButton(
-              backgroundColor: AppTheme.buttonColor, // Use theme color
+              backgroundColor: isDarkMode
+                  ? AppTheme.darkSidebarIconColor
+                  : AppTheme.lightsidebarIconColor, // Use theme color
               onPressed: _createNewProject,
-              child: const Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
+              child:
+                  const Icon(Icons.add, color: AppTheme.darkSidebarTextColor),
             )
           : null,
     );

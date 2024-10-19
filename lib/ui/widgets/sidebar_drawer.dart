@@ -30,7 +30,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
-    var isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Drawer(
       backgroundColor: isDarkMode
@@ -61,10 +61,11 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   child: Text(
                     'JD',
                     style: TextStyle(
-                        color: isDarkMode
-                            ? AppTheme.darkTextColor
-                            : AppTheme.textColor,
-                        fontSize: 22),
+                      color: isDarkMode
+                          ? AppTheme.darkTextColor
+                          : AppTheme.textColor,
+                      fontSize: 22,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -72,26 +73,30 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   'John Doe',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: isDarkMode
-                          ? AppTheme.darkTextColor
-                          : AppTheme.textColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
+                    color: isDarkMode
+                        ? AppTheme.darkTextColor
+                        : AppTheme.textColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 5),
                 Text(
                   'Web Developer',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: isDarkMode
-                          ? AppTheme.darkTextColor
-                          : AppTheme.textColor,
-                      fontSize: 14),
+                    color: isDarkMode
+                        ? AppTheme.darkTextColor
+                        : AppTheme.textColor,
+                    fontSize: 14,
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 20), // Space after the profile section
+
+          // Arrow Button - Positioning in the right corner
           Container(
             alignment: Alignment.topRight, // Align to the top right
             margin: const EdgeInsets.only(
@@ -103,20 +108,19 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   : AppTheme.lightsidebarIconColor
                       .withOpacity(0.8), // Background color
               child: IconButton(
-                icon: Icon(Icons.arrow_forward,
-                    color: isDarkMode
-                        ? AppTheme.darkTextColor
-                        : AppTheme.textColor),
+                icon: Icon(
+                  Icons.arrow_forward,
+                  color:
+                      isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
+                ),
                 onPressed: () {
                   // Action for the arrow button
-                  // You can implement functionality here, like collapsing the sidebar
+                  // Implement functionality here, like collapsing the sidebar
                 },
                 padding: const EdgeInsets.all(12), // Adjust padding as needed
               ),
             ),
           ),
-
-          // Arrow Button - Positioning in the right corner
 
           // Scrollable Navigation Section
           Expanded(
@@ -174,16 +178,18 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                 // Dark Mode Toggle Switch
                 ListTile(
                   leading: Icon(
-                      isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
-                      color: isDarkMode
-                          ? AppTheme.darkTextColor
-                          : AppTheme.textColor),
+                    isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
+                    color: isDarkMode
+                        ? AppTheme.darkTextColor
+                        : AppTheme.textColor,
+                  ),
                   title: Text(
                     'Dark Mode',
                     style: AppTheme.sidebarTextStyle.copyWith(
-                        color: isDarkMode
-                            ? AppTheme.darkTextColor
-                            : AppTheme.textColor),
+                      color: isDarkMode
+                          ? AppTheme.darkTextColor
+                          : AppTheme.textColor,
+                    ),
                   ),
                   trailing: Switch(
                     value: isDarkMode,
