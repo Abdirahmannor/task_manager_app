@@ -11,6 +11,17 @@ class AppTheme {
   static const Color cardBackgroundColor =
       Colors.white; // Card Background Color
 
+  static const Color sidebarBackgroundColor = Color(0xFF2E2E48);
+  static const Color sidebarSelectedColor = primaryColor;
+  static const Color sidebarIconColor = Colors.white;
+  static const Color sidebarTextColor = Colors.white;
+
+  static final TextStyle sidebarTextStyle = GoogleFonts.openSans(
+    fontSize: 18,
+    fontWeight: FontWeight.bold,
+    color: sidebarTextColor,
+  );
+
   // Define font styles
   static final TextTheme textTheme = TextTheme(
     displayLarge: GoogleFonts.poppins(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../utills/project_manager.dart'; // Import ProjectManager
 import '../widgets/custom_title_bar.dart'; // Import your custom title bar
+import '../widgets/sidebar_drawer.dart'; // Import SidebarDrawer
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -11,8 +12,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ProjectManager _projectManager = ProjectManager();
-
   late List<Map<String, dynamic>> userProjects;
+  String selectedPage = 'Dashboard'; // Default page
 
   @override
   void initState() {
@@ -28,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Method to create a new project
   void _createNewProject() {
     showDialog(
       context: context,
@@ -90,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                   Navigator.of(context).pop();
                 } else {
-                  // Show error if title is empty
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Project title cannot be empty.'),
@@ -107,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Method to edit an existing project
   void _editProject(String projectId) {
     final project = _projectManager.getProject(projectId);
 
@@ -172,7 +174,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                     Navigator.of(context).pop();
                   } else {
-                    // Show error if title is empty
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Project title cannot be empty.'),
@@ -190,6 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  // Method to delete a project
   void _deleteProject(String projectId) {
     showDialog(
       context: context,
@@ -226,59 +228,117 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // Callback to handle page selection from the sidebar
+  void onSidebarPageSelected(String page) {
+    setState(() {
+      selectedPage = page;
+    });
+  }
+
+  // Render content based on the selected sidebar option
+  Widget _buildContentArea() {
+    switch (selectedPage) {
+      case 'Dashboard':
+        return _buildProjectList(); // Existing project list on Dashboard
+      case 'School Activities':
+        return const Center(
+            child: Text('School Activities Content')); // Placeholder
+      case 'Calendar':
+        return const Center(child: Text('Calendar Content')); // Placeholder
+      case 'Favorites':
+        return const Center(child: Text('Favorites Content')); // Placeholder
+      case 'Notes':
+        return const Center(child: Text('Notes Content')); // Placeholder
+      default:
+        return const Center(child: Text('Select a page'));
+    }
+  }
+
+  // Project list for the Dashboard
+  Widget _buildProjectList() {
+    return userProjects.isEmpty
+        ? const Center(
+            child: Text(
+              'No projects found. Start by creating a new project!',
+              style: TextStyle(fontSize: 18),
+            ),
+          )
+        : ListView.builder(
+            itemCount: userProjects.length,
+            itemBuilder: (context, index) {
+              final project = userProjects[index];
+              final projectId = project['id'] ?? 'Unknown ID';
+              return Card(
+                color: Theme.of(context)
+                    .cardColor, // Adapt card color based on the theme
+                margin: const EdgeInsets.symmetric(vertical: 8.0),
+                child: ListTile(
+                  title: Text(
+                    project['title'] ?? 'Unnamed Project',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge, // Use the updated text style
+                  ),
+                  subtitle: Text(
+                    'ID: $projectId\n${project['description'] ?? 'No description available'}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium, // Use the updated text style
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () => _editProject(projectId),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => _deleteProject(projectId),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Row(
         children: [
-          const CustomTitleBar(
-              showIcons: true), // Show Back and Logout icons on Home screen
+          // SidebarDrawer integrated with page selection callback
+          SidebarDrawer(onPageSelected: onSidebarPageSelected),
+
+          // Main content area that changes with selected page
           Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: userProjects.isEmpty
-                  ? const Center(
-                      child: Text(
-                        'No projects found. Start by creating a new project!',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: userProjects.length,
-                      itemBuilder: (context, index) {
-                        final project = userProjects[index];
-                        final projectId = project['id'] ?? 'Unknown ID';
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: ListTile(
-                            title: Text(project['title'] ?? 'Unnamed Project'),
-                            subtitle: Text(
-                                'ID: $projectId\n${project['description'] ?? 'No description available'}'),
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.edit),
-                                  onPressed: () => _editProject(projectId),
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: () => _deleteProject(projectId),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+            child: Column(
+              children: [
+                const CustomTitleBar(
+                    showIcons: true), // Custom title bar at the top
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child:
+                        _buildContentArea(), // Right-side content based on page selection
+                  ),
+                ),
+              ],
             ),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _createNewProject,
-        child: const Icon(Icons.add),
-      ),
+      // FAB only shows on 'Dashboard' page
+      floatingActionButton: selectedPage == 'Dashboard'
+          ? FloatingActionButton(
+              onPressed: _createNewProject,
+              child: const Icon(
+                Icons.add,
+              ),
+            )
+          : null,
     );
   }
 }

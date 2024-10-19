@@ -1,162 +1,137 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../theme/theme_manager.dart';
-import '../screens/school_activities_screen.dart';
-import '../screens/sign_in_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class SidebarDrawer extends StatefulWidget {
-  const SidebarDrawer({super.key});
+class SidebarDrawer extends StatelessWidget {
+  final Function(String) onPageSelected;
 
-  @override
-  SidebarDrawerState createState() => SidebarDrawerState();
-}
-
-class SidebarDrawerState extends State<SidebarDrawer> {
-  bool isCollapsed = true;
-
-  Future<void> _logout(BuildContext context) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.remove('email');
-    await prefs.remove('password');
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
-    );
-  }
+  const SidebarDrawer({Key? key, required this.onPageSelected})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Drawer(
+      // Background color based on dark or light mode
+      backgroundColor: Theme.of(context)
+          .colorScheme
+          .surface, // Use the surface color for better dark/light adaptation
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Header with a collapsible button
           DrawerHeader(
-            decoration: const BoxDecoration(color: Colors.blueGrey),
-            child: Row(
-              children: [
-                IconButton(
-                  icon: Icon(
-                    isCollapsed
-                        ? Icons.arrow_forward_ios
-                        : Icons.arrow_back_ios,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      isCollapsed = !isCollapsed;
-                    });
-                  },
-                ),
-                if (!isCollapsed)
-                  const Expanded(
-                    child: Text(
-                      'FocusHub',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ),
-              ],
+            decoration: BoxDecoration(
+              color: isDarkMode
+                  ? Colors.black54
+                  : Colors.blue, // Adapted for dark mode
             ),
-          ),
-          // Search bar
-          if (!isCollapsed)
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  prefixIcon: const Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+            child: UserAccountsDrawerHeader(
+              accountName: Text(
+                'John Doe',
+                style: TextStyle(
+                    color: isDarkMode
+                        ? Colors.white
+                        : Colors.black87), // Dark mode text color
+              ),
+              accountEmail: Text(
+                'Web Developer',
+                style: TextStyle(
+                    color: isDarkMode
+                        ? Colors.white70
+                        : Colors.black54), // Dark mode text color
+              ),
+              currentAccountPicture: CircleAvatar(
+                backgroundColor: isDarkMode ? Colors.white : Colors.blueAccent,
+                child: Text(
+                  'JD',
+                  style: TextStyle(
+                      fontSize: 24.0,
+                      color: isDarkMode
+                          ? Colors.black
+                          : Colors.white), // Dark mode text color
                 ),
               ),
+              decoration: BoxDecoration(
+                  color: isDarkMode ? Colors.black54 : Colors.blue),
             ),
-          if (!isCollapsed) const SizedBox(height: 10),
-          // Navigation options
+          ),
+
+          // Main navigation items
           Expanded(
             child: ListView(
+              padding: EdgeInsets.zero,
               children: [
+                _buildListTile(Icons.dashboard, 'Dashboard', 'Dashboard',
+                    context, isDarkMode),
                 _buildListTile(
-                  context,
-                  icon: Icons.dashboard,
-                  label: 'Dashboard',
-                  onTap: () {
-                    Navigator.pushNamed(context, '/dashboard');
-                  },
-                ),
+                    Icons.person, 'Profile', 'Profile', context, isDarkMode),
                 _buildListTile(
-                  context,
-                  icon: Icons.school,
-                  label: 'School Activities',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SchoolActivitiesScreen()),
-                    );
-                  },
-                ),
+                    Icons.star, 'Favorites', 'Favorites', context, isDarkMode),
+                _buildListTile(Icons.calendar_today, 'Calendar', 'Calendar',
+                    context, isDarkMode),
                 _buildListTile(
-                  context,
-                  icon: Icons.event,
-                  label: 'Calendar',
-                  onTap: () {
-                    Navigator.pushNamed(context, '/calendar');
-                  },
-                ),
-                // Add more list tiles for shortcuts, notes, etc.
+                    Icons.note, 'Notes', 'Notes', context, isDarkMode),
               ],
             ),
           ),
-          // Dark/light mode toggle
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ListTile(
-              leading: Icon(
-                themeManager.themeMode == ThemeMode.light
-                    ? Icons.brightness_4
-                    : Icons.brightness_7,
-              ),
-              title: const Text('Toggle Theme'),
-              onTap: () {
-                themeManager.toggleTheme();
-              },
+
+          const Divider(), // Divider between main navigation and settings/help
+
+          // Settings and Help
+          _buildListTile(
+              Icons.settings, 'Settings', 'Settings', context, isDarkMode),
+          _buildListTile(
+              Icons.help_outline, 'Help', 'Help', context, isDarkMode),
+
+          const Divider(), // Divider before dark mode toggle and logout
+
+          // Dark Mode Toggle
+          SwitchListTile(
+            title: const Text("Dark Mode"),
+            secondary: Icon(
+              themeManager.themeMode == ThemeMode.dark
+                  ? Icons.dark_mode
+                  : Icons.light_mode,
             ),
+            value: themeManager.themeMode == ThemeMode.dark,
+            onChanged: (bool value) {
+              themeManager.toggleTheme();
+            },
           ),
-          // Logout button
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ListTile(
-              leading: const Icon(Icons.logout, color: Colors.white),
-              title:
-                  const Text('Logout', style: TextStyle(color: Colors.white)),
-              onTap: () {
-                _logout(context);
-              },
-            ),
+
+          // Logout button at the bottom
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: _buildListTile(
+                Icons.logout, 'Logout', 'Logout', context, isDarkMode),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildListTile(BuildContext context,
-      {required IconData icon,
-      required String label,
-      required Function() onTap}) {
+  // Helper function to build ListTile widgets with proper dark mode adaptations
+  Widget _buildListTile(IconData icon, String title, String page,
+      BuildContext context, bool isDarkMode) {
     return ListTile(
-      leading: Icon(icon, color: Colors.white),
-      title: isCollapsed
-          ? null
-          : Text(label, style: const TextStyle(color: Colors.white)),
-      onTap: onTap,
-      hoverColor: Colors.blueGrey[800],
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      leading: Icon(icon,
+          color: isDarkMode
+              ? Colors.white
+              : Colors.black87), // Dark mode icon color
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16,
+          color: isDarkMode
+              ? Colors.white
+              : Colors.black87, // Dark mode text color
+        ),
+      ),
+      onTap: () => onPageSelected(page),
     );
   }
 }
