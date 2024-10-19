@@ -2,11 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../theme/theme_manager.dart';
 
-class SidebarDrawer extends StatelessWidget {
+class SidebarDrawer extends StatefulWidget {
   final Function(String) onPageSelected;
 
   const SidebarDrawer({Key? key, required this.onPageSelected})
       : super(key: key);
+
+  @override
+  _SidebarDrawerState createState() => _SidebarDrawerState();
+}
+
+class _SidebarDrawerState extends State<SidebarDrawer> {
+  bool isCollapsed =
+      false; // For handling the back arrow collapse functionality
 
   @override
   Widget build(BuildContext context) {
@@ -14,51 +22,86 @@ class SidebarDrawer extends StatelessWidget {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Drawer(
-      // Background color based on dark or light mode
-      backgroundColor: Theme.of(context)
-          .colorScheme
-          .surface, // Use the surface color for better dark/light adaptation
+      backgroundColor:
+          Theme.of(context).colorScheme.surface, // Unified background
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           DrawerHeader(
             decoration: BoxDecoration(
-              color: isDarkMode
-                  ? Colors.black54
-                  : Colors.blue, // Adapted for dark mode
+              color: Theme.of(context)
+                  .colorScheme
+                  .surface, // Same background for the header
             ),
-            child: UserAccountsDrawerHeader(
-              accountName: Text(
-                'John Doe',
-                style: TextStyle(
-                    color: isDarkMode
-                        ? Colors.white
-                        : Colors.black87), // Dark mode text color
-              ),
-              accountEmail: Text(
-                'Web Developer',
-                style: TextStyle(
-                    color: isDarkMode
-                        ? Colors.white70
-                        : Colors.black54), // Dark mode text color
-              ),
-              currentAccountPicture: CircleAvatar(
-                backgroundColor: isDarkMode ? Colors.white : Colors.blueAccent,
-                child: Text(
-                  'JD',
-                  style: TextStyle(
-                      fontSize: 24.0,
-                      color: isDarkMode
-                          ? Colors.black
-                          : Colors.white), // Dark mode text color
+            child: Stack(
+              children: [
+                UserAccountsDrawerHeader(
+                  accountName: Text(
+                    'John Doe',
+                    style: TextStyle(
+                        color: isDarkMode
+                            ? Colors.white
+                            : Colors.black87), // Adapt to dark mode
+                  ),
+                  accountEmail: Text(
+                    'Web Developer',
+                    style: TextStyle(
+                        color: isDarkMode
+                            ? Colors.white70
+                            : Colors.black54), // Adapt to dark mode
+                  ),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundColor:
+                        isDarkMode ? Colors.white : Colors.blueAccent,
+                    child: Text(
+                      'JD',
+                      style: TextStyle(
+                          fontSize: 24.0,
+                          color: isDarkMode
+                              ? Colors.black
+                              : Colors.white), // Adapt to dark mode
+                    ),
+                  ),
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .surface, // Ensure background matches the sidebar
+                  ),
                 ),
-              ),
-              decoration: BoxDecoration(
-                  color: isDarkMode ? Colors.black54 : Colors.blue),
+
+                // Back Arrow Icon at the top-right
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: IconButton(
+                    icon: Icon(
+                      isCollapsed
+                          ? Icons.arrow_forward_ios
+                          : Icons.arrow_back_ios, // Collapsible behavior
+                      color: isDarkMode
+                          ? Colors.white
+                          : Colors.black87, // Adapt icon color to dark mode
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        isCollapsed = !isCollapsed;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
 
-          // Main navigation items
+          // Divider with improved visibility
+          Divider(
+            color: isDarkMode
+                ? Colors.white54
+                : Colors.black38, // More prominent divider in dark mode
+            thickness: 1, // Slightly thicker divider for better visibility
+          ),
+
+          // Navigation items...
           Expanded(
             child: ListView(
               padding: EdgeInsets.zero,
@@ -73,39 +116,35 @@ class SidebarDrawer extends StatelessWidget {
                     context, isDarkMode),
                 _buildListTile(
                     Icons.note, 'Notes', 'Notes', context, isDarkMode),
+
+                const Divider(), // Regular divider between navigation and settings/help
+
+                _buildListTile(Icons.settings, 'Settings', 'Settings', context,
+                    isDarkMode),
+                _buildListTile(
+                    Icons.help_outline, 'Help', 'Help', context, isDarkMode),
+
+                const Divider(), // Regular divider before dark mode toggle and logout
+
+                // Dark Mode Toggle
+                SwitchListTile(
+                  title: const Text("Dark Mode"),
+                  secondary: Icon(
+                    themeManager.themeMode == ThemeMode.dark
+                        ? Icons.dark_mode
+                        : Icons.light_mode,
+                  ),
+                  value: themeManager.themeMode == ThemeMode.dark,
+                  onChanged: (bool value) {
+                    themeManager.toggleTheme();
+                  },
+                ),
+
+                // Logout button at the bottom
+                _buildListTile(
+                    Icons.logout, 'Logout', 'Logout', context, isDarkMode),
               ],
             ),
-          ),
-
-          const Divider(), // Divider between main navigation and settings/help
-
-          // Settings and Help
-          _buildListTile(
-              Icons.settings, 'Settings', 'Settings', context, isDarkMode),
-          _buildListTile(
-              Icons.help_outline, 'Help', 'Help', context, isDarkMode),
-
-          const Divider(), // Divider before dark mode toggle and logout
-
-          // Dark Mode Toggle
-          SwitchListTile(
-            title: const Text("Dark Mode"),
-            secondary: Icon(
-              themeManager.themeMode == ThemeMode.dark
-                  ? Icons.dark_mode
-                  : Icons.light_mode,
-            ),
-            value: themeManager.themeMode == ThemeMode.dark,
-            onChanged: (bool value) {
-              themeManager.toggleTheme();
-            },
-          ),
-
-          // Logout button at the bottom
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: _buildListTile(
-                Icons.logout, 'Logout', 'Logout', context, isDarkMode),
           ),
         ],
       ),
@@ -121,17 +160,18 @@ class SidebarDrawer extends StatelessWidget {
       leading: Icon(icon,
           color: isDarkMode
               ? Colors.white
-              : Colors.black87), // Dark mode icon color
+              : Colors.black87), // Icon color adapted to dark mode
       title: Text(
         title,
         style: TextStyle(
           fontSize: 16,
           color: isDarkMode
               ? Colors.white
-              : Colors.black87, // Dark mode text color
+              : Colors.black87, // Text color adapted to dark mode
         ),
       ),
-      onTap: () => onPageSelected(page),
+      onTap: () =>
+          widget.onPageSelected(page), // Trigger page selection callback
     );
   }
 }
