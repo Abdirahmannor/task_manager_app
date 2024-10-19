@@ -17,6 +17,7 @@ class SidebarDrawer extends StatefulWidget {
 
 class _SidebarDrawerState extends State<SidebarDrawer> {
   bool isCollapsed = false;
+  String activeTab = 'Dashboard'; // Track the active tab
 
   Future<void> _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -88,27 +89,27 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   _buildTab(
                     icon: Icons.dashboard,
                     label: 'Dashboard',
-                    isActive: true,
+                    isActive: activeTab == 'Dashboard', // Check if active
                   ),
                   _buildTab(
                     icon: Icons.person,
                     label: 'Profile',
-                    isActive: false,
+                    isActive: activeTab == 'Profile',
                   ),
                   _buildTab(
                     icon: Icons.star,
                     label: 'Favorites',
-                    isActive: false,
+                    isActive: activeTab == 'Favorites',
                   ),
                   _buildTab(
                     icon: Icons.calendar_today,
                     label: 'Calendar',
-                    isActive: false,
+                    isActive: activeTab == 'Calendar',
                   ),
                   _buildTab(
                     icon: Icons.note,
                     label: 'Notes',
-                    isActive: false,
+                    isActive: activeTab == 'Notes',
                   ),
                   const Divider(color: Colors.white), // Optional divider
                 ],
@@ -121,16 +122,15 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Column(
               children: [
-                const Divider(color: Colors.white), // Divider between sections
                 _buildTab(
                   icon: Icons.settings,
                   label: 'Settings',
-                  isActive: false,
+                  isActive: activeTab == 'Settings',
                 ),
                 _buildTab(
                   icon: Icons.help,
                   label: 'Help',
-                  isActive: false,
+                  isActive: activeTab == 'Help',
                 ),
                 // Dark Mode Toggle Switch
                 ListTile(
@@ -178,34 +178,19 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     required String label,
     required bool isActive,
   }) {
-    bool isHovered = false; // Track hover state
-
     return MouseRegion(
-      onEnter: (_) {
-        setState(() {
-          isHovered = true; // Set hover state to true when mouse enters
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          isHovered = false; // Set hover state to false when mouse exits
-        });
-      },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
         decoration: BoxDecoration(
-          color: isActive || isHovered
-              ? AppTheme.sidebarSelectedColor
-              : Colors.transparent,
+          color: isActive ? AppTheme.sidebarSelectedColor : Colors.transparent,
           borderRadius: BorderRadius.circular(15),
         ),
         child: ListTile(
           leading: Container(
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color: isActive || isHovered
-                  ? AppTheme.sidebarIconColor
-                  : Colors.grey.shade300,
+              color:
+                  isActive ? AppTheme.sidebarIconColor : Colors.grey.shade300,
               borderRadius: BorderRadius.circular(30),
             ),
             child: Icon(
@@ -216,12 +201,13 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
           title: Text(
             label,
             style: AppTheme.sidebarTextStyle.copyWith(
-              color: isActive || isHovered
-                  ? Colors.white
-                  : AppTheme.sidebarTextColor,
+              color: isActive ? Colors.white : AppTheme.sidebarTextColor,
             ),
           ),
           onTap: () {
+            setState(() {
+              activeTab = label; // Update active tab on click
+            });
             widget.onPageSelected(label);
           },
         ),
