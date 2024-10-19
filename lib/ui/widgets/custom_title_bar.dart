@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
+import 'package:provider/provider.dart';
 import '../../utills/session_manager.dart';
+import '../../theme/theme_manager.dart';
+import '../../theme/app_theme.dart';
 
 class CustomTitleBar extends StatelessWidget {
   final bool showIcons;
@@ -9,12 +12,16 @@ class CustomTitleBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onPanUpdate: (details) {
         appWindow.startDragging(); // Allows the whole title bar to be draggable
       },
       child: Container(
-        color: Colors.blue, // Set custom color here
+        color: isDarkMode
+            ? AppTheme.darkBackgroundColor // Use dark background color
+            : AppTheme.backgroundColor, // Use light background color
         height: 40.0,
         child: Row(
           children: [

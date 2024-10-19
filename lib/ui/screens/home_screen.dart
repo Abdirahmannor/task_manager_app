@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../utills/project_manager.dart'; // Import ProjectManager
 import '../widgets/custom_title_bar.dart'; // Import your custom title bar
 import '../widgets/sidebar_drawer.dart'; // Import SidebarDrawer
+import '../../theme/app_theme.dart'; // Import AppTheme for colors
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,9 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // Load projects for the current user
     userProjects = _projectManager.getAllProjects();
-    // Update old projects without ID
     for (var project in userProjects) {
       if (project['id'] == null || project['id'] == 'Unknown ID') {
         project['id'] = DateTime.now().millisecondsSinceEpoch.toString();
@@ -29,7 +28,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Method to create a new project
   void _createNewProject() {
     showDialog(
       context: context,
@@ -39,21 +37,29 @@ class _HomeScreenState extends State<HomeScreen> {
             TextEditingController();
 
         return AlertDialog(
-          title: const Text("Create New Project"),
+          backgroundColor: Theme.of(context).cardColor, // Use theme color
+          title: Text(
+            "Create New Project",
+            style: TextStyle(color: AppTheme.textColor), // Use theme color
+          ),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Project Title",
+                  labelStyle:
+                      TextStyle(color: AppTheme.textColor), // Use theme color
                 ),
               ),
               const SizedBox(height: 16),
               TextField(
                 controller: descriptionController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Project Description",
+                  labelStyle:
+                      TextStyle(color: AppTheme.textColor), // Use theme color
                 ),
               ),
             ],
@@ -85,15 +91,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     userProjects = _projectManager.getAllProjects();
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text('Project created successfully!'),
-                      backgroundColor: Colors.green,
+                      backgroundColor:
+                          AppTheme.sidebarSelectedColor, // Use theme color
                     ),
                   );
                   Navigator.of(context).pop();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
+                    SnackBar(
                       content: Text('Project title cannot be empty.'),
                       backgroundColor: Colors.red,
                     ),
@@ -108,7 +115,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Method to edit an existing project
   void _editProject(String projectId) {
     final project = _projectManager.getProject(projectId);
 
@@ -122,21 +128,29 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Edit Project"),
+            backgroundColor: Theme.of(context).cardColor, // Use theme color
+            title: Text(
+              "Edit Project",
+              style: TextStyle(color: AppTheme.textColor), // Use theme color
+            ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
                   controller: titleController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Project Title",
+                    labelStyle:
+                        TextStyle(color: AppTheme.textColor), // Use theme color
                   ),
                 ),
                 const SizedBox(height: 16),
                 TextField(
                   controller: descriptionController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: "Project Description",
+                    labelStyle:
+                        TextStyle(color: AppTheme.textColor), // Use theme color
                   ),
                 ),
               ],
@@ -167,15 +181,16 @@ class _HomeScreenState extends State<HomeScreen> {
                       userProjects = _projectManager.getAllProjects();
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text('Project updated successfully!'),
-                        backgroundColor: Colors.green,
+                        backgroundColor:
+                            AppTheme.sidebarSelectedColor, // Use theme color
                       ),
                     );
                     Navigator.of(context).pop();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
+                      SnackBar(
                         content: Text('Project title cannot be empty.'),
                         backgroundColor: Colors.red,
                       ),
@@ -191,12 +206,12 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // Method to delete a project
   void _deleteProject(String projectId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Theme.of(context).cardColor, // Use theme color
           title: const Text("Delete Project"),
           content: const Text("Are you sure you want to delete this project?"),
           actions: [
@@ -213,9 +228,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   userProjects = _projectManager.getAllProjects();
                 });
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
+                  SnackBar(
                     content: Text('Project deleted successfully!'),
-                    backgroundColor: Colors.green,
+                    backgroundColor:
+                        AppTheme.sidebarSelectedColor, // Use theme color
                   ),
                 );
                 Navigator.of(context).pop();
@@ -228,39 +244,38 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // Callback to handle page selection from the sidebar
   void onSidebarPageSelected(String page) {
     setState(() {
       selectedPage = page;
     });
   }
 
-  // Render content based on the selected sidebar option
   Widget _buildContentArea() {
     switch (selectedPage) {
       case 'Dashboard':
-        return _buildProjectList(); // Existing project list on Dashboard
+        return _buildProjectList();
       case 'School Activities':
-        return const Center(
-            child: Text('School Activities Content')); // Placeholder
+        return const Center(child: Text('School Activities Content'));
       case 'Calendar':
-        return const Center(child: Text('Calendar Content')); // Placeholder
+        return const Center(child: Text('Calendar Content'));
       case 'Favorites':
-        return const Center(child: Text('Favorites Content')); // Placeholder
+        return const Center(child: Text('Favorites Content'));
       case 'Notes':
-        return const Center(child: Text('Notes Content')); // Placeholder
+        return const Center(child: Text('Notes Content'));
       default:
         return const Center(child: Text('Select a page'));
     }
   }
 
-  // Project list for the Dashboard
   Widget _buildProjectList() {
     return userProjects.isEmpty
-        ? const Center(
+        ? Center(
             child: Text(
               'No projects found. Start by creating a new project!',
-              style: TextStyle(fontSize: 18),
+              style: TextStyle(
+                fontSize: 18,
+                color: AppTheme.textColor, // Use the theme color for text
+              ),
             ),
           )
         : ListView.builder(
@@ -275,15 +290,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListTile(
                   title: Text(
                     project['title'] ?? 'Unnamed Project',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge, // Use the updated text style
+                    style:
+                        TextStyle(color: AppTheme.textColor), // Use theme color
                   ),
                   subtitle: Text(
                     'ID: $projectId\n${project['description'] ?? 'No description available'}',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium, // Use the updated text style
+                    style:
+                        TextStyle(color: AppTheme.textColor), // Use theme color
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -309,10 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Row(
         children: [
-          // SidebarDrawer integrated with page selection callback
           SidebarDrawer(onPageSelected: onSidebarPageSelected),
-
-          // Main content area that changes with selected page
           Expanded(
             child: Column(
               children: [
@@ -321,8 +331,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child:
-                        _buildContentArea(), // Right-side content based on page selection
+                    child: _buildContentArea(),
                   ),
                 ),
               ],
@@ -330,12 +339,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      // FAB only shows on 'Dashboard' page
       floatingActionButton: selectedPage == 'Dashboard'
           ? FloatingActionButton(
+              backgroundColor: AppTheme.buttonColor, // Use theme color
               onPressed: _createNewProject,
               child: const Icon(
                 Icons.add,
+                color: Colors.white,
               ),
             )
           : null,

@@ -16,7 +16,6 @@ class SidebarDrawer extends StatefulWidget {
 }
 
 class _SidebarDrawerState extends State<SidebarDrawer> {
-  bool isCollapsed = false;
   String activeTab = 'Dashboard'; // Track the active tab
 
   Future<void> _logout(BuildContext context) async {
@@ -36,14 +35,18 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
 
     return Drawer(
       backgroundColor: isDarkMode
-          ? AppTheme.sidebarBackgroundColor
-          : AppTheme.backgroundColor,
+          ? AppTheme.darkSidebarBackgroundColor // Dark mode background
+          : AppTheme.sidebarBackgroundColor, // Light mode background
       child: Column(
         children: [
           // Profile Section
           Container(
             decoration: BoxDecoration(
-              color: AppTheme.sidebarBackgroundColor.withOpacity(0.9),
+              color: isDarkMode
+                  ? AppTheme
+                      .sidebarProfileBackgroundColor // Dark mode profile background
+                  : AppTheme
+                      .sidebarProfileBackgroundColor, // Light mode profile background
               borderRadius: const BorderRadius.only(
                 bottomRight: Radius.circular(15),
                 bottomLeft: Radius.circular(15),
@@ -51,18 +54,18 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             ),
             padding:
                 const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
-            child: Column(
+            child: const Column(
               children: [
                 CircleAvatar(
                   radius: 45,
                   backgroundColor: AppTheme.sidebarIconColor,
-                  child: const Text(
+                  child: Text(
                     'JD',
                     style: TextStyle(color: Colors.white, fontSize: 22),
                   ),
                 ),
-                const SizedBox(height: 25),
-                const Text(
+                SizedBox(height: 10),
+                Text(
                   'John Doe',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -70,8 +73,8 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 8),
-                const Text(
+                SizedBox(height: 5),
+                Text(
                   'Web Developer',
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.white70, fontSize: 14),
@@ -89,7 +92,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   _buildTab(
                     icon: Icons.dashboard,
                     label: 'Dashboard',
-                    isActive: activeTab == 'Dashboard', // Check if active
+                    isActive: activeTab == 'Dashboard',
                   ),
                   _buildTab(
                     icon: Icons.person,
@@ -111,7 +114,9 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     label: 'Notes',
                     isActive: activeTab == 'Notes',
                   ),
-                  const Divider(color: Colors.white), // Optional divider
+                  const SizedBox(height: 10), // Space before the divider
+                  const Divider(color: Colors.white),
+                  const SizedBox(height: 10), // Space after the divider
                 ],
               ),
             ),
@@ -178,24 +183,41 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     required String label,
     required bool isActive,
   }) {
+    bool isHovering = false; // Track hover state
+
     return MouseRegion(
+      onEnter: (_) {
+        setState(() {
+          isHovering = true; // Set hovering state to true
+        });
+      },
+      onExit: (_) {
+        setState(() {
+          isHovering = false; // Set hovering state to false
+        });
+      },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
         decoration: BoxDecoration(
-          color: isActive ? AppTheme.sidebarSelectedColor : Colors.transparent,
+          color: isActive || isHovering
+              ? AppTheme.sidebarSelectedColor
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(15),
         ),
         child: ListTile(
           leading: Container(
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color:
-                  isActive ? AppTheme.sidebarIconColor : Colors.grey.shade300,
+              color: isActive || isHovering
+                  ? AppTheme.sidebarIconColor
+                  : AppTheme.sidebarInactiveIconColor,
               borderRadius: BorderRadius.circular(30),
             ),
             child: Icon(
               icon,
-              color: isActive ? Colors.white : AppTheme.sidebarIconColor,
+              color: isActive || isHovering
+                  ? Colors.white
+                  : AppTheme.sidebarIconColor,
             ),
           ),
           title: Text(
@@ -206,7 +228,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
           ),
           onTap: () {
             setState(() {
-              activeTab = label; // Update active tab on click
+              activeTab = label; // Set the active tab
             });
             widget.onPageSelected(label);
           },

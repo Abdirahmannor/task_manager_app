@@ -3,23 +3,48 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Define centralized color scheme
-  static const Color primaryColor = Color(0xFF1A73E8); // Main Blue Color
-  static const Color accentColor = Color(0xFFFFA000); // Accent Color (Orange)
-  static const Color backgroundColor = Color(0xFFF1F3F4); // Light Background
-  static const Color buttonColor = Color(0xFF1A73E8); // Button Color
-  static const Color textColor = Color(0xFF202124); // Main Text Color
-  static const Color cardBackgroundColor =
-      Colors.white; // Card Background Color
+  static const Color primaryColor =
+      Color.fromARGB(255, 71, 11, 55); // Main Color
+  static const Color accentColor =
+      Color.fromARGB(255, 27, 17, 85); // Accent Color
 
-  // Sidebar Colors
-  static const Color sidebarBackgroundColor = Color(0xFF2E2E48);
+  // Light Mode Colors
+  static const Color backgroundColor = Color(0Xffccc0c8); // Light Background
+  static const Color sidebarBackgroundColor =
+      Color.fromARGB(255, 240, 240, 240); // Light Mode Sidebar Background
   static const Color sidebarProfileBackgroundColor =
-      Color(0xFF1C1C1C); // Profile section background
-  static const Color sidebarSelectedColor = primaryColor;
-  static const Color sidebarIconColor = Colors.white;
+      Color(0xFF504e4f); // Light Mode Profile section background
+  static const Color sidebarSelectedColor =
+      Color(0xFF4CAF50); // Light Mode Active tab color (green)
+  static const Color sidebarIconColor = Colors.white; // Light Mode Icon color
   static const Color sidebarInactiveIconColor =
-      Colors.grey; // Inactive icon color
-  static const Color sidebarTextColor = Colors.white;
+      Color(0xFFB0BEC5); // Light Mode Inactive icon color
+  static const Color sidebarTextColor =
+      Colors.black; // Light Mode Sidebar text color
+
+  static const Color buttonColor = Color(0xFF1A73E8); // Button Color
+  static const Color textColor =
+      Color.fromARGB(255, 119, 12, 12); // Main Text Color
+  static const Color cardBackgroundColor =
+      Color.fromARGB(255, 29, 28, 28); // Card Background Color
+
+  // Dark Mode Colors
+  static const Color darkBackgroundColor = Color(0xFF1d1b1c); // Dark Background
+  static const Color darkTextColor = Color(0xFFDDCFD9); // Light Text Color
+  static const Color darkCardColor =
+      Color.fromARGB(255, 4, 22, 71); // Dark Card Background
+  static const Color darkSidebarBackgroundColor =
+      Color.fromARGB(255, 138, 21, 21); // Dark Mode Sidebar Background
+  static const Color darkSidebarProfileBackgroundColor =
+      Color(0xFF3A3A3A); // Dark Mode Profile section background
+  static const Color darkSidebarSelectedColor =
+      Color(0xFF4CAF50); // Dark Mode Active tab color (green)
+  static const Color darkSidebarIconColor =
+      Colors.white; // Dark Mode Icon color
+  static const Color darkSidebarInactiveIconColor =
+      Color(0xFFB0BEC5); // Dark Mode Inactive icon color
+  static const Color darkSidebarTextColor =
+      Colors.white; // Dark Mode Sidebar text color
 
   static final TextStyle sidebarTextStyle = GoogleFonts.openSans(
     fontSize: 18,
@@ -91,11 +116,11 @@ class AppTheme {
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: primaryColor,
-    scaffoldBackgroundColor: Colors.black,
-    cardColor: const Color(0xFF1E1E1E),
+    scaffoldBackgroundColor: darkBackgroundColor,
+    cardColor: darkCardColor,
     textTheme: textTheme.apply(
-      bodyColor: Colors.white,
-      displayColor: Colors.white,
+      bodyColor: darkTextColor,
+      displayColor: darkTextColor,
     ),
     buttonTheme: ButtonThemeData(
       buttonColor: buttonColor,
@@ -117,7 +142,7 @@ class AppTheme {
       brightness: Brightness.dark,
       primary: primaryColor,
       secondary: accentColor,
-      surface: Colors.black,
+      surface: darkBackgroundColor,
     ),
   );
 }
