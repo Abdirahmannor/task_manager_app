@@ -4,14 +4,14 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   // Define centralized color scheme
   static const Color primaryColor =
-      Color.fromARGB(255, 71, 11, 55); // Main Color
+      Color.fromARGB(255, 5, 80, 48); // Main Color
   static const Color accentColor =
       Color.fromARGB(255, 27, 17, 85); // Accent Color
 
   // Light Mode Colors
   static const Color backgroundColor = Color(0Xffccc0c8); // Light Background
   static const Color sidebarBackgroundColor =
-      Color.fromARGB(255, 240, 240, 240); // Light Mode Sidebar Background
+      Color.fromARGB(255, 18, 175, 57); // Light Mode Sidebar Background
   static const Color sidebarProfileBackgroundColor =
       Color(0xFF504e4f); // Light Mode Profile section background
   static const Color sidebarSelectedColor =
@@ -34,13 +34,13 @@ class AppTheme {
   static const Color darkCardColor =
       Color.fromARGB(255, 4, 22, 71); // Dark Card Background
   static const Color darkSidebarBackgroundColor =
-      Color.fromARGB(255, 138, 21, 21); // Dark Mode Sidebar Background
+      Color.fromARGB(255, 209, 13, 13); // Dark Mode Sidebar Background
   static const Color darkSidebarProfileBackgroundColor =
       Color(0xFF3A3A3A); // Dark Mode Profile section background
   static const Color darkSidebarSelectedColor =
       Color(0xFF4CAF50); // Dark Mode Active tab color (green)
   static const Color darkSidebarIconColor =
-      Colors.white; // Dark Mode Icon color
+      Color.fromARGB(255, 11, 143, 77); // Dark Mode Icon color
   static const Color darkSidebarInactiveIconColor =
       Color(0xFFB0BEC5); // Dark Mode Inactive icon color
   static const Color darkSidebarTextColor =

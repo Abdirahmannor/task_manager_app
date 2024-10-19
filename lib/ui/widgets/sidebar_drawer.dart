@@ -35,19 +35,15 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
 
     return Drawer(
       backgroundColor: isDarkMode
-          ? AppTheme.darkSidebarBackgroundColor // Dark mode background
-          : AppTheme.sidebarBackgroundColor, // Light mode background
+          ? AppTheme.sidebarBackgroundColor
+          : AppTheme.backgroundColor,
       child: Column(
         children: [
           // Profile Section
           Container(
-            decoration: BoxDecoration(
-              color: isDarkMode
-                  ? AppTheme
-                      .sidebarProfileBackgroundColor // Dark mode profile background
-                  : AppTheme
-                      .sidebarProfileBackgroundColor, // Light mode profile background
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              color: AppTheme.sidebarProfileBackgroundColor,
+              borderRadius: BorderRadius.only(
                 bottomRight: Radius.circular(15),
                 bottomLeft: Radius.circular(15),
               ),
@@ -83,6 +79,28 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             ),
           ),
           const SizedBox(height: 20), // Space after the profile section
+          Container(
+            alignment: Alignment.topRight, // Align to the top right
+            margin: const EdgeInsets.only(
+                top: 10, right: 10), // Margin for positioning
+            child: Material(
+              shape: const CircleBorder(), // Define shape here
+              color: isDarkMode
+                  ? AppTheme.sidebarIconColor
+                  : AppTheme.sidebarProfileBackgroundColor
+                      .withOpacity(0.8), // Background color
+              child: IconButton(
+                icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                onPressed: () {
+                  // Action for the arrow button
+                  // You can implement functionality here, like collapsing the sidebar
+                },
+                padding: const EdgeInsets.all(12), // Adjust padding as needed
+              ),
+            ),
+          ),
+
+          // Arrow Button - Positioning in the right corner
 
           // Scrollable Navigation Section
           Expanded(
