@@ -10,41 +10,52 @@ class AppTheme {
 
   // Light Mode Colors
   static const Color backgroundColor = Color(0Xffccc0c8); // Light Background
+  static const Color lightSidebarBackgroundColor =
+      Color.fromARGB(255, 240, 132, 8); // light Mode Sidebar Background
   static const Color sidebarBackgroundColor =
-      Color.fromARGB(255, 18, 175, 57); // Light Mode Sidebar Background
-  static const Color sidebarProfileBackgroundColor =
-      Color(0xFF504e4f); // Light Mode Profile section background
+      Color.fromARGB(255, 19, 168, 81); // Light Mode Sidebar Background
+  static const Color lightsidebarProfileBackgroundColor = Color.fromARGB(
+      255, 201, 15, 108); // Light Mode Profile section background
   static const Color sidebarSelectedColor =
-      Color(0xFF4CAF50); // Light Mode Active tab color (green)
-  static const Color sidebarIconColor = Colors.white; // Light Mode Icon color
+      Color.fromARGB(255, 45, 69, 141); // Light Mode Active tab color (green)
+  static const Color lightsidebarIconColor =
+      Colors.white; // Light Mode Icon color
   static const Color sidebarInactiveIconColor =
       Color(0xFFB0BEC5); // Light Mode Inactive icon color
   static const Color sidebarTextColor =
-      Colors.black; // Light Mode Sidebar text color
+      Color.fromARGB(255, 243, 240, 240); // Light Mode Sidebar text color
 
   static const Color buttonColor = Color(0xFF1A73E8); // Button Color
   static const Color textColor =
-      Color.fromARGB(255, 119, 12, 12); // Main Text Color
+      Color.fromARGB(255, 240, 239, 239); // Main Text Color
   static const Color cardBackgroundColor =
-      Color.fromARGB(255, 29, 28, 28); // Card Background Color
+      Color.fromARGB(255, 221, 19, 19); // Card Background Color
+  static const Color LightIsHover =
+      Color.fromARGB(255, 22, 107, 33); // light Hover
 
   // Dark Mode Colors
-  static const Color darkBackgroundColor = Color(0xFF1d1b1c); // Dark Background
-  static const Color darkTextColor = Color(0xFFDDCFD9); // Light Text Color
+  static const Color darkBackgroundColor =
+      Color(0XFFf041955); // Dark Background
+  static const Color darkTextColor =
+      Color.fromARGB(255, 238, 236, 237); // Light Text Color
+  static const Color darksidebarArrowColor =
+      Color.fromARGB(255, 90, 122, 15); // Light Mode Sidebar Arrow icon
+
   static const Color darkCardColor =
-      Color.fromARGB(255, 4, 22, 71); // Dark Card Background
+      Color.fromARGB(255, 212, 90, 8); // Dark Card Background
   static const Color darkSidebarBackgroundColor =
-      Color.fromARGB(255, 209, 13, 13); // Dark Mode Sidebar Background
+      Color.fromARGB(255, 8, 25, 122); // Dark Mode Sidebar Background
   static const Color darkSidebarProfileBackgroundColor =
-      Color(0xFF3A3A3A); // Dark Mode Profile section background
+      Color.fromARGB(255, 6, 160, 121); // Dark Mode Profile section background
   static const Color darkSidebarSelectedColor =
-      Color(0xFF4CAF50); // Dark Mode Active tab color (green)
+      Color(0XFFf041955); // Dark Mode Active tab color (green)
   static const Color darkSidebarIconColor =
-      Color.fromARGB(255, 11, 143, 77); // Dark Mode Icon color
+      Color.fromARGB(255, 69, 38, 126); // Dark Mode Icon color
   static const Color darkSidebarInactiveIconColor =
-      Color(0xFFB0BEC5); // Dark Mode Inactive icon color
+      Color.fromARGB(255, 2, 78, 116); // Dark Mode Inactive icon color
   static const Color darkSidebarTextColor =
-      Colors.white; // Dark Mode Sidebar text color
+      Color.fromARGB(255, 226, 222, 222); // Dark Mode Sidebar text color
+  static const Color darkIsHover = Color.fromARGB(255, 25, 9, 63); // Dark Hover
 
   static final TextStyle sidebarTextStyle = GoogleFonts.openSans(
     fontSize: 18,

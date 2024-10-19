@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bitsdojo_window/bitsdojo_window.dart';
-import 'package:provider/provider.dart';
 import '../../utills/session_manager.dart';
-import '../../theme/theme_manager.dart';
 import '../../theme/app_theme.dart';
 
 class CustomTitleBar extends StatelessWidget {

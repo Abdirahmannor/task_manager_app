@@ -8,8 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SidebarDrawer extends StatefulWidget {
   final Function(String) onPageSelected;
 
-  const SidebarDrawer({Key? key, required this.onPageSelected})
-      : super(key: key);
+  const SidebarDrawer({super.key, required this.onPageSelected});
 
   @override
   _SidebarDrawerState createState() => _SidebarDrawerState();
@@ -31,49 +30,63 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
   @override
   Widget build(BuildContext context) {
     final themeManager = Provider.of<ThemeManager>(context);
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    var isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Drawer(
       backgroundColor: isDarkMode
-          ? AppTheme.sidebarBackgroundColor
-          : AppTheme.backgroundColor,
+          ? AppTheme.darkSidebarBackgroundColor
+          : AppTheme.lightSidebarBackgroundColor,
       child: Column(
         children: [
           // Profile Section
           Container(
-            decoration: const BoxDecoration(
-              color: AppTheme.sidebarProfileBackgroundColor,
-              borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+              color: isDarkMode
+                  ? AppTheme.darkSidebarProfileBackgroundColor
+                  : AppTheme.lightsidebarProfileBackgroundColor,
+              borderRadius: const BorderRadius.only(
                 bottomRight: Radius.circular(15),
                 bottomLeft: Radius.circular(15),
               ),
             ),
             padding:
                 const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
-            child: const Column(
+            child: Column(
               children: [
                 CircleAvatar(
                   radius: 45,
-                  backgroundColor: AppTheme.sidebarIconColor,
+                  backgroundColor: isDarkMode
+                      ? AppTheme.darkBackgroundColor
+                      : AppTheme.backgroundColor,
                   child: Text(
                     'JD',
-                    style: TextStyle(color: Colors.white, fontSize: 22),
+                    style: TextStyle(
+                        color: isDarkMode
+                            ? AppTheme.darkTextColor
+                            : AppTheme.textColor,
+                        fontSize: 22),
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Text(
                   'John Doe',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      color: Colors.white,
+                      color: isDarkMode
+                          ? AppTheme.darkTextColor
+                          : AppTheme.textColor,
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Text(
                   'Web Developer',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                  style: TextStyle(
+                      color: isDarkMode
+                          ? AppTheme.darkTextColor
+                          : AppTheme.textColor,
+                      fontSize: 14),
                 ),
               ],
             ),
@@ -86,11 +99,14 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             child: Material(
               shape: const CircleBorder(), // Define shape here
               color: isDarkMode
-                  ? AppTheme.sidebarIconColor
-                  : AppTheme.sidebarProfileBackgroundColor
+                  ? AppTheme.darkSidebarIconColor
+                  : AppTheme.lightsidebarIconColor
                       .withOpacity(0.8), // Background color
               child: IconButton(
-                icon: const Icon(Icons.arrow_forward, color: Colors.white),
+                icon: Icon(Icons.arrow_forward,
+                    color: isDarkMode
+                        ? AppTheme.darkTextColor
+                        : AppTheme.textColor),
                 onPressed: () {
                   // Action for the arrow button
                   // You can implement functionality here, like collapsing the sidebar
@@ -133,7 +149,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     isActive: activeTab == 'Notes',
                   ),
                   const SizedBox(height: 10), // Space before the divider
-                  const Divider(color: Colors.white),
+                  const Divider(color: Colors.red),
                   const SizedBox(height: 10), // Space after the divider
                 ],
               ),
@@ -158,14 +174,16 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                 // Dark Mode Toggle Switch
                 ListTile(
                   leading: Icon(
-                    isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
-                    color: AppTheme.sidebarIconColor,
-                  ),
+                      isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
+                      color: isDarkMode
+                          ? AppTheme.darkTextColor
+                          : AppTheme.textColor),
                   title: Text(
                     'Dark Mode',
                     style: AppTheme.sidebarTextStyle.copyWith(
-                      color: AppTheme.sidebarTextColor,
-                    ),
+                        color: isDarkMode
+                            ? AppTheme.darkTextColor
+                            : AppTheme.textColor),
                   ),
                   trailing: Switch(
                     value: isDarkMode,
@@ -227,21 +245,22 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
               color: isActive || isHovering
-                  ? AppTheme.sidebarIconColor
+                  ? AppTheme.darkIsHover
                   : AppTheme.sidebarInactiveIconColor,
               borderRadius: BorderRadius.circular(30),
             ),
             child: Icon(
               icon,
-              color: isActive || isHovering
-                  ? Colors.white
-                  : AppTheme.sidebarIconColor,
+              color:
+                  isActive || isHovering ? Colors.white : AppTheme.darkIsHover,
             ),
           ),
           title: Text(
             label,
             style: AppTheme.sidebarTextStyle.copyWith(
-              color: isActive ? Colors.white : AppTheme.sidebarTextColor,
+              color: isActive
+                  ? const Color.fromARGB(199, 219, 214, 214)
+                  : AppTheme.sidebarTextColor,
             ),
           ),
           onTap: () {

@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         return AlertDialog(
           backgroundColor: Theme.of(context).cardColor, // Use theme color
-          title: Text(
+          title: const Text(
             "Create New Project",
             style: TextStyle(color: AppTheme.textColor), // Use theme color
           ),
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Project Title",
                   labelStyle:
                       TextStyle(color: AppTheme.textColor), // Use theme color
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               TextField(
                 controller: descriptionController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: "Project Description",
                   labelStyle:
                       TextStyle(color: AppTheme.textColor), // Use theme color
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     userProjects = _projectManager.getAllProjects();
                   });
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Project created successfully!'),
                       backgroundColor:
                           AppTheme.sidebarSelectedColor, // Use theme color
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Navigator.of(context).pop();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Project title cannot be empty.'),
                       backgroundColor: Colors.red,
                     ),
@@ -129,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             backgroundColor: Theme.of(context).cardColor, // Use theme color
-            title: Text(
+            title: const Text(
               "Edit Project",
               style: TextStyle(color: AppTheme.textColor), // Use theme color
             ),
@@ -138,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 TextField(
                   controller: titleController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Project Title",
                     labelStyle:
                         TextStyle(color: AppTheme.textColor), // Use theme color
@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 16),
                 TextField(
                   controller: descriptionController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "Project Description",
                     labelStyle:
                         TextStyle(color: AppTheme.textColor), // Use theme color
@@ -181,7 +181,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       userProjects = _projectManager.getAllProjects();
                     });
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text('Project updated successfully!'),
                         backgroundColor:
                             AppTheme.sidebarSelectedColor, // Use theme color
@@ -190,7 +190,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Navigator.of(context).pop();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text('Project title cannot be empty.'),
                         backgroundColor: Colors.red,
                       ),
@@ -228,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   userProjects = _projectManager.getAllProjects();
                 });
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('Project deleted successfully!'),
                     backgroundColor:
                         AppTheme.sidebarSelectedColor, // Use theme color
@@ -269,7 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildProjectList() {
     return userProjects.isEmpty
-        ? Center(
+        ? const Center(
             child: Text(
               'No projects found. Start by creating a new project!',
               style: TextStyle(
@@ -290,13 +290,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListTile(
                   title: Text(
                     project['title'] ?? 'Unnamed Project',
-                    style:
-                        TextStyle(color: AppTheme.textColor), // Use theme color
+                    style: const TextStyle(
+                        color: AppTheme.textColor), // Use theme color
                   ),
                   subtitle: Text(
                     'ID: $projectId\n${project['description'] ?? 'No description available'}',
-                    style:
-                        TextStyle(color: AppTheme.textColor), // Use theme color
+                    style: const TextStyle(
+                        color: AppTheme.textColor), // Use theme color
                   ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
