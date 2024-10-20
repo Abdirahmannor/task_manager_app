@@ -12,13 +12,13 @@ class AppTheme {
   static const Color backgroundColor =
       Color.fromARGB(255, 82, 80, 81); // Light Background
   static const Color lightSidebarBackgroundColor =
-      Color.fromARGB(255, 49, 47, 44); // light Mode Sidebar Background
+      Color.fromARGB(255, 49, 47, 44); // Light Mode Sidebar Background
   static const Color sidebarBackgroundColor =
       Color.fromARGB(255, 19, 168, 81); // Light Mode Sidebar Background
   static const Color lightsidebarProfileBackgroundColor =
       Color.fromARGB(255, 31, 28, 29); // Light Mode Profile section background
   static const Color sidebarSelectedColor =
-      Color.fromARGB(255, 45, 69, 141); // Light Mode Active tab color (green)
+      Color.fromARGB(255, 45, 69, 141); // Light Mode Active tab color
   static const Color lightsidebarIconColor =
       Color.fromARGB(255, 129, 128, 128); // Light Mode Icon color
   static const Color sidebarInactiveIconColor =
@@ -33,7 +33,7 @@ class AppTheme {
   static const Color cardBackgroundColor =
       Color.fromARGB(255, 221, 19, 19); // Card Background Color
   static const Color LightIsHover =
-      Color.fromARGB(255, 22, 107, 33); // light Hover
+      Color.fromARGB(255, 22, 107, 33); // Light Hover
 
   // Dark Mode Colors
   static const Color darkBackgroundColor =
@@ -60,13 +60,20 @@ class AppTheme {
   static const Color darkIsHover = Color.fromARGB(255, 25, 9, 63); // Dark Hover
   static const Color darkiconcolor = darkTextColor;
 
-  static final TextStyle sidebarTextStyle = GoogleFonts.openSans(
-    fontSize: 18,
-    fontWeight: FontWeight.bold,
+  // Define font styles for sidebar
+  static final TextStyle sidebarTextStyle = GoogleFonts.poppins(
+    fontSize: 16, // Reduced font size for better alignment
+    fontWeight: FontWeight.w500, // Semi-bold for better visibility
     color: sidebarTextColor,
   );
 
-  // Define font styles
+  static final TextStyle sidebarActiveTextStyle = GoogleFonts.poppins(
+    fontSize: 18,
+    fontWeight: FontWeight.bold, // Bold for active tab
+    color: Colors.white, // Change to your desired color
+  );
+
+  // Define font styles for other sections
   static final TextTheme textTheme = TextTheme(
     displayLarge: GoogleFonts.poppins(
       fontSize: 32,
@@ -75,7 +82,7 @@ class AppTheme {
     ),
     headlineMedium: GoogleFonts.poppins(
       fontSize: 24,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w600, // Medium weight for better visibility
       color: textColor,
     ),
     bodyLarge: GoogleFonts.openSans(

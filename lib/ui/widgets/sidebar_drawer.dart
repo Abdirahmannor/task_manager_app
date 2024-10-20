@@ -243,7 +243,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
       child: SidebarTabCard(
         title: label,
         icon: icon,
-        isActive: isActive || isHovering,
+        isActive: isActive || isHovering, // Adjust the active state
         onTap: () {
           setState(() {
             activeTab = label; // Set the active tab
