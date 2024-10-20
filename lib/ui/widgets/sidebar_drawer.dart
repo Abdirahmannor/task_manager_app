@@ -18,6 +18,7 @@ class SidebarDrawer extends StatefulWidget {
 
 class _SidebarDrawerState extends State<SidebarDrawer> {
   String activeTab = 'Dashboard'; // Track the active tab
+  bool isSidebarCollapsed = false; // Track if the sidebar is collapsed
 
   Future<void> _logout(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -41,181 +42,174 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
       child: Column(
         children: [
           // Profile Section
-          Container(
-            decoration: BoxDecoration(
-              color: isDarkMode
-                  ? AppTheme.darkSidebarProfileBackgroundColor
-                  : AppTheme.lightsidebarProfileBackgroundColor,
-              borderRadius: const BorderRadius.only(
-                bottomRight: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
-              ),
-            ),
-            padding:
-                const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 45,
-                  backgroundColor: isDarkMode
-                      ? AppTheme.darkBackgroundColor
-                      : AppTheme.backgroundColor,
-                  child: Text(
-                    'JD',
-                    style: TextStyle(
-                      color: isDarkMode
-                          ? AppTheme.darkTextColor
-                          : AppTheme.textColor,
-                      fontSize: 22,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  'John Doe',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: isDarkMode
-                        ? AppTheme.darkTextColor
-                        : AppTheme.textColor,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 5),
-                Text(
-                  'Web Developer',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: isDarkMode
-                        ? AppTheme.darkTextColor
-                        : AppTheme.textColor,
-                    fontSize: 14,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20), // Space after the profile section
+          _buildProfileSection(isDarkMode),
 
           // Arrow Button - Positioning in the right corner
-          Container(
-            alignment: Alignment.topRight, // Align to the top right
-            margin: const EdgeInsets.only(
-                top: 10, right: 10), // Margin for positioning
-            child: Material(
-              shape: const CircleBorder(), // Define shape here
-              color: isDarkMode
-                  ? AppTheme.darkSidebarIconColor
-                  : AppTheme.lightsidebarIconColor
-                      .withOpacity(0.8), // Background color
-              child: IconButton(
-                icon: Icon(
-                  Icons.arrow_forward,
-                  color:
-                      isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
-                ),
-                onPressed: () {
-                  // Action for the arrow button
-                  // Implement functionality here, like collapsing the sidebar
-                },
-                padding: const EdgeInsets.all(12), // Adjust padding as needed
-              ),
-            ),
-          ),
+          _buildCollapseButton(isDarkMode),
 
           // Scrollable Navigation Section
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildTab(
-                    icon: Icons.dashboard,
-                    label: 'Dashboard',
-                    isActive: activeTab == 'Dashboard',
-                  ),
-                  _buildTab(
-                    icon: Icons.person,
-                    label: 'Profile',
-                    isActive: activeTab == 'Profile',
-                  ),
-                  _buildTab(
-                    icon: Icons.star,
-                    label: 'Favorites',
-                    isActive: activeTab == 'Favorites',
-                  ),
-                  _buildTab(
-                    icon: Icons.calendar_today,
-                    label: 'Calendar',
-                    isActive: activeTab == 'Calendar',
-                  ),
-                  _buildTab(
-                    icon: Icons.note,
-                    label: 'Notes',
-                    isActive: activeTab == 'Notes',
-                  ),
-                  const SizedBox(height: 10), // Space before the divider
-                  const Divider(color: Colors.red),
-                  const SizedBox(height: 10), // Space after the divider
-                ],
+          _buildNavigationSection(),
+
+          // Settings/Help/Logout Section
+          _buildSettingsSection(isDarkMode, themeManager),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileSection(bool isDarkMode) {
+    return Container(
+      decoration: BoxDecoration(
+        color: isDarkMode
+            ? AppTheme.darkSidebarProfileBackgroundColor
+            : AppTheme.lightsidebarProfileBackgroundColor,
+        borderRadius: const BorderRadius.only(
+          bottomRight: Radius.circular(15),
+          bottomLeft: Radius.circular(15),
+        ),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
+      child: Column(
+        children: [
+          CircleAvatar(
+            radius: 45,
+            backgroundColor: isDarkMode
+                ? AppTheme.darkBackgroundColor
+                : AppTheme.backgroundColor,
+            child: Text(
+              'JD',
+              style: TextStyle(
+                color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
+                fontSize: 22,
               ),
             ),
           ),
-
-          // Settings/Help/Logout Section
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
-            child: Column(
-              children: [
-                _buildTab(
-                  icon: Icons.settings,
-                  label: 'Settings',
-                  isActive: activeTab == 'Settings',
-                ),
-                _buildTab(
-                  icon: Icons.help,
-                  label: 'Help',
-                  isActive: activeTab == 'Help',
-                ),
-                // Dark Mode Toggle Switch
-                ListTile(
-                  leading: Icon(
-                    isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
-                    color: isDarkMode
-                        ? AppTheme.darkTextColor
-                        : AppTheme.textColor,
-                  ),
-                  title: Text(
-                    'Dark Mode',
-                    style: AppTheme.sidebarTextStyle.copyWith(
-                      color: isDarkMode
-                          ? AppTheme.darkTextColor
-                          : AppTheme.textColor,
-                    ),
-                  ),
-                  trailing: Switch(
-                    value: isDarkMode,
-                    onChanged: (value) {
-                      themeManager.toggleTheme();
-                    },
-                  ),
-                ),
-                // Logout Button
-                ListTile(
-                  leading: const Icon(
-                    Icons.logout,
-                    color: Colors.white,
-                  ),
-                  title: Text(
-                    'Logout',
-                    style: AppTheme.sidebarTextStyle.copyWith(
-                      color: AppTheme.sidebarTextColor,
-                    ),
-                  ),
-                  onTap: () => _logout(context),
-                ),
-              ],
+          const SizedBox(height: 10),
+          Text(
+            'John Doe',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
             ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            'Web Developer',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCollapseButton(bool isDarkMode) {
+    return Container(
+      alignment: Alignment.topRight,
+      margin: const EdgeInsets.only(top: 10, right: 10),
+      child: Material(
+        shape: const CircleBorder(),
+        color: isDarkMode
+            ? AppTheme.darkSidebarIconColor
+            : AppTheme.lightsidebarIconColor.withOpacity(0.8),
+        elevation: 4,
+        child: IconButton(
+          icon: AnimatedRotation(
+            turns: isSidebarCollapsed ? 0.5 : 0.0,
+            duration: const Duration(milliseconds: 200),
+            child: Icon(
+              Icons.chevron_right,
+              color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
+            ),
+          ),
+          onPressed: () {
+            setState(() {
+              isSidebarCollapsed = !isSidebarCollapsed;
+            });
+          },
+          padding: const EdgeInsets.all(12),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNavigationSection() {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildTab(
+                icon: Icons.dashboard,
+                label: 'Dashboard',
+                isActive: activeTab == 'Dashboard'),
+            _buildTab(
+                icon: Icons.person,
+                label: 'Profile',
+                isActive: activeTab == 'Profile'),
+            _buildTab(
+                icon: Icons.star,
+                label: 'Favorites',
+                isActive: activeTab == 'Favorites'),
+            _buildTab(
+                icon: Icons.calendar_today,
+                label: 'Calendar',
+                isActive: activeTab == 'Calendar'),
+            _buildTab(
+                icon: Icons.note,
+                label: 'Notes',
+                isActive: activeTab == 'Notes'),
+            const SizedBox(height: 10),
+            const Divider(color: Colors.red),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSettingsSection(bool isDarkMode, ThemeManager themeManager) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Column(
+        children: [
+          _buildTab(
+              icon: Icons.settings,
+              label: 'Settings',
+              isActive: activeTab == 'Settings'),
+          _buildTab(
+              icon: Icons.help, label: 'Help', isActive: activeTab == 'Help'),
+          ListTile(
+            leading: Icon(
+              isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
+              color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
+            ),
+            title: Text(
+              'Dark Mode',
+              style: AppTheme.sidebarTextStyle.copyWith(
+                color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
+              ),
+            ),
+            trailing: Switch(
+              value: isDarkMode,
+              onChanged: (value) {
+                themeManager.toggleTheme(); // Call the toggleTheme method
+              },
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.logout, color: Colors.white),
+            title: Text(
+              'Logout',
+              style: AppTheme.sidebarTextStyle.copyWith(
+                color: AppTheme.sidebarTextColor,
+              ),
+            ),
+            onTap: () => _logout(context),
           ),
         ],
       ),
@@ -227,30 +221,16 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     required String label,
     required bool isActive,
   }) {
-    bool isHovering = false; // Track hover state
-
-    return MouseRegion(
-      onEnter: (_) {
+    return SidebarTabCard(
+      title: label,
+      icon: icon,
+      isActive: isActive,
+      onTap: () {
         setState(() {
-          isHovering = true; // Set hovering state to true
+          activeTab = label; // Set the active tab
         });
+        widget.onPageSelected(label);
       },
-      onExit: (_) {
-        setState(() {
-          isHovering = false; // Set hovering state to false
-        });
-      },
-      child: SidebarTabCard(
-        title: label,
-        icon: icon,
-        isActive: isActive || isHovering, // Adjust the active state
-        onTap: () {
-          setState(() {
-            activeTab = label; // Set the active tab
-          });
-          widget.onPageSelected(label);
-        },
-      ),
     );
   }
 }
