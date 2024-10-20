@@ -7,6 +7,7 @@ import '../widgets/auth_text_field.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/auth_card.dart';
 import '../widgets/custom_title_bar.dart';
+import '../../data/models/user_model.dart'; // Import User model
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -21,6 +22,8 @@ class SignUpScreenState extends State<SignUpScreen> {
   bool isLoading = false;
 
   final TextEditingController nameController = TextEditingController();
+  final TextEditingController usernameController =
+      TextEditingController(); // New username controller
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -33,11 +36,13 @@ class SignUpScreenState extends State<SignUpScreen> {
     });
 
     final name = nameController.text.trim();
+    final username = usernameController.text.trim(); // Get username input
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
     final confirmPassword = confirmPasswordController.text.trim();
 
     if (name.isNotEmpty &&
+        username.isNotEmpty &&
         email.isNotEmpty &&
         password.isNotEmpty &&
         confirmPassword.isNotEmpty) {
@@ -51,7 +56,14 @@ class SignUpScreenState extends State<SignUpScreen> {
           );
         } else {
           // Save new user data
-          _userBox.put(email, {'name': name, 'password': password});
+          final newUser = User(
+            username: email, // Assuming username is the email
+            password: password,
+            email: email,
+            name: name, // Make sure to include the name
+          );
+
+          _userBox.put(email, newUser.toMap()); // Save new user
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Account created successfully!'),
@@ -107,9 +119,7 @@ class SignUpScreenState extends State<SignUpScreen> {
               ),
               Column(
                 children: [
-                  const CustomTitleBar(
-                      showIcons:
-                          false), // Hide Back and Logout icons on Sign In screen
+                  const CustomTitleBar(showIcons: false),
                   WindowTitleBarBox(
                     child: Row(
                       children: [
@@ -134,6 +144,17 @@ class SignUpScreenState extends State<SignUpScreen> {
                               AuthTextField(
                                 controller: nameController,
                                 hint: "Name",
+                                suffixIcon: const IconButton(
+                                  icon: Icon(Icons.person),
+                                  onPressed: null,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              // Username TextField
+                              AuthTextField(
+                                controller:
+                                    usernameController, // Username input
+                                hint: "Username", // Hint for username
                                 suffixIcon: const IconButton(
                                   icon: Icon(Icons.person),
                                   onPressed: null,
@@ -186,9 +207,8 @@ class SignUpScreenState extends State<SignUpScreen> {
                               ),
                               const SizedBox(height: 24),
                               // Sign Up Button
-                              // Updated Sign Up Button section
                               isLoading
-                                  ? const CircularProgressIndicator() // Show loading indicator when isLoading is true
+                                  ? const CircularProgressIndicator()
                                   : CustomButton(
                                       text: "Sign Up",
                                       isSelected: true,
@@ -234,22 +254,19 @@ class SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   // Bottom Navigation Buttons
-                  // Bottom Navigation Buttons
                   if (screenWidth > 800)
                     Positioned(
                       bottom: 30,
                       left: 150,
                       child: isLoading
-                          ? const CircularProgressIndicator() // Show loading indicator when isLoading is true
+                          ? const CircularProgressIndicator()
                           : AuthNavigationButtons(
                               onSignInPressed: () {
                                 Navigator.pushReplacementNamed(
                                     context, '/signIn');
                               },
                               onSignUpPressed: signUp,
-
-                              isSignInSelected:
-                                  false, // Change this to match the correct state
+                              isSignInSelected: false,
                             ),
                     ),
                 ],
