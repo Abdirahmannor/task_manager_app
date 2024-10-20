@@ -62,13 +62,17 @@ class _SidebarTabCardState extends State<SidebarTabCard> {
             borderRadius: BorderRadius.circular(12), // Rounded corners
           ),
           margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+          // Set the background color to be semi-transparent
           color: widget.isActive
               ? AppTheme.sidebarSelectedColor
               : isHovering || isPressed
                   ? (isDarkMode
                       ? AppTheme.darkIsHover
-                      : AppTheme.lightSidebarBackgroundColor)
-                  : AppTheme.backgroundColor,
+                          .withOpacity(0.7) // Semi-transparent for hover
+                      : AppTheme.lightSidebarBackgroundColor
+                          .withOpacity(0.7)) // Semi-transparent for hover
+                  : AppTheme.backgroundColor.withOpacity(
+                      0.5), // Slightly more transparent for inactive
           child: Padding(
             padding: const EdgeInsets.all(12), // Padding inside the card
             child: Row(
@@ -77,16 +81,23 @@ class _SidebarTabCardState extends State<SidebarTabCard> {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: isPressed
-                        ? AppTheme.darkIsHover // Change color when pressed
+                        ? AppTheme.darkIsHover
+                            .withOpacity(0.7) // Change color when pressed
                         : isHovering
                             ? (isDarkMode
-                                ? AppTheme.darkSidebarIconColor
-                                : AppTheme.lightSidebarBackgroundColor)
+                                ? AppTheme.darkSidebarIconColor.withOpacity(
+                                    0.7) // Semi-transparent for hover
+                                : AppTheme.lightSidebarBackgroundColor
+                                    .withOpacity(
+                                        0.7)) // Semi-transparent for hover
                             : widget.isActive
-                                ? AppTheme.darkIsHover
+                                ? AppTheme.darkIsHover.withOpacity(
+                                    0.7) // Semi-transparent for active
                                 : isDarkMode
-                                    ? AppTheme.darkSidebarIconColor
-                                    : AppTheme.lightsidebarIconColor,
+                                    ? AppTheme.darkSidebarIconColor.withOpacity(
+                                        0.5) // More transparent for inactive
+                                    : AppTheme.lightsidebarIconColor.withOpacity(
+                                        0.5), // More transparent for inactive
                     borderRadius: BorderRadius.circular(30),
                     boxShadow: [
                       BoxShadow(
