@@ -5,6 +5,8 @@ import '../../theme/app_theme.dart';
 import '../screens/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'sidebar_tab_card.dart';
+
 class SidebarDrawer extends StatefulWidget {
   final Function(String) onPageSelected;
 
@@ -238,44 +240,16 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
           isHovering = false; // Set hovering state to false
         });
       },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
-        decoration: BoxDecoration(
-          color: isActive || isHovering
-              ? AppTheme.sidebarSelectedColor
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: ListTile(
-          leading: Container(
-            padding: const EdgeInsets.all(10.0),
-            decoration: BoxDecoration(
-              color: isActive || isHovering
-                  ? AppTheme.darkIsHover
-                  : AppTheme.sidebarInactiveIconColor,
-              borderRadius: BorderRadius.circular(30),
-            ),
-            child: Icon(
-              icon,
-              color:
-                  isActive || isHovering ? Colors.white : AppTheme.darkIsHover,
-            ),
-          ),
-          title: Text(
-            label,
-            style: AppTheme.sidebarTextStyle.copyWith(
-              color: isActive
-                  ? const Color.fromARGB(199, 219, 214, 214)
-                  : AppTheme.sidebarTextColor,
-            ),
-          ),
-          onTap: () {
-            setState(() {
-              activeTab = label; // Set the active tab
-            });
-            widget.onPageSelected(label);
-          },
-        ),
+      child: SidebarTabCard(
+        title: label,
+        icon: icon,
+        isActive: isActive || isHovering,
+        onTap: () {
+          setState(() {
+            activeTab = label; // Set the active tab
+          });
+          widget.onPageSelected(label);
+        },
       ),
     );
   }

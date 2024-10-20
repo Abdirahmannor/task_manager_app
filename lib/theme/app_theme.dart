@@ -25,6 +25,7 @@ class AppTheme {
       Color(0xFFB0BEC5); // Light Mode Inactive icon color
   static const Color sidebarTextColor =
       Color.fromARGB(255, 243, 240, 240); // Light Mode Sidebar text color
+  static const Color lighticoncolor = textColor;
 
   static const Color buttonColor = Color(0xFF1A73E8); // Button Color
   static const Color textColor =
@@ -57,6 +58,7 @@ class AppTheme {
   static const Color darkSidebarTextColor =
       Color.fromARGB(255, 226, 222, 222); // Dark Mode Sidebar text color
   static const Color darkIsHover = Color.fromARGB(255, 25, 9, 63); // Dark Hover
+  static const Color darkiconcolor = darkTextColor;
 
   static final TextStyle sidebarTextStyle = GoogleFonts.openSans(
     fontSize: 18,
