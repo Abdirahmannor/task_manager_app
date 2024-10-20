@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
 
 class ProfileSection extends StatelessWidget {
-  final String userInitials;
-  final String userName;
-  final String userRole;
+  final String userInitials; // Initials of the user
+  final String userName; // Full name of the user
+  final String userRole; // User role
 
   const ProfileSection({
     Key? key,
@@ -36,7 +36,7 @@ class ProfileSection extends StatelessWidget {
                 ? AppTheme.darkBackgroundColor
                 : AppTheme.backgroundColor,
             child: Text(
-              userInitials,
+              userInitials, // Display initials here
               style: TextStyle(
                 color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
                 fontSize: 22,
@@ -45,7 +45,7 @@ class ProfileSection extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            userName,
+            'Hi, $userName', // Display greeting with user's name
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
@@ -55,7 +55,7 @@ class ProfileSection extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            userRole,
+            userRole, // Display user role
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,

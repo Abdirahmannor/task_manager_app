@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../theme/app_theme.dart';
-import 'sidebar_profile.dart';
 
 class SidebarProfile extends StatelessWidget {
   final String userInitials;
@@ -18,8 +17,7 @@ class SidebarProfile extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
-    return // Profile Section
-        Container(
+    return Container(
       decoration: BoxDecoration(
         color: isDarkMode
             ? AppTheme.darkSidebarProfileBackgroundColor
@@ -38,7 +36,7 @@ class SidebarProfile extends StatelessWidget {
                 ? AppTheme.darkBackgroundColor
                 : AppTheme.backgroundColor,
             child: Text(
-              'JD',
+              userInitials, // Use dynamic initials
               style: TextStyle(
                 color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
                 fontSize: 22,
@@ -47,7 +45,7 @@ class SidebarProfile extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'John Doe',
+            'Hi, $userName', // Update here for greeting
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
@@ -57,7 +55,7 @@ class SidebarProfile extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            'Web Developer',
+            userRole, // Use dynamic user role
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../data/models/user_model.dart';
 import '../../theme/theme_manager.dart';
 import '../../theme/app_theme.dart';
 import '../screens/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'profile_section.dart';
 import 'sidebar_tab_card.dart';
-import 'sidebar_profile.dart'; // Import the new profile widget
+import '../../data/database/database_helper.dart'; // Import your database helper
 
 class SidebarDrawer extends StatefulWidget {
   final Function(String) onPageSelected;
@@ -20,9 +22,35 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
   String activeTab = 'Dashboard'; // Track the active tab
   bool isSidebarCollapsed = false; // Track if the sidebar is collapsed
   String searchQuery = ''; // Variable to hold the current search query
-  final String userInitials = "JD"; // Placeholder for user initials
-  final String userName = "John Doe"; // Placeholder for user name
-  final String userRole = "Web Developer"; // Placeholder for user role
+  String userInitials = ''; // Placeholder for user initials
+  String userName = ''; // Placeholder for user name
+  String userRole = ''; // Placeholder for user role
+  final DatabaseHelper _dbHelper =
+      DatabaseHelper(); // Create an instance of DatabaseHelper
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserData(); // Fetch user data on initialization
+  }
+
+  Future<void> _fetchUserData() async {
+    // Fetch the user's email from SharedPreferences (replace with actual fetching logic)
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String email =
+        prefs.getString('email') ?? ''; // Replace with the actual email key
+    User? user = await _dbHelper.getUserByEmail(email); // Fetch user by emai
+
+    if (user != null) {
+      setState(() {
+        userInitials = user.username.isNotEmpty
+            ? user.username[0]
+            : 'U'; // Set initials (first character of username)
+        userName = user.name; // Set user's name
+        userRole = "user.role"; // Set user's role
+      });
+    }
+  }
 
   bool _matchesSearch(String label) {
     return label.toLowerCase().contains(searchQuery.toLowerCase());
@@ -50,11 +78,12 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
       child: Column(
         children: [
           // Profile Section
-          SidebarProfile(
-            userInitials: userInitials, // Use defined user initials
-            userName: userName, // Use defined user name
-            userRole: userRole, // Use defined user role
+          ProfileSection(
+            userInitials: userInitials, // Fetch user's initials dynamically
+            userName: userName, // Fetch user's name dynamically
+            userRole: userRole, // Fetch user's role dynamically
           ),
+
           const SizedBox(height: 20), // Space after the profile section
 
           // Arrow Button - Positioning in the right corner

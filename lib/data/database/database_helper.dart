@@ -17,11 +17,13 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
+    // Define the path to the database
     String path = join(await getDatabasesPath(), 'tasks.db');
     return await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) async {
+        // Create tasks table
         await db.execute('''
           CREATE TABLE tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -33,14 +35,16 @@ class DatabaseHelper {
           )
         ''');
 
+        // Create users table
         await db.execute('''
           CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT,
             email TEXT UNIQUE,
-            password TEXT
+            password TEXT,
+            name TEXT // Added name field
           )
-        '''); // Create the users table
+        ''');
       },
     );
   }
@@ -52,7 +56,7 @@ class DatabaseHelper {
   }
 
   // Get a user by username from the database
-  Future<User?> getUser(String username) async {
+  Future<User?> getUserByUsername(String username) async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query(
       'users',
@@ -66,8 +70,22 @@ class DatabaseHelper {
     return null; // Return null if no user found
   }
 
-  // Your existing task-related methods here...
+  // Get a user by email from the database
+  Future<User?> getUserByEmail(String email) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'users',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
 
+    if (maps.isNotEmpty) {
+      return User.fromMap(maps.first);
+    }
+    return null; // Return null if no user found
+  }
+
+  // Get all tasks from the database
   Future<List<Task>> getAllTasks() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('tasks');

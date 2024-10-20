@@ -61,6 +61,7 @@ class SignUpScreenState extends State<SignUpScreen> {
             password: password,
             email: email,
             name: name, // Make sure to include the name
+            role: 'User', // Set a default role or get it dynamically
           );
 
           _userBox.put(email, newUser.toMap()); // Save new user

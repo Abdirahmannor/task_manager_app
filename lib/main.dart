@@ -8,9 +8,11 @@ import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/sign_up_screen.dart';
 import 'ui/screens/home_screen.dart';
 import 'utills/window_manager_util.dart'; // Import the window manager utility
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  databaseFactory = databaseFactoryFfi; // Initialize the database factory
 
   // Initialize Hive and open boxes
   await Hive.initFlutter();

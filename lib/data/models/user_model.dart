@@ -4,6 +4,7 @@ class User {
   final String password;
   final String email;
   final String name; // Add this field
+  final String role; // Add this field
 
   User({
     this.id = 0, // Default value if not provided
@@ -11,6 +12,7 @@ class User {
     required this.password,
     required this.email,
     required this.name, // Add this required parameter
+    required this.role, // Add this required parameter
   });
 
   Map<String, dynamic> toMap() {
@@ -20,6 +22,7 @@ class User {
       'password': password,
       'email': email,
       'name': name, // Include name in the map
+      'role': role, // Include role in the map
     };
   }
 
@@ -30,6 +33,7 @@ class User {
       password: map['password'],
       email: map['email'],
       name: map['name'], // Ensure this is included
+      role: map['role'], // Ensure this is included
     );
   }
 }
