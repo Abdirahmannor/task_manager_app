@@ -7,7 +7,7 @@ import '../screens/sign_in_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'profile_section.dart';
 import 'sidebar_tab_card.dart';
-import '../../data/database/database_helper.dart'; // Import your database helper
+import '../../data/database/database_helper.dart';
 
 class SidebarDrawer extends StatefulWidget {
   final Function(String) onPageSelected;
@@ -19,37 +19,32 @@ class SidebarDrawer extends StatefulWidget {
 }
 
 class _SidebarDrawerState extends State<SidebarDrawer> {
-  String activeTab = 'Dashboard'; // Track the active tab
-  bool isSidebarCollapsed = false; // Track if the sidebar is collapsed
-  String searchQuery = ''; // Variable to hold the current search query
+  String activeTab = 'Home'; // Set default active tab to Home
+  bool isSidebarCollapsed = false;
+  String searchQuery = '';
 
-  String userInitials = ""; // Fetch user's initials dynamically
-  String userName = ""; // Fetch user's name dynamically
-  String userRole = ""; // Fetch user's role dynamically
+  String userInitials = "";
+  String userName = "";
+  String userRole = "";
 
-  DatabaseHelper _dbHelper =
-      DatabaseHelper(); // Create an instance of DatabaseHelper
+  DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
   void initState() {
     super.initState();
-    _fetchUserData(); // Fetch user data when the widget initializes
+    _fetchUserData();
   }
 
   Future<void> _fetchUserData() async {
-    // Fetch the user's email from SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String email =
-        prefs.getString('email') ?? ''; // Replace with the actual email key
-    User? user = await _dbHelper.getUserByEmail(email); // Fetch user by email
+    String email = prefs.getString('email') ?? '';
+    User? user = await _dbHelper.getUserByEmail(email);
 
     if (user != null) {
       setState(() {
-        userInitials = user.username.isNotEmpty
-            ? user.username[0]
-            : 'U'; // Set initials (first character of username)
-        userName = user.name; // Set user's name
-        userRole = user.role; // Set user's role correctly
+        userInitials = user.username.isNotEmpty ? user.username[0] : 'U';
+        userName = user.name;
+        userRole = user.role;
       });
     }
   }
@@ -79,16 +74,11 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
           : AppTheme.lightSidebarBackgroundColor,
       child: Column(
         children: [
-          // Profile Section
           ProfileSection(
-            userInitials: userInitials,
-            userName: userName,
-            userRole: userRole, // Fetch user's role dynamically
-          ),
-
-          const SizedBox(height: 20), // Space after the profile section
-
-          // Arrow Button - Positioning in the right corner
+              userInitials: userInitials,
+              userName: userName,
+              userRole: userRole),
+          const SizedBox(height: 20),
           Container(
             alignment: Alignment.topRight,
             margin: const EdgeInsets.only(top: 10, right: 10),
@@ -112,8 +102,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   ),
                   onPressed: () {
                     setState(() {
-                      isSidebarCollapsed =
-                          !isSidebarCollapsed; // Toggle sidebar state
+                      isSidebarCollapsed = !isSidebarCollapsed;
                     });
                   },
                   padding: const EdgeInsets.all(12),
@@ -121,20 +110,17 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
               ),
             ),
           ),
-
-          // Scrollable Navigation Section
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Search Bar
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 16),
                     child: TextField(
                       onChanged: (value) {
                         setState(() {
-                          searchQuery = value; // Update search query
+                          searchQuery = value;
                         });
                       },
                       decoration: InputDecoration(
@@ -156,13 +142,12 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                       ),
                     ),
                   ),
-
                   // Filtered tabs based on the search query
-                  if (_matchesSearch('Dashboard'))
+                  if (_matchesSearch('Home'))
                     _buildTab(
-                        icon: Icons.dashboard,
-                        label: 'Dashboard',
-                        isActive: activeTab == 'Dashboard'),
+                        icon: Icons.home,
+                        label: 'Home',
+                        isActive: activeTab == 'Home'),
                   if (_matchesSearch('Projects'))
                     _buildTab(
                         icon: Icons.folder,
@@ -189,15 +174,13 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                         label: 'Notes',
                         isActive: activeTab == 'Notes'),
 
-                  const SizedBox(height: 10), // Space before the divider
+                  const SizedBox(height: 10),
                   const Divider(color: Colors.red),
-                  const SizedBox(height: 10), // Space after the divider
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
           ),
-
-          // Settings/Help/Logout Section
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Column(
@@ -210,8 +193,6 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     icon: Icons.help,
                     label: 'Help',
                     isActive: activeTab == 'Help'),
-
-                // Dark Mode Toggle Switch
                 ListTile(
                   leading: Icon(
                     isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
@@ -230,11 +211,10 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   trailing: Switch(
                     value: isDarkMode,
                     onChanged: (value) {
-                      themeManager.toggleTheme(); // Call the toggleTheme method
+                      themeManager.toggleTheme();
                     },
                   ),
                 ),
-                // Logout Button
                 ListTile(
                   leading: const Icon(Icons.logout, color: Colors.white),
                   title: Text(
@@ -253,7 +233,6 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     );
   }
 
-// Inside the _buildTab method
   Widget _buildTab({
     required IconData icon,
     required String label,
@@ -267,11 +246,10 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         setState(() {
           activeTab = label; // Set the active tab
         });
-
         // Navigate to the corresponding screen based on the tab selected
         switch (label) {
-          case 'Dashboard':
-            Navigator.pushNamed(context, '/projects');
+          case 'Home':
+            Navigator.pushNamed(context, '/home');
             break;
           case 'Projects':
             Navigator.pushNamed(context, '/projects');
@@ -283,18 +261,10 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             Navigator.pushNamed(context, '/schoolManagement');
             break;
           case 'Resources':
-            Navigator.pushNamed(
-                context, '/resources'); // Make sure to define this route
+            Navigator.pushNamed(context, '/resources');
             break;
           case 'Notes':
-            Navigator.pushNamed(
-                context, '/notes'); // Make sure to define this route
-            break;
-          case 'Settings':
-            // Add navigation logic for Settings if needed
-            break;
-          case 'Help':
-            // Add navigation logic for Help if needed
+            Navigator.pushNamed(context, '/notes');
             break;
           default:
             break;

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_manager.dart';
+import 'ui/screens/project_screens/home_screen.dart';
 import 'ui/screens/project_screens/note_screen.dart';
 import 'ui/screens/project_screens/project_screens.dart';
 import 'ui/screens/project_screens/resources_screen.dart';
@@ -11,7 +12,6 @@ import 'ui/screens/project_screens/school_management_screen.dart';
 import 'ui/screens/project_screens/tasks_screen.dart';
 import 'ui/screens/sign_in_screen.dart';
 import 'ui/screens/sign_up_screen.dart';
-import 'ui/screens/home_screen.dart';
 
 import 'utills/window_manager_util.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -61,9 +61,8 @@ class MyApp extends StatelessWidget {
         '/projects': (context) => const ProjectsScreen(),
         '/tasks': (context) => const TasksScreen(),
         '/schoolManagement': (context) => const SchoolManagementScreen(),
-        '/resources': (context) =>
-            const ResourcesScreen(), // Add Resources route
-        '/notes': (context) => const NoteScreen(), // Add Notes route
+        '/resources': (context) => const ResourcesScreen(),
+        '/notes': (context) => const NoteScreen(),
       },
       builder: (context, child) {
         return WindowTitleBarBox(
