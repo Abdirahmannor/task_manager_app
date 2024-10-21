@@ -81,8 +81,8 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         children: [
           // Profile Section
           ProfileSection(
-            userInitials: userInitials, // Fetch user's initials dynamically
-            userName: userName, // Fetch user's name dynamically
+            userInitials: userInitials,
+            userName: userName,
             userRole: userRole, // Fetch user's role dynamically
           ),
 
@@ -90,21 +90,18 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
 
           // Arrow Button - Positioning in the right corner
           Container(
-            alignment: Alignment.topRight, // Align to the top right
-            margin: const EdgeInsets.only(
-                top: 10, right: 10), // Margin for positioning
+            alignment: Alignment.topRight,
+            margin: const EdgeInsets.only(top: 10, right: 10),
             child: MouseRegion(
               child: Material(
-                shape: const CircleBorder(), // Define shape here
+                shape: const CircleBorder(),
                 color: isDarkMode
                     ? AppTheme.darkSidebarIconColor
-                    : AppTheme.lightsidebarIconColor
-                        .withOpacity(0.8), // Background color
-                elevation: 4, // Add shadow effect
+                    : AppTheme.lightsidebarIconColor.withOpacity(0.8),
+                elevation: 4,
                 child: IconButton(
                   icon: AnimatedRotation(
-                    turns:
-                        isSidebarCollapsed ? 0.5 : 0.0, // Rotate based on state
+                    turns: isSidebarCollapsed ? 0.5 : 0.0,
                     duration: const Duration(milliseconds: 200),
                     child: Icon(
                       Icons.chevron_right,
@@ -119,7 +116,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                           !isSidebarCollapsed; // Toggle sidebar state
                     });
                   },
-                  padding: const EdgeInsets.all(12), // Adjust padding as needed
+                  padding: const EdgeInsets.all(12),
                 ),
               ),
             ),
@@ -163,34 +160,35 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                   // Filtered tabs based on the search query
                   if (_matchesSearch('Dashboard'))
                     _buildTab(
-                      icon: Icons.dashboard,
-                      label: 'Dashboard',
-                      isActive: activeTab == 'Dashboard',
-                    ),
-                  if (_matchesSearch('Profile'))
+                        icon: Icons.dashboard,
+                        label: 'Dashboard',
+                        isActive: activeTab == 'Dashboard'),
+                  if (_matchesSearch('Projects'))
                     _buildTab(
-                      icon: Icons.person,
-                      label: 'Profile',
-                      isActive: activeTab == 'Profile',
-                    ),
-                  if (_matchesSearch('Favorites'))
+                        icon: Icons.folder,
+                        label: 'Projects',
+                        isActive: activeTab == 'Projects'),
+                  if (_matchesSearch('Tasks'))
                     _buildTab(
-                      icon: Icons.star,
-                      label: 'Favorites',
-                      isActive: activeTab == 'Favorites',
-                    ),
-                  if (_matchesSearch('Calendar'))
+                        icon: Icons.task,
+                        label: 'Tasks',
+                        isActive: activeTab == 'Tasks'),
+                  if (_matchesSearch('School Management'))
                     _buildTab(
-                      icon: Icons.calendar_today,
-                      label: 'Calendar',
-                      isActive: activeTab == 'Calendar',
-                    ),
+                        icon: Icons.school,
+                        label: 'School Management',
+                        isActive: activeTab == 'School Management'),
+                  if (_matchesSearch('Resources'))
+                    _buildTab(
+                        icon: Icons.library_books,
+                        label: 'Resources',
+                        isActive: activeTab == 'Resources'),
                   if (_matchesSearch('Notes'))
                     _buildTab(
-                      icon: Icons.note,
-                      label: 'Notes',
-                      isActive: activeTab == 'Notes',
-                    ),
+                        icon: Icons.note,
+                        label: 'Notes',
+                        isActive: activeTab == 'Notes'),
+
                   const SizedBox(height: 10), // Space before the divider
                   const Divider(color: Colors.red),
                   const SizedBox(height: 10), // Space after the divider
@@ -205,15 +203,14 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             child: Column(
               children: [
                 _buildTab(
-                  icon: Icons.settings,
-                  label: 'Settings',
-                  isActive: activeTab == 'Settings',
-                ),
+                    icon: Icons.settings,
+                    label: 'Settings',
+                    isActive: activeTab == 'Settings'),
                 _buildTab(
-                  icon: Icons.help,
-                  label: 'Help',
-                  isActive: activeTab == 'Help',
-                ),
+                    icon: Icons.help,
+                    label: 'Help',
+                    isActive: activeTab == 'Help'),
+
                 // Dark Mode Toggle Switch
                 ListTile(
                   leading: Icon(
@@ -269,7 +266,40 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         setState(() {
           activeTab = label; // Set the active tab
         });
-        widget.onPageSelected(label);
+
+        // Navigate to the corresponding screen based on the tab selected
+        switch (label) {
+          case 'Dashboard':
+            Navigator.pushNamed(context, '/home');
+            break;
+          case 'Projects':
+            Navigator.pushNamed(context, '/projects');
+            break;
+          case 'Tasks':
+            Navigator.pushNamed(context, '/tasks');
+            break;
+          case 'School Management':
+            Navigator.pushNamed(context, '/schoolManagement');
+            break;
+          case 'Resources':
+            Navigator.pushNamed(
+                context, '/resources'); // Make sure to define this route
+            break;
+          case 'Notes':
+            Navigator.pushNamed(
+                context, '/notes'); // Make sure to define this route
+            break;
+          case 'Settings':
+            // Add navigation logic for Settings if needed
+            break;
+          case 'Help':
+            // Add navigation logic for Help if needed
+            break;
+          default:
+            break;
+        }
+
+        widget.onPageSelected(label); // Call the onPageSelected function
       },
     );
   }
