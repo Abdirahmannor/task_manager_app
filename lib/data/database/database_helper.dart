@@ -17,34 +17,33 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    // Define the path to the database
     String path = join(await getDatabasesPath(), 'tasks.db');
+    print('Database Path: $path'); // Log the path to the console
+
     return await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) async {
-        // Create tasks table
         await db.execute('''
-          CREATE TABLE tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            title TEXT,
-            description TEXT,
-            date TEXT,
-            isCompleted INTEGER,
-            category TEXT
-          )
-        ''');
+        CREATE TABLE tasks (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          title TEXT,
+          description TEXT,
+          date TEXT,
+          isCompleted INTEGER,
+          category TEXT
+        )
+      ''');
 
-        // Create users table
         await db.execute('''
-          CREATE TABLE users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT,
-            email TEXT UNIQUE,
-            password TEXT,
-            name TEXT // Added name field
-          )
-        ''');
+        CREATE TABLE users (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          username TEXT,
+          email TEXT UNIQUE,
+          password TEXT,
+          name TEXT
+        )
+      ''');
       },
     );
   }

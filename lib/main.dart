@@ -12,6 +12,9 @@ import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize the SQLite database factory
+  sqfliteFfiInit(); // Make sure to initialize the FFI library
   databaseFactory = databaseFactoryFfi; // Initialize the database factory
 
   // Initialize Hive and open boxes

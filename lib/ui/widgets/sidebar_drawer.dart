@@ -22,24 +22,26 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
   String activeTab = 'Dashboard'; // Track the active tab
   bool isSidebarCollapsed = false; // Track if the sidebar is collapsed
   String searchQuery = ''; // Variable to hold the current search query
-  String userInitials = ''; // Placeholder for user initials
-  String userName = ''; // Placeholder for user name
-  String userRole = ''; // Placeholder for user role
-  final DatabaseHelper _dbHelper =
+
+  String userInitials = ""; // Fetch user's initials dynamically
+  String userName = ""; // Fetch user's name dynamically
+  String userRole = ""; // Fetch user's role dynamically
+
+  DatabaseHelper _dbHelper =
       DatabaseHelper(); // Create an instance of DatabaseHelper
 
   @override
   void initState() {
     super.initState();
-    _fetchUserData(); // Fetch user data on initialization
+    _fetchUserData(); // Fetch user data when the widget initializes
   }
 
   Future<void> _fetchUserData() async {
-    // Fetch the user's email from SharedPreferences (replace with actual fetching logic)
+    // Fetch the user's email from SharedPreferences
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String email =
         prefs.getString('email') ?? ''; // Replace with the actual email key
-    User? user = await _dbHelper.getUserByEmail(email); // Fetch user by emai
+    User? user = await _dbHelper.getUserByEmail(email); // Fetch user by email
 
     if (user != null) {
       setState(() {
@@ -47,7 +49,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             ? user.username[0]
             : 'U'; // Set initials (first character of username)
         userName = user.name; // Set user's name
-        userRole = "user.role"; // Set user's role
+        userRole = user.role; // Set user's role correctly
       });
     }
   }
