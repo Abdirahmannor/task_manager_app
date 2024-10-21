@@ -3,7 +3,7 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import '../../utills/session_manager.dart';
 import '../../theme/app_theme.dart';
 
-class CustomTitleBar extends StatelessWidget {
+class CustomTitleBar extends StatelessWidget implements PreferredSizeWidget {
   final bool showIcons;
 
   const CustomTitleBar({super.key, required this.showIcons});
@@ -51,4 +51,8 @@ class CustomTitleBar extends StatelessWidget {
       ),
     );
   }
+
+  @override
+  Size get preferredSize =>
+      Size.fromHeight(40.0); // Set the height of the title bar
 }
