@@ -253,6 +253,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
     );
   }
 
+// Inside the _buildTab method
   Widget _buildTab({
     required IconData icon,
     required String label,
@@ -270,7 +271,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         // Navigate to the corresponding screen based on the tab selected
         switch (label) {
           case 'Dashboard':
-            Navigator.pushNamed(context, '/home');
+            Navigator.pushNamed(context, '/projects');
             break;
           case 'Projects':
             Navigator.pushNamed(context, '/projects');

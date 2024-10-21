@@ -5,7 +5,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_manager.dart';
 import 'ui/screens/project_screens/note_screen.dart';
-import 'ui/screens/project_screens/projects_screen.dart';
+import 'ui/screens/project_screens/project_screens.dart';
 import 'ui/screens/project_screens/resources_screen.dart';
 import 'ui/screens/project_screens/school_management_screen.dart';
 import 'ui/screens/project_screens/tasks_screen.dart';

@@ -2,6 +2,7 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import '../models/task_model.dart';
 import '../models/user_model.dart'; // Import your user model
+import '../models/project_model.dart'; // Import your project model
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -22,7 +23,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 1,
+      version: 2, // Incremented database version
       onCreate: (db, version) async {
         await db.execute('''
         CREATE TABLE tasks (
@@ -33,7 +34,7 @@ class DatabaseHelper {
           isCompleted INTEGER,
           category TEXT
         )
-      ''');
+        ''');
 
         await db.execute('''
         CREATE TABLE users (
@@ -43,7 +44,15 @@ class DatabaseHelper {
           password TEXT,
           name TEXT
         )
-      ''');
+        ''');
+
+        await db.execute('''
+        CREATE TABLE projects (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          name TEXT,
+          description TEXT
+        )
+        '''); // Ensuring the projects table is defined
       },
     );
   }
@@ -98,5 +107,24 @@ class DatabaseHelper {
         category: maps[i]['category'],
       );
     });
+  }
+
+  // Get all projects from the database
+  Future<List<Project>> getAllProjects() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('projects');
+    return List.generate(maps.length, (i) {
+      return Project(
+        id: maps[i]['id'],
+        name: maps[i]['name'],
+        description: maps[i]['description'],
+      );
+    });
+  }
+
+  // Insert a new project into the database
+  Future<int> insertProject(Project project) async {
+    final db = await database;
+    return await db.insert('projects', project.toMap());
   }
 }

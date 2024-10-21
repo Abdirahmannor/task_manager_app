@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../../data/database/database_helper.dart';
-import '../../../data/models/project_model.dart';
+import '../../../data/models/project_model.dart'; // Correct import path
+import '../../../data/database/database_helper.dart'; // Correct import path
 
 class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
 
   @override
-  _ProjectsScreenState createState() => _ProjectsScreenState();
+  State<ProjectsScreen> createState() => _ProjectsScreenState();
 }
 
 class _ProjectsScreenState extends State<ProjectsScreen> {
@@ -17,13 +16,13 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   @override
   void initState() {
     super.initState();
-    _fetchProjects(); // Fetch all projects when the screen initializes
+    _fetchProjects(); // Fetch projects when the screen initializes
   }
 
   Future<void> _fetchProjects() async {
     _projects = await _dbHelper
         .getAllProjects(); // Fetch all projects from the database
-    setState(() {}); // Refresh the UI
+    setState(() {});
   }
 
   Future<void> _addProject(String name) async {
@@ -36,26 +35,21 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Projects'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              // Implement your logic to add a project here
-            },
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Projects')),
       body: ListView.builder(
         itemCount: _projects.length,
         itemBuilder: (context, index) {
-          final project = _projects[index];
           return ListTile(
-            title: Text(project.name),
-            // Implement further details or actions as needed
+            title: Text(_projects[index].name),
+            // Add any additional project information as needed
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Handle adding a new project
+        },
+        child: const Icon(Icons.add),
       ),
     );
   }
