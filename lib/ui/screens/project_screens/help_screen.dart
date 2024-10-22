@@ -19,16 +19,16 @@ class HelpScreenState extends State<HelpScreen> {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Row(children: [
-        SidebarDrawer(
-          onPageSelected: (page) {
-            // Handle page navigation
-            setState(() {
-              activeTab =
-                  page; // Update the active tab based on sidebar selection
-            });
-          },
-          activeTab: activeTab, // Pass the active tab to the SidebarDrawer
-        ),
+        // SidebarDrawer(
+        //   onPageSelected: (page) {
+        //     // Handle page navigation
+        //     setState(() {
+        //       activeTab =
+        //           page; // Update the active tab based on sidebar selection
+        //     });
+        //   },
+        //   activeTab: activeTab, // Pass the active tab to the SidebarDrawer
+        // ),
         const Expanded(
           // Ensure the content expands to fill the screen
           child: Column(

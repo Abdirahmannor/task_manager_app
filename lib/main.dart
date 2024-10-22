@@ -6,6 +6,7 @@ import 'package:task_manager_app/ui/screens/project_screens/help_screen.dart';
 import 'package:task_manager_app/ui/screens/project_screens/settings_screen.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_manager.dart';
+import 'ui/screens/project_screens/Main_Screen.dart';
 import 'ui/screens/project_screens/home_screen.dart';
 import 'ui/screens/project_screens/note_screen.dart';
 import 'ui/screens/project_screens/project_screens.dart';
@@ -55,10 +56,11 @@ class MyApp extends StatelessWidget {
       themeMode: themeManager.themeMode,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      initialRoute: isLoggedIn ? '/home' : '/signIn',
+      initialRoute: isLoggedIn ? '/main' : '/signIn',
       routes: {
         '/signIn': (context) => const SignInScreen(),
         '/signUp': (context) => const SignUpScreen(),
+        '/main': (context) => const MainScreen(), // Route for MainScreen
         '/home': (context) => const HomeScreen(),
         '/projects': (context) => const ProjectsScreen(),
         '/tasks': (context) => const TasksScreen(),

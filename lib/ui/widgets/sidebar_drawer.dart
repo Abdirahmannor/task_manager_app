@@ -244,34 +244,6 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
         widget.onPageSelected(label);
 
         // Navigate to the corresponding screen based on the tab selected
-        switch (label) {
-          case 'Home':
-            Navigator.pushNamed(context, '/home');
-            break;
-          case 'Projects':
-            Navigator.pushNamed(context, '/projects');
-            break;
-          case 'Tasks':
-            Navigator.pushNamed(context, '/tasks');
-            break;
-          case 'School Management':
-            Navigator.pushNamed(context, '/schoolManagement');
-            break;
-          case 'Resources':
-            Navigator.pushNamed(context, '/resources');
-            break;
-          case 'Notes':
-            Navigator.pushNamed(context, '/notes');
-            break;
-          case 'Settings':
-            Navigator.pushNamed(context, '/settings');
-            break;
-          case 'Help':
-            Navigator.pushNamed(context, '/help');
-            break;
-          default:
-            break;
-        }
       },
     );
   }

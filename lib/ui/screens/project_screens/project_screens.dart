@@ -289,14 +289,14 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     return Scaffold(
       body: Row(
         children: [
-          SidebarDrawer(
-              onPageSelected: (page) {
-                setState(() {
-                  // This should set the active tab correctly
-                  activeTab = page;
-                });
-              },
-              activeTab: activeTab),
+          // SidebarDrawer(
+          //     onPageSelected: (page) {
+          //       setState(() {
+          //         // This should set the active tab correctly
+          //         activeTab = page;
+          //       });
+          //     },
+          //     activeTab: activeTab),
           Expanded(
             child: Column(
               children: [

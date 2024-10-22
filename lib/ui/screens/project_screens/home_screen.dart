@@ -26,16 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Row(
         children: [
-          SidebarDrawer(
-            onPageSelected: (page) {
-              // Handle page navigation
-              setState(() {
-                activeTab =
-                    page; // Update the active tab based on sidebar selection
-              });
-            },
-            activeTab: activeTab, // Pass the active tab to the SidebarDrawer
-          ),
+          // SidebarDrawer(
+          //   onPageSelected: (page) {
+          //     // Handle page navigation
+          //     setState(() {
+          //       activeTab =
+          //           page; // Update the active tab based on sidebar selection
+          //     });
+          //   },
+          //   activeTab: activeTab, // Pass the active tab to the SidebarDrawer
+          // ),
           Expanded(
             child: Column(
               children: [
