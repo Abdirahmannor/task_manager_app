@@ -66,15 +66,95 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   }
 
   void _createNewProject() {
-    // Existing create project code...
+    // Show a dialog with the Project Creation Card for creating a new project
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          backgroundColor: Theme.of(context).cardColor,
+          child:
+              ProjectCreationScreen(), // No ID passed, indicating new project
+        );
+      },
+    );
   }
 
   void _editProject(String projectId) {
-    // Existing edit project code...
+    // Fetch the project details to pass as initial values
+    final project = _projectManager.getProject(projectId);
+
+    if (project != null) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+            ),
+            backgroundColor: Theme.of(context).cardColor,
+            child: ProjectCreationScreen(
+              projectId: projectId, // Pass the project ID for editing
+              initialTitle: project['title'], // Pass the initial title
+              initialDescription:
+                  project['description'], // Pass the initial description
+            ),
+          );
+        },
+      );
+    } else {
+      // Handle case where project is not found
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Project not found!'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   void _deleteProject(String projectId) {
-    // Existing delete project code...
+    // Confirm deletion with the user
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Delete Project"),
+          content: const Text("Are you sure you want to delete this project?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pop(); // Close the dialog without deleting
+              },
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                // Deleting the project and updating the state
+                setState(() {
+                  _projectManager
+                      .deleteProject(projectId); // Delete the project
+                  userProjects = _projectManager
+                      .getAllProjects(); // Refresh the project list
+                });
+                // Show feedback to the user
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Project deleted successfully!'),
+                    backgroundColor: AppTheme.sidebarSelectedColor,
+                  ),
+                );
+                Navigator.of(context).pop(); // Close the dialog after deletion
+              },
+              child: const Text("Delete"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
 // Example line 140: Add this new method above _buildProjectList

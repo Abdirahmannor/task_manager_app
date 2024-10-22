@@ -12,7 +12,7 @@ class AppTheme {
   static const Color backgroundColor =
       Color.fromARGB(255, 82, 80, 81); // Light Background
   static const Color lightSidebarBackgroundColor =
-      Color.fromARGB(255, 49, 47, 44); // Light Mode Sidebar Background
+      Color.fromARGB(255, 49, 47, 44); // Light Sidebar Background
   static const Color sidebarBackgroundColor =
       Color.fromARGB(255, 19, 168, 81); // Light Mode Sidebar Background
   static const Color lightsidebarProfileBackgroundColor =
@@ -26,7 +26,6 @@ class AppTheme {
   static const Color sidebarTextColor =
       Color.fromARGB(255, 243, 240, 240); // Light Mode Sidebar text color
   static const Color lighticoncolor = textColor;
-
   static const Color buttonColor = Color(0xFF1A73E8); // Button Color
   static const Color textColor =
       Color.fromARGB(255, 240, 239, 239); // Main Text Color
@@ -42,11 +41,10 @@ class AppTheme {
       Color.fromARGB(255, 238, 236, 237); // Light Text Color
   static const Color darksidebarArrowColor =
       Color.fromARGB(255, 90, 122, 15); // Light Mode Sidebar Arrow icon
-
   static const Color darkCardColor =
       Color.fromARGB(255, 212, 90, 8); // Dark Card Background
   static const Color darkSidebarBackgroundColor =
-      Color.fromARGB(255, 8, 25, 122); // Dark Mode Sidebar Background
+      Color.fromARGB(255, 8, 25, 122); // Dark Sidebar Background
   static const Color darkSidebarProfileBackgroundColor =
       Color.fromARGB(255, 6, 160, 121); // Dark Mode Profile section background
   static const Color darkSidebarSelectedColor =
@@ -60,17 +58,23 @@ class AppTheme {
   static const Color darkIsHover = Color.fromARGB(255, 25, 9, 63); // Dark Hover
   static const Color darkiconcolor = darkTextColor;
 
-  // Define font styles for sidebar
+  // New Additions for Consistency
+  static const Color dialogBackgroundColorLight =
+      Color(0xFFF2F2F2); // Light Mode Dialog Background
+  static const Color dialogBackgroundColorDark =
+      Color(0xFF2D2D2D); // Dark Mode Dialog Background
+
+  // Font Styles for Sidebar
   static final TextStyle sidebarTextStyle = GoogleFonts.poppins(
-    fontSize: 16, // Reduced font size for better alignment
-    fontWeight: FontWeight.w500, // Semi-bold for better visibility
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
     color: sidebarTextColor,
   );
 
   static final TextStyle sidebarActiveTextStyle = GoogleFonts.poppins(
     fontSize: 18,
-    fontWeight: FontWeight.bold, // Bold for active tab
-    color: Colors.white, // Change to your desired color
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
   );
 
   // Define font styles for other sections
@@ -82,7 +86,7 @@ class AppTheme {
     ),
     headlineMedium: GoogleFonts.poppins(
       fontSize: 24,
-      fontWeight: FontWeight.w600, // Medium weight for better visibility
+      fontWeight: FontWeight.w600,
       color: textColor,
     ),
     bodyLarge: GoogleFonts.openSans(
@@ -125,6 +129,8 @@ class AppTheme {
         ),
       ),
     ),
+    dialogBackgroundColor: dialogBackgroundColorLight,
+    dividerColor: Colors.grey.withOpacity(0.2),
     colorScheme: ColorScheme.fromSwatch().copyWith(
       brightness: Brightness.light,
       primary: primaryColor,
@@ -159,6 +165,8 @@ class AppTheme {
         ),
       ),
     ),
+    dialogBackgroundColor: dialogBackgroundColorDark,
+    dividerColor: Colors.grey.withOpacity(0.5),
     colorScheme: ColorScheme.fromSwatch().copyWith(
       brightness: Brightness.dark,
       primary: primaryColor,
