@@ -27,11 +27,11 @@ class ProfileSection extends StatelessWidget {
           bottomLeft: Radius.circular(15),
         ),
       ),
-      padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 16.0),
+      padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
       child: Column(
         children: [
           CircleAvatar(
-            radius: 45,
+            radius: 30,
             backgroundColor: isDarkMode
                 ? AppTheme.darkBackgroundColor
                 : AppTheme.backgroundColor,
@@ -45,7 +45,7 @@ class ProfileSection extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Text(
-            'Hi, $userName', // Display greeting with user's name
+            'Hi', // Display greeting with user's name
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,
@@ -55,7 +55,7 @@ class ProfileSection extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            userRole, // Display user role
+            userName, // Display user role
             textAlign: TextAlign.center,
             style: TextStyle(
               color: isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor,

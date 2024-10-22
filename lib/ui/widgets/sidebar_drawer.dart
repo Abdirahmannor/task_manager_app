@@ -11,15 +11,18 @@ import '../../data/database/database_helper.dart';
 
 class SidebarDrawer extends StatefulWidget {
   final Function(String) onPageSelected;
+  final String activeTab; // Add this line to receive activeTab
 
-  const SidebarDrawer({super.key, required this.onPageSelected});
+  const SidebarDrawer(
+      {super.key,
+      required this.onPageSelected,
+      required this.activeTab}); // Update constructor
 
   @override
   _SidebarDrawerState createState() => _SidebarDrawerState();
 }
 
 class _SidebarDrawerState extends State<SidebarDrawer> {
-  String activeTab = 'Home'; // Set default active tab to Home
   bool isSidebarCollapsed = false;
   String searchQuery = '';
 
@@ -147,36 +150,49 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     _buildTab(
                         icon: Icons.home,
                         label: 'Home',
-                        isActive: activeTab == 'Home'),
+                        isActive: widget.activeTab ==
+                            'Home'), // Use the activeTab from the widget
                   if (_matchesSearch('Projects'))
                     _buildTab(
                         icon: Icons.folder,
                         label: 'Projects',
-                        isActive: activeTab == 'Projects'),
+                        isActive: widget.activeTab ==
+                            'Projects'), // Use the activeTab from the widget
                   if (_matchesSearch('Tasks'))
                     _buildTab(
                         icon: Icons.task,
                         label: 'Tasks',
-                        isActive: activeTab == 'Tasks'),
+                        isActive: widget.activeTab ==
+                            'Tasks'), // Use the activeTab from the widget
                   if (_matchesSearch('School Management'))
                     _buildTab(
                         icon: Icons.school,
                         label: 'School Management',
-                        isActive: activeTab == 'School Management'),
+                        isActive: widget.activeTab ==
+                            'School Management'), // Use the activeTab from the widget
                   if (_matchesSearch('Resources'))
                     _buildTab(
                         icon: Icons.library_books,
                         label: 'Resources',
-                        isActive: activeTab == 'Resources'),
+                        isActive: widget.activeTab ==
+                            'Resources'), // Use the activeTab from the widget
                   if (_matchesSearch('Notes'))
                     _buildTab(
                         icon: Icons.note,
                         label: 'Notes',
-                        isActive: activeTab == 'Notes'),
-
-                  const SizedBox(height: 10),
-                  const Divider(color: Colors.red),
-                  const SizedBox(height: 10),
+                        isActive: widget.activeTab ==
+                            'Notes'), // Use the activeTab from the widget
+                  if (_matchesSearch('Settings'))
+                    _buildTab(
+                        icon: Icons.settings,
+                        label: 'Settings',
+                        isActive: widget.activeTab ==
+                            'Settings'), // Use the activeTab from the widget
+                  _buildTab(
+                      icon: Icons.help,
+                      label: 'Help',
+                      isActive: widget.activeTab ==
+                          'Help'), // Use the activeTab from the widget
                 ],
               ),
             ),
@@ -185,14 +201,6 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
             padding: const EdgeInsets.symmetric(vertical: 10.0),
             child: Column(
               children: [
-                _buildTab(
-                    icon: Icons.settings,
-                    label: 'Settings',
-                    isActive: activeTab == 'Settings'),
-                _buildTab(
-                    icon: Icons.help,
-                    label: 'Help',
-                    isActive: activeTab == 'Help'),
                 ListTile(
                   leading: Icon(
                     isDarkMode ? Icons.nightlight_round : Icons.wb_sunny,
@@ -244,8 +252,11 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
       isActive: isActive,
       onTap: () {
         setState(() {
-          activeTab = label; // Set the active tab
+          // Update the active tab
+          widget.onPageSelected(
+              label); // Notify the parent about the selected page
         });
+
         // Navigate to the corresponding screen based on the tab selected
         switch (label) {
           case 'Home':
@@ -266,11 +277,15 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
           case 'Notes':
             Navigator.pushNamed(context, '/notes');
             break;
+          case 'Settings':
+            Navigator.pushNamed(context, '/settings');
+            break;
+          case 'Help':
+            Navigator.pushNamed(context, '/help');
+            break;
           default:
             break;
         }
-
-        widget.onPageSelected(label); // Call the onPageSelected function
       },
     );
   }

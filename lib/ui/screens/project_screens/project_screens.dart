@@ -14,7 +14,6 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   final ProjectManager _projectManager = ProjectManager();
   late List<Map<String, dynamic>> userProjects;
   String activeTab = 'Projects'; // Declare activeTab to track the active tab
-  // String activeTab = 'Projects'; // Declare activeTab to track the active tab
 
   @override
   void initState() {
@@ -290,12 +289,15 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     return Scaffold(
       body: Row(
         children: [
-          SidebarDrawer(onPageSelected: (page) {
-            setState(() {
-              // This should set the active tab correctly
-              activeTab = page;
-            });
-          }),
+          SidebarDrawer(
+            onPageSelected: (page) {
+              setState(() {
+                // This should set the active tab correctly
+                activeTab = page;
+              });
+            },
+            activeTab: activeTab, // Pass the active tab to the SidebarDrawer
+          ),
           Expanded(
             child: Column(
               children: [

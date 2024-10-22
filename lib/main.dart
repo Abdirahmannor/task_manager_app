@@ -2,6 +2,8 @@ import 'package:bitsdojo_window/bitsdojo_window.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:task_manager_app/ui/screens/project_screens/help_screen.dart';
+import 'package:task_manager_app/ui/screens/project_screens/settings_screen.dart';
 import 'theme/app_theme.dart';
 import 'theme/theme_manager.dart';
 import 'ui/screens/project_screens/home_screen.dart';
@@ -63,6 +65,8 @@ class MyApp extends StatelessWidget {
         '/schoolManagement': (context) => const SchoolManagementScreen(),
         '/resources': (context) => const ResourcesScreen(),
         '/notes': (context) => const NoteScreen(),
+        '/help': (context) => const HelpScreen(),
+        '/settings': (context) => const SettingsScreen(),
       },
       builder: (context, child) {
         return WindowTitleBarBox(

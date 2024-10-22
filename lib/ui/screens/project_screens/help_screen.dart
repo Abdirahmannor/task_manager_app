@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import '../../widgets/custom_title_bar.dart';
 import '../../widgets/sidebar_drawer.dart';
 
-class SchoolManagementScreen extends StatefulWidget {
+class HelpScreen extends StatefulWidget {
   // Change to StatefulWidget
-  const SchoolManagementScreen({super.key});
+  const HelpScreen({super.key});
 
   @override
-  SchoolManagementScreenState createState() => SchoolManagementScreenState();
+  HelpScreenState createState() => HelpScreenState();
 }
 
-class SchoolManagementScreenState extends State<SchoolManagementScreen> {
+class HelpScreenState extends State<HelpScreen> {
   late List<Map<String, dynamic>> userProjects;
-  String activeTab =
-      'School Management'; // Set the active tab to Home initially
+  String activeTab = 'Help'; // Set the active tab to Home initially
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,7 @@ class SchoolManagementScreenState extends State<SchoolManagementScreen> {
                   padding: const EdgeInsets.all(16.0),
                   child: Center(
                     child: Text(
-                      'School Management Content Here', // Example content for the screen
+                      'Help Content Here', // Example content for the screen
                       style: TextStyle(fontSize: 24),
                     ),
                   ),
