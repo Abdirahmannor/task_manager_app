@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/ui/screens/ProjectCreationScreen';
+import 'package:task_manager_app/ui/widgets/ProjectCreationCard.dart';
+
 import '../../../theme/app_theme.dart';
 import '../../../utills/project_manager.dart';
 import '../../widgets/custom_title_bar.dart';
@@ -136,7 +139,6 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     );
   }
 
-  // Example line 155
   Widget _buildProjectList() {
     return filteredProjects.isEmpty
         ? const Center(
@@ -195,7 +197,18 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.edit),
-                        onPressed: () => _editProject(projectId),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProjectCreationScreen(
+                                projectId: projectId,
+                                initialTitle: project['title'],
+                                initialDescription: project['description'],
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       IconButton(
                         icon: const Icon(Icons.delete),
@@ -285,7 +298,20 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         backgroundColor: isDarkMode
             ? AppTheme.darkSidebarIconColor
             : AppTheme.lightsidebarIconColor,
-        onPressed: _createNewProject,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                backgroundColor: Theme.of(context).cardColor,
+                child: ProjectCreationCard(),
+              );
+            },
+          );
+        },
         child: const Icon(Icons.add, color: AppTheme.darkSidebarTextColor),
       ),
     );
