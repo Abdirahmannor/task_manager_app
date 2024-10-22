@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_app/data/models/task_model.dart';
-import 'package:task_manager_app/ui/screens/project_screens/note_screen.dart';
 import 'package:task_manager_app/ui/screens/project_screens/resources_screen.dart';
 import 'package:task_manager_app/ui/screens/project_screens/school_management_screen.dart';
 import 'package:task_manager_app/ui/screens/project_screens/settings_screen.dart';
 import 'package:task_manager_app/ui/screens/project_screens/tasks_screen.dart';
 import '../../widgets/sidebar_drawer.dart';
+import 'note_screen.dart';
 import 'project_screens.dart';
 import 'home_screen.dart';
 import 'help_screen.dart'; // Import your Help screen
