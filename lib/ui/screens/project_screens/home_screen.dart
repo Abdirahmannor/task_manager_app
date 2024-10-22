@@ -13,20 +13,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ProjectManager _projectManager = ProjectManager();
   late List<Map<String, dynamic>> userProjects;
-  String activeTab = 'Home'; // Set the active tab to Home initially
+  String activeTab = 'Home';
 
   @override
   void initState() {
     super.initState();
     userProjects = _projectManager.getAllProjects();
-  }
-
-  // Function to handle page selection and update active tab
-  void onPageSelected(String page) {
-    // Handle any additional logic here if needed
-    setState(() {
-      // Update state or any other necessary actions based on selected page
-    });
   }
 
   @override
@@ -43,11 +35,12 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             },
             activeTab: activeTab, // Pass the active tab to the SidebarDrawer
-          ), // Pass onPageSelected function
+          ),
           Expanded(
             child: Column(
               children: [
                 const CustomTitleBar(showIcons: true),
+                const Text('Welcome to the Dashboard!'),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),

@@ -11,12 +11,10 @@ import '../../data/database/database_helper.dart';
 
 class SidebarDrawer extends StatefulWidget {
   final Function(String) onPageSelected;
-  final String activeTab; // Add this line to receive activeTab
+  final String activeTab; // Receive activeTab
 
   const SidebarDrawer(
-      {super.key,
-      required this.onPageSelected,
-      required this.activeTab}); // Update constructor
+      {super.key, required this.onPageSelected, required this.activeTab});
 
   @override
   _SidebarDrawerState createState() => _SidebarDrawerState();
@@ -25,7 +23,6 @@ class SidebarDrawer extends StatefulWidget {
 class _SidebarDrawerState extends State<SidebarDrawer> {
   bool isSidebarCollapsed = false;
   String searchQuery = '';
-
   String userInitials = "";
   String userName = "";
   String userRole = "";
@@ -150,49 +147,41 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                     _buildTab(
                         icon: Icons.home,
                         label: 'Home',
-                        isActive: widget.activeTab ==
-                            'Home'), // Use the activeTab from the widget
+                        isActive: widget.activeTab == 'Home'),
                   if (_matchesSearch('Projects'))
                     _buildTab(
                         icon: Icons.folder,
                         label: 'Projects',
-                        isActive: widget.activeTab ==
-                            'Projects'), // Use the activeTab from the widget
+                        isActive: widget.activeTab == 'Projects'),
                   if (_matchesSearch('Tasks'))
                     _buildTab(
                         icon: Icons.task,
                         label: 'Tasks',
-                        isActive: widget.activeTab ==
-                            'Tasks'), // Use the activeTab from the widget
+                        isActive: widget.activeTab == 'Tasks'),
                   if (_matchesSearch('School Management'))
                     _buildTab(
                         icon: Icons.school,
                         label: 'School Management',
-                        isActive: widget.activeTab ==
-                            'School Management'), // Use the activeTab from the widget
+                        isActive: widget.activeTab == 'School Management'),
                   if (_matchesSearch('Resources'))
                     _buildTab(
                         icon: Icons.library_books,
                         label: 'Resources',
-                        isActive: widget.activeTab ==
-                            'Resources'), // Use the activeTab from the widget
+                        isActive: widget.activeTab == 'Resources'),
                   if (_matchesSearch('Notes'))
                     _buildTab(
                         icon: Icons.note,
                         label: 'Notes',
-                        isActive: widget.activeTab ==
-                            'Notes'), // Use the activeTab from the widget
+                        isActive: widget.activeTab == 'Notes'),
                   if (_matchesSearch('Settings'))
                     _buildTab(
                         icon: Icons.settings,
                         label: 'Settings',
-                        isActive: widget.activeTab ==
-                            'Settings'), // Use the activeTab from the widget
+                        isActive: widget.activeTab == 'Settings'),
                   _buildTab(
                       icon: Icons.help,
                       label: 'Help',
-                      isActive: widget.activeTab ==
-                          'Help'), // Use the activeTab from the widget
+                      isActive: widget.activeTab == 'Help'),
                 ],
               ),
             ),
@@ -251,11 +240,8 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
       icon: icon,
       isActive: isActive,
       onTap: () {
-        setState(() {
-          // Update the active tab
-          widget.onPageSelected(
-              label); // Notify the parent about the selected page
-        });
+        // Notify the parent about the selected page
+        widget.onPageSelected(label);
 
         // Navigate to the corresponding screen based on the tab selected
         switch (label) {
