@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../utills/project_manager.dart';
 import '../../widgets/custom_title_bar.dart';
-import '../../widgets/sidebar_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -39,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Column(
               children: [
-                const CustomTitleBar(showIcons: true),
+                const CustomTitleBar(showIcons: false),
                 const Text('Welcome to the Dashboard!'),
                 Expanded(
                   child: Padding(

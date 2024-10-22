@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../widgets/custom_title_bar.dart';
-import '../../widgets/sidebar_drawer.dart';
 
 class HelpScreen extends StatefulWidget {
   // Change to StatefulWidget
@@ -16,8 +15,7 @@ class HelpScreenState extends State<HelpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    return Scaffold(
+    return const Scaffold(
       body: Row(children: [
         // SidebarDrawer(
         //   onPageSelected: (page) {
@@ -29,14 +27,14 @@ class HelpScreenState extends State<HelpScreen> {
         //   },
         //   activeTab: activeTab, // Pass the active tab to the SidebarDrawer
         // ),
-        const Expanded(
+        Expanded(
           // Ensure the content expands to fill the screen
           child: Column(
             children: [
               CustomTitleBar(showIcons: true),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16.0),
                   child: Center(
                     child: Text(
                       'Help Content Here', // Example content for the screen

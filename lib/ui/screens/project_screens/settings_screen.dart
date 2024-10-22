@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../widgets/custom_title_bar.dart';
-import '../../widgets/sidebar_drawer.dart';
 
 class SettingsScreen extends StatefulWidget {
   // Change to StatefulWidget
@@ -16,7 +15,7 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    // final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return const Scaffold(
       body: Row(children: [
         // SidebarDrawer(

@@ -40,7 +40,7 @@ class _MainScreenState extends State<MainScreen> {
       case 'Tasks':
         contentScreen = const TasksScreen();
         break;
-      case 'School management':
+      case 'School Management':
         contentScreen = const SchoolManagementScreen();
         break;
       case 'Resources':
@@ -68,10 +68,16 @@ class _MainScreenState extends State<MainScreen> {
             activeTab: activeTab, // Pass active tab to SidebarDrawer
           ),
           Expanded(
-            child: Container(
-              height: MediaQuery.of(context).size.height -
-                  60, // Adjust height as needed
-              child: contentScreen, // Display the selected content screen
+            child: Column(
+              children: [
+                // const CustomTitleBar(
+                //     showIcons: true), // Place the title bar here
+                Expanded(
+                  child: Container(
+                    child: contentScreen, // Display the selected content screen
+                  ),
+                ),
+              ],
             ),
           ),
         ],

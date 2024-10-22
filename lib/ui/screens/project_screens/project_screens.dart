@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../theme/app_theme.dart';
 import '../../../utills/project_manager.dart';
 import '../../widgets/custom_title_bar.dart';
-import '../../widgets/sidebar_drawer.dart';
 
 class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
