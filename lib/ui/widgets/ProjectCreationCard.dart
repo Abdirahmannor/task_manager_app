@@ -7,12 +7,14 @@ class ProjectCreationCard extends StatefulWidget {
   final String? projectId;
   final String? initialTitle;
   final String? initialDescription;
+  final Function(String, String) onSave; // onSave callback
 
   const ProjectCreationCard({
     Key? key,
     this.projectId,
     this.initialTitle,
     this.initialDescription,
+    required this.onSave, // Required callback
   }) : super(key: key);
 
   @override

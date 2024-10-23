@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_app/ui/screens/ProjectCreationScreen';
+
+import 'package:task_manager_app/ui/screens/ProjectCreationScreen.dart';
 import 'package:task_manager_app/ui/widgets/ProjectCreationCard.dart';
 
 import '../../../theme/app_theme.dart';
@@ -66,51 +67,65 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   }
 
   void _createNewProject() {
-    // Show a dialog with the Project Creation Card for creating a new project
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12.0),
-          ),
-          backgroundColor: Theme.of(context).cardColor,
-          child:
-              ProjectCreationScreen(), // No ID passed, indicating new project
+        return ProjectCreationCard(
+          onSave: (title, description) {
+            final String projectId =
+                DateTime.now().millisecondsSinceEpoch.toString();
+            _projectManager.saveProject(
+              projectId,
+              {
+                'id': projectId,
+                'title': title,
+                'description': description,
+              },
+            );
+            // Refresh the project list
+            setState(() {
+              userProjects =
+                  _projectManager.getAllProjects(); // Refresh the project list
+              filteredProjects =
+                  List.from(userProjects); // Update filtered projects
+            });
+            Navigator.of(context).pop(); // Close the dialog
+          },
         );
       },
     );
   }
 
   void _editProject(String projectId) {
-    // Fetch the project details to pass as initial values
     final project = _projectManager.getProject(projectId);
-
     if (project != null) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          return Dialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12.0),
-            ),
-            backgroundColor: Theme.of(context).cardColor,
-            child: ProjectCreationScreen(
-              projectId: projectId, // Pass the project ID for editing
-              initialTitle: project['title'], // Pass the initial title
-              initialDescription:
-                  project['description'], // Pass the initial description
-            ),
+          return ProjectCreationCard(
+            projectId: projectId,
+            initialTitle: project['title'],
+            initialDescription: project['description'],
+            onSave: (updatedTitle, updatedDescription) {
+              _projectManager.saveProject(
+                projectId,
+                {
+                  'id': projectId,
+                  'title': updatedTitle,
+                  'description': updatedDescription,
+                },
+              );
+              // Refresh the project list
+              setState(() {
+                userProjects = _projectManager
+                    .getAllProjects(); // Refresh the project list
+                filteredProjects =
+                    List.from(userProjects); // Update filtered projects
+              });
+              Navigator.of(context).pop(); // Close the dialog
+            },
           );
         },
-      );
-    } else {
-      // Handle case where project is not found
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Project not found!'),
-          backgroundColor: Colors.red,
-        ),
       );
     }
   }
@@ -131,6 +146,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
               },
               child: const Text("Cancel"),
             ),
+            // this button do
             TextButton(
               onPressed: () {
                 // Deleting the project and updating the state
@@ -139,8 +155,9 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                       .deleteProject(projectId); // Delete the project
                   userProjects = _projectManager
                       .getAllProjects(); // Refresh the project list
+                  filteredProjects =
+                      List.from(userProjects); // Refresh filtered projects
                 });
-                // Show feedback to the user
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Project deleted successfully!'),
@@ -255,7 +272,6 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                 default:
                   statusColor = Colors.grey;
               }
-
               return Card(
                 color: Theme.of(context).cardColor,
                 margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -278,15 +294,33 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                       IconButton(
                         icon: const Icon(Icons.edit),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ProjectCreationScreen(
+                          // Show the ProjectCreationCard in a dialog for editing
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return ProjectCreationCard(
                                 projectId: projectId,
                                 initialTitle: project['title'],
                                 initialDescription: project['description'],
-                              ),
-                            ),
+                                onSave: (updatedTitle, updatedDescription) {
+                                  // Logic to save the edited project
+                                  _projectManager.saveProject(
+                                    projectId,
+                                    {
+                                      'id': projectId,
+                                      'title': updatedTitle,
+                                      'description': updatedDescription,
+                                    },
+                                  );
+                                  setState(() {
+                                    userProjects = _projectManager
+                                        .getAllProjects(); // Refresh the project list
+                                  });
+                                  Navigator.of(context)
+                                      .pop(); // Close the dialog
+                                },
+                              );
+                            },
                           );
                         },
                       ),
@@ -379,15 +413,29 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
             ? AppTheme.darkSidebarIconColor
             : AppTheme.lightsidebarIconColor,
         onPressed: () {
+          // Open the ProjectCreationCard for new project
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return Dialog(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                backgroundColor: Theme.of(context).cardColor,
-                child: ProjectCreationCard(),
+              return ProjectCreationCard(
+                onSave: (title, description) {
+                  // Logic to save the new project
+                  final String projectId =
+                      DateTime.now().millisecondsSinceEpoch.toString();
+                  _projectManager.saveProject(
+                    projectId,
+                    {
+                      'id': projectId,
+                      'title': title,
+                      'description': description,
+                    },
+                  );
+                  setState(() {
+                    userProjects = _projectManager
+                        .getAllProjects(); // Refresh the project list
+                  });
+                  Navigator.of(context).pop(); // Close the dialog
+                },
               );
             },
           );
