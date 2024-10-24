@@ -1,137 +1,80 @@
 import 'package:flutter/material.dart';
-
-import 'package:task_manager_app/ui/screens/ProjectCreationScreen.dart';
-import 'package:task_manager_app/ui/widgets/ProjectCreationCard.dart';
-
-import '../../../theme/app_theme.dart';
-import '../../../utills/project_manager.dart';
-import '../../widgets/custom_title_bar.dart';
+import 'package:task_manager_app/data/database/database_helper.dart';
+import 'package:task_manager_app/data/models/project_model.dart';
+import 'package:task_manager_app/ui/widgets/project_details_card.dart'; // Updated to ProjectDetailsCard
+import 'package:task_manager_app/ui/widgets/custom_title_bar.dart';
 
 class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
+
   @override
   _ProjectsScreenState createState() => _ProjectsScreenState();
 }
 
 class _ProjectsScreenState extends State<ProjectsScreen> {
-  final ProjectManager _projectManager = ProjectManager();
-  late List<Map<String, dynamic>> userProjects;
-  List<Map<String, dynamic>> filteredProjects = [];
-  String activeTab = 'Projects'; // Declare activeTab to track the active tab
+  final DatabaseHelper _projectManager = DatabaseHelper();
+  late List<Project> userProjects;
+  List<Project> filteredProjects = [];
   final TextEditingController _searchController = TextEditingController();
-  String _selectedStatus = 'All'; // Default filter value
-
-  final List<String> _statuses = ['All', 'Active', 'Completed', 'On Hold'];
 
   @override
   void initState() {
     super.initState();
-    userProjects = _projectManager.getAllProjects();
-    _initializeProjectIds();
-    _searchController.addListener(_filterProjects);
-    filteredProjects = List.from(userProjects); // Initial display
+    _refreshProjectList();
   }
 
-  void _initializeProjectIds() {
-    for (var project in userProjects) {
-      if (project['id'] == null || project['id'] == 'Unknown ID') {
-        project['id'] = DateTime.now().millisecondsSinceEpoch.toString();
-        _projectManager.saveProject(project['id'], project);
-      }
-    }
-  }
-
-  void _filterProjects() {
-    String query = _searchController.text.toLowerCase();
+  void _refreshProjectList() async {
+    userProjects = await _projectManager.getAllProjects();
     setState(() {
-      filteredProjects = userProjects.where((project) {
-        final title = (project['title'] ?? '').toLowerCase();
-        final description = (project['description'] ?? '').toLowerCase();
-        final status = (project['status'] ?? 'Active').toLowerCase();
-        // Example line 60
-
-        // Apply status filtering if not "All"
-        bool matchesStatus =
-            _selectedStatus == 'All' || status == _selectedStatus.toLowerCase();
-
-        return (title.contains(query) || description.contains(query)) &&
-            matchesStatus;
-      }).toList();
+      filteredProjects = List.from(userProjects);
     });
   }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _createNewProject() {
+  void _createOrEditProject({Project? project}) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ProjectCreationCard(
-          onSave: (title, description) {
-            final String projectId =
-                DateTime.now().millisecondsSinceEpoch.toString();
-            _projectManager.saveProject(
-              projectId,
-              {
-                'id': projectId,
-                'title': title,
-                'description': description,
-              },
+        return ProjectDetailsCard(
+          projectId: project?.id?.toString(),
+          initialTitle: project?.name,
+          initialDescription: project?.description,
+          initialPriority: project?.priority,
+          initialStatus: project?.status,
+          initialDuration: project?.duration,
+          initialStartDate: project?.startDate,
+          onSave: (title, description, priority, status, duration, startDate) {
+            // Create or update the project object
+            Project updatedProject = Project(
+              id: project?.id,
+              name: title,
+              description: description,
+              priority: priority,
+              status: status,
+              duration: duration,
+              startDate: startDate,
+              lastDate: startDate.add(Duration(days: duration)),
             );
+
+            // Insert new project or update existing project
+            if (project == null) {
+              _projectManager.insertProject(updatedProject);
+            } else {
+              _projectManager.updateProject(updatedProject);
+            }
+
             // Refresh the project list
-            setState(() {
-              userProjects =
-                  _projectManager.getAllProjects(); // Refresh the project list
-              filteredProjects =
-                  List.from(userProjects); // Update filtered projects
-            });
-            Navigator.of(context).pop(); // Close the dialog
+            _refreshProjectList(); // Make sure this updates the UI
+
+            // Close the dialog after the project list has been refreshed
+            Navigator.of(context).pop();
+            _refreshProjectList();
           },
         );
       },
     );
   }
 
-  void _editProject(String projectId) {
-    final project = _projectManager.getProject(projectId);
-    if (project != null) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return ProjectCreationCard(
-            projectId: projectId,
-            initialTitle: project['title'],
-            initialDescription: project['description'],
-            onSave: (updatedTitle, updatedDescription) {
-              _projectManager.saveProject(
-                projectId,
-                {
-                  'id': projectId,
-                  'title': updatedTitle,
-                  'description': updatedDescription,
-                },
-              );
-              // Refresh the project list
-              setState(() {
-                userProjects = _projectManager
-                    .getAllProjects(); // Refresh the project list
-                filteredProjects =
-                    List.from(userProjects); // Update filtered projects
-              });
-              Navigator.of(context).pop(); // Close the dialog
-            },
-          );
-        },
-      );
-    }
-  }
-
-  void _deleteProject(String projectId) {
-    // Confirm deletion with the user
+  void _deleteProject(Project project) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -146,24 +89,10 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
               },
               child: const Text("Cancel"),
             ),
-            // this button do
             TextButton(
               onPressed: () {
-                // Deleting the project and updating the state
-                setState(() {
-                  _projectManager
-                      .deleteProject(projectId); // Delete the project
-                  userProjects = _projectManager
-                      .getAllProjects(); // Refresh the project list
-                  filteredProjects =
-                      List.from(userProjects); // Refresh filtered projects
-                });
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Project deleted successfully!'),
-                    backgroundColor: AppTheme.sidebarSelectedColor,
-                  ),
-                );
+                _projectManager.deleteProject(project.id);
+                _refreshProjectList(); // Refresh the project list
                 Navigator.of(context).pop(); // Close the dialog after deletion
               },
               child: const Text("Delete"),
@@ -174,273 +103,61 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     );
   }
 
-// Example line 140: Add this new method above _buildProjectList
-  Widget _buildSummarySection() {
-    int totalProjects = userProjects.length;
-    int activeProjects =
-        userProjects.where((project) => project['status'] == 'Active').length;
-    int completedProjects = userProjects
-        .where((project) => project['status'] == 'Completed')
-        .length;
-    int onHoldProjects =
-        userProjects.where((project) => project['status'] == 'On Hold').length;
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildSummaryCard('Total Projects', totalProjects, Icons.folder),
-          _buildSummaryCard('Active', activeProjects, Icons.play_circle_fill),
-          _buildSummaryCard('Completed', completedProjects, Icons.check_circle),
-          _buildSummaryCard(
-              'On Hold', onHoldProjects, Icons.pause_circle_filled),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSummaryCard(String title, int count, IconData icon) {
-    return Card(
-      color: Theme.of(context).cardColor,
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 30, color: AppTheme.sidebarSelectedColor),
-            const SizedBox(height: 8),
-            Text(
-              title,
-              style: const TextStyle(
-                color: AppTheme.textColor,
-                fontSize: 14,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              '$count',
-              style: const TextStyle(
-                color: AppTheme.textColor,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProjectList() {
-    return filteredProjects.isEmpty
-        ? const Center(
-            child: Text(
-              'No projects found. Start by creating a new project!',
-              style: TextStyle(
-                fontSize: 18,
-                color: AppTheme.textColor,
-              ),
-            ),
-          )
-        : ListView.builder(
-            itemCount: filteredProjects.length,
-            itemBuilder: (context, index) {
-              final project = filteredProjects[index];
-              final projectId = project['id'] ?? 'Unknown ID';
-              final projectStatus = project['status'] ?? 'Active';
-
-              // Define the color for the status indicator based on project status
-              Color statusColor;
-              switch (projectStatus) {
-                case 'Active':
-                  statusColor = Colors.green;
-                  break;
-                case 'Completed':
-                  statusColor = Colors.blue;
-                  break;
-                case 'On Hold':
-                  statusColor = Colors.orange;
-                  break;
-                case 'Overdue':
-                  statusColor = Colors.red;
-                  break;
-                default:
-                  statusColor = Colors.grey;
-              }
-              return Card(
-                color: Theme.of(context).cardColor,
-                margin: const EdgeInsets.symmetric(vertical: 8.0),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: statusColor,
-                    radius: 8,
-                  ),
-                  title: Text(
-                    project['title'] ?? 'Unnamed Project',
-                    style: const TextStyle(color: AppTheme.textColor),
-                  ),
-                  subtitle: Text(
-                    'ID: $projectId\n${project['description'] ?? 'No description available'}',
-                    style: const TextStyle(color: AppTheme.textColor),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () {
-                          // Show the ProjectCreationCard in a dialog for editing
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return ProjectCreationCard(
-                                projectId: projectId,
-                                initialTitle: project['title'],
-                                initialDescription: project['description'],
-                                onSave: (updatedTitle, updatedDescription) {
-                                  // Logic to save the edited project
-                                  _projectManager.saveProject(
-                                    projectId,
-                                    {
-                                      'id': projectId,
-                                      'title': updatedTitle,
-                                      'description': updatedDescription,
-                                    },
-                                  );
-                                  setState(() {
-                                    userProjects = _projectManager
-                                        .getAllProjects(); // Refresh the project list
-                                  });
-                                  Navigator.of(context)
-                                      .pop(); // Close the dialog
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => _deleteProject(projectId),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          );
-  }
-
-  // Example line 195: Update the Expanded child section in the build method
   @override
   Widget build(BuildContext context) {
-    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      body: Row(
+      appBar: AppBar(
+        title: const Text('Projects'),
+      ),
+      body: Column(
         children: [
-          // SidebarDrawer code...
+          // Search functionality
+          TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: 'Search Projects...',
+              prefixIcon: const Icon(Icons.search),
+            ),
+            onChanged: (value) {
+              setState(() {
+                // Implement search functionality if required
+              });
+            },
+          ),
           Expanded(
-            child: Column(
-              children: [
-                const CustomTitleBar(showIcons: true),
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _searchController,
-                          decoration: InputDecoration(
-                            hintText: 'Search Projects...',
-                            hintStyle:
-                                const TextStyle(color: AppTheme.textColor),
-                            prefixIcon: Icon(
-                              Icons.search,
-                              color: isDarkMode
-                                  ? AppTheme.darkSidebarIconColor
-                                  : AppTheme.lightsidebarIconColor,
-                            ),
-                            filled: true,
-                            fillColor: Theme.of(context).cardColor,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(8.0),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
+            child: ListView.builder(
+              itemCount: filteredProjects.length,
+              itemBuilder: (context, index) {
+                final project = filteredProjects[index];
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ListTile(
+                    title: Text(project.name),
+                    subtitle: Text(project.description),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () =>
+                              _createOrEditProject(project: project),
                         ),
-                      ),
-                      const SizedBox(width: 16),
-                      DropdownButton<String>(
-                        value: _selectedStatus,
-                        dropdownColor: Theme.of(context).cardColor,
-                        style: const TextStyle(color: AppTheme.textColor),
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _selectedStatus = newValue!;
-                            _filterProjects();
-                          });
-                        },
-                        items: _statuses
-                            .map<DropdownMenuItem<String>>((String status) {
-                          return DropdownMenuItem<String>(
-                            value: status,
-                            child: Text(status),
-                          );
-                        }).toList(),
-                      ),
-                    ],
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () => _deleteProject(project),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                _buildSummarySection(), // Add the summary section here
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: _buildProjectList(),
-                  ),
-                ),
-              ],
+                );
+              },
             ),
           ),
+          FloatingActionButton(
+            onPressed: () => _createOrEditProject(),
+            child: const Icon(Icons.add),
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: isDarkMode
-            ? AppTheme.darkSidebarIconColor
-            : AppTheme.lightsidebarIconColor,
-        onPressed: () {
-          // Open the ProjectCreationCard for new project
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return ProjectCreationCard(
-                onSave: (title, description) {
-                  // Logic to save the new project
-                  final String projectId =
-                      DateTime.now().millisecondsSinceEpoch.toString();
-                  _projectManager.saveProject(
-                    projectId,
-                    {
-                      'id': projectId,
-                      'title': title,
-                      'description': description,
-                    },
-                  );
-                  setState(() {
-                    userProjects = _projectManager
-                        .getAllProjects(); // Refresh the project list
-                  });
-                  Navigator.of(context).pop(); // Close the dialog
-                },
-              );
-            },
-          );
-        },
-        child: const Icon(Icons.add, color: AppTheme.darkSidebarTextColor),
       ),
     );
   }

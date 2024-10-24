@@ -23,80 +23,56 @@ class DatabaseHelper {
 
     return await openDatabase(
       path,
-      version: 2, // Incremented database version
+      version: 3, // Incremented database version
       onCreate: (db, version) async {
-        await db.execute('''
-        CREATE TABLE tasks (
+        await db.execute('''CREATE TABLE tasks (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           title TEXT,
           description TEXT,
           date TEXT,
           isCompleted INTEGER,
           category TEXT
-        )
-        ''');
+        )''');
 
-        await db.execute('''
-        CREATE TABLE users (
+        await db.execute('''CREATE TABLE users (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           username TEXT,
           email TEXT UNIQUE,
           password TEXT,
-          name TEXT
-        )
-        ''');
+          name TEXT,
+          role TEXT // Ensure the role field exists
+        )''');
 
-        await db.execute('''
-        CREATE TABLE projects (
+        await db.execute('''CREATE TABLE projects (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           name TEXT,
-          description TEXT
-        )
-        '''); // Ensuring the projects table is defined
+          description TEXT,
+          priority TEXT,
+          status TEXT,
+          duration INTEGER,
+          startDate TEXT,
+          lastDate TEXT
+        )'''); // Ensuring the projects table includes new fields
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 3) {
+          await db.execute('''ALTER TABLE projects ADD COLUMN priority TEXT''');
+          await db.execute('''ALTER TABLE projects ADD COLUMN status TEXT''');
+          await db
+              .execute('''ALTER TABLE projects ADD COLUMN duration INTEGER''');
+          await db
+              .execute('''ALTER TABLE projects ADD COLUMN startDate TEXT''');
+          await db.execute('''ALTER TABLE projects ADD COLUMN lastDate TEXT''');
+        }
       },
     );
-  }
-
-  // Insert a new user into the database
-  Future<int> insertUser(User user) async {
-    final db = await database;
-    return await db.insert('users', user.toMap());
-  }
-
-  // Get a user by username from the database
-  Future<User?> getUserByUsername(String username) async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      'users',
-      where: 'username = ?',
-      whereArgs: [username],
-    );
-
-    if (maps.isNotEmpty) {
-      return User.fromMap(maps.first);
-    }
-    return null; // Return null if no user found
-  }
-
-  // Get a user by email from the database
-  Future<User?> getUserByEmail(String email) async {
-    final db = await database;
-    final List<Map<String, dynamic>> maps = await db.query(
-      'users',
-      where: 'email = ?',
-      whereArgs: [email],
-    );
-
-    if (maps.isNotEmpty) {
-      return User.fromMap(maps.first);
-    }
-    return null; // Return null if no user found
   }
 
   // Get all tasks from the database
   Future<List<Task>> getAllTasks() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('tasks');
+
     return List.generate(maps.length, (i) {
       return Task(
         id: maps[i]['id'],
@@ -109,16 +85,30 @@ class DatabaseHelper {
     });
   }
 
+  // Get a user by email from the database
+  Future<User?> getUserByEmail(String email) async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query(
+      'users',
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    if (maps.isNotEmpty) {
+      return User.fromMap(
+          maps.first); // Use the fromMap method to create User instances
+    }
+    return null; // Return null if no user found
+  }
+
   // Get all projects from the database
   Future<List<Project>> getAllProjects() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('projects');
+
     return List.generate(maps.length, (i) {
-      return Project(
-        id: maps[i]['id'],
-        name: maps[i]['name'],
-        description: maps[i]['description'],
-      );
+      return Project.fromMap(
+          maps[i]); // Use the fromMap method to create Project instances
     });
   }
 
@@ -127,4 +117,27 @@ class DatabaseHelper {
     final db = await database;
     return await db.insert('projects', project.toMap());
   }
+
+  // Update an existing project in the database
+  Future<int> updateProject(Project project) async {
+    final db = await database;
+    return await db.update(
+      'projects',
+      project.toMap(),
+      where: 'id = ?',
+      whereArgs: [project.id],
+    );
+  }
+
+  // Delete a project from the database
+  Future<int> deleteProject(int? id) async {
+    final db = await database;
+    return await db.delete(
+      'projects',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // Add additional CRUD methods for users and tasks as needed.
 }
