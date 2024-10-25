@@ -24,11 +24,11 @@ class AppTheme {
   static const Color sidebarInactiveIconColor =
       Color(0xFFB0BEC5); // Light Mode Inactive icon color
   static const Color sidebarTextColor =
-      Color.fromARGB(255, 243, 240, 240); // Light Mode Sidebar text color
+      Color.fromARGB(255, 22, 2, 2); // Light Mode Sidebar text color
   static const Color lighticoncolor = textColor;
   static const Color buttonColor = Color(0xFF1A73E8); // Button Color
   static const Color textColor =
-      Color.fromARGB(255, 240, 239, 239); // Main Text Color
+      Color.fromARGB(255, 14, 7, 7); // Main Text Color
   static const Color cardBackgroundColor =
       Color.fromARGB(255, 221, 19, 19); // Card Background Color
   static const Color LightIsHover =

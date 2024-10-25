@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../utills/project_manager.dart';
 import '../../widgets/custom_title_bar.dart';
+import '../../../theme/app_theme.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,16 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: Row(
         children: [
-          // SidebarDrawer(
-          //   onPageSelected: (page) {
-          //     // Handle page navigation
-          //     setState(() {
-          //       activeTab =
-          //           page; // Update the active tab based on sidebar selection
-          //     });
-          //   },
-          //   activeTab: activeTab, // Pass the active tab to the SidebarDrawer
-          // ),
+          // SidebarDrawer omitted for this version
           Expanded(
             child: Column(
               children: [
@@ -47,10 +39,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemCount: userProjects.length,
                       itemBuilder: (context, index) {
                         final project = userProjects[index];
-                        return ListTile(
-                          title: Text(project['title'] ?? 'Unnamed Project'),
-                          subtitle: Text(project['description'] ??
-                              'No description available'),
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: ListTile(
+                            title: Text(project['title'] ?? 'Unnamed Project'),
+                            subtitle: Text(project['description'] ??
+                                'No description available'),
+                          ),
                         );
                       },
                     ),
