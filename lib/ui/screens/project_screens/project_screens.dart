@@ -6,7 +6,6 @@ import 'package:task_manager_app/theme/theme_manager.dart';
 import 'package:task_manager_app/ui/widgets/custom_title_bar.dart';
 import 'package:intl/intl.dart';
 import '../../../theme/app_theme.dart';
-// Import your new ProjectListCard
 
 class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
@@ -265,10 +264,8 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text(
-            "Delete Project",
-            style: TextStyle(color: Colors.white),
-          ),
+          title: const Text("Delete Project",
+              style: TextStyle(color: Colors.white)),
           content: const Text("Are you sure you want to delete this project?"),
           actions: [
             TextButton(
@@ -283,6 +280,9 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                 _projectManager.deleteProject(project.id);
                 _refreshProjectList(); // Refresh the project list
                 Navigator.of(context).pop(); // Close the dialog after deletion
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: const Text('Project deleted successfully!'),
+                    backgroundColor: Colors.red));
               },
               child: const Text("Delete"),
             ),
@@ -307,15 +307,50 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                 color:
                     isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor),
           ),
-          TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              hintText: 'Search Projects...',
-              prefixIcon: const Icon(Icons.search),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: 'Search Projects...',
+                      filled: true,
+                      fillColor: isDarkMode
+                          ? AppTheme.darkfillcolor
+                          : AppTheme.lightfillcolor,
+                      hintStyle: TextStyle(
+                          color: isDarkMode
+                              ? AppTheme.darkTextColor
+                              : AppTheme.textColor),
+                      prefixIcon: const Icon(Icons.search),
+                    ),
+                    onChanged: (value) {
+                      // Implement search functionality if required
+                    },
+                  ),
+                ),
+                const SizedBox(width: 10),
+                DropdownButton<String>(
+                  value: _selectedPriority,
+                  icon: const Icon(Icons.filter_list),
+                  items: ['All', 'Low', 'Medium', 'High', 'Critical']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _selectedPriority = newValue!;
+                      // Implement filter functionality based on selected priority
+                    });
+                  },
+                ),
+              ],
             ),
-            onChanged: (value) {
-              // Implement search functionality if required
-            },
           ),
           Expanded(
             child: ListView.builder(

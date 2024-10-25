@@ -42,7 +42,7 @@ class AppTheme {
   static const Color lightfillcolor = // light fill color
       Color.fromARGB(255, 199, 194, 194);
   // Dark Mode Colors
-  static const Color darkBackgroundColor = Color(0xff050539); // Dark Background
+  static const Color darkBackgroundColor = Color(0xff31173a); // Dark Background
   static const Color darkTextColor =
       Color.fromARGB(255, 211, 208, 208); // Light Text Color
   static const Color darksidebarArrowColor =
@@ -50,25 +50,25 @@ class AppTheme {
   static const Color darkCardColor =
       Color.fromARGB(255, 71, 69, 70); // Dark Card Background
   static const Color darkSidebarBackgroundColor =
-      Color(0xff15202B); // Dark Sidebar Background
+      Color(0xff5b4965); // Dark Sidebar Background
   static const Color darkSidebarProfileBackgroundColor =
       Color.fromARGB(255, 6, 160, 121); // Dark Mode Profile section background
   static const Color darkSidebarSelectedColor =
-      Color.fromARGB(255, 126, 127, 133); // Dark Mode Active tab color (green)
+      Color.fromARGB(255, 51, 4, 66); // Dark Mode Active tab color (green)
   static const Color darkSidebarIconColor =
       Color.fromARGB(255, 69, 38, 126); // Dark Mode Icon color
   static const Color darkSidebarInactiveIconColor =
-      Color.fromARGB(255, 204, 130, 20); // Dark Mode Inactive icon color
+      Color(0XFF7c4b1a); // Dark Mode Inactive icon color
   static const Color darkSidebarTextColor =
       Color.fromARGB(255, 219, 20, 37); // Dark Mode Sidebar text color
   static const Color darkIsHover = Color.fromARGB(255, 25, 9, 63); // Dark Hover
   static const Color darkCardBorderColor =
       Color.fromARGB(255, 15, 53, 40); // Dark theme border color
   static const Color darkiconcolor = darkTextColor;
-  static const Color darkprjectCardColor =
-      Color.fromARGB(255, 2, 2, 49); // Light theme card color
-  static const Color darkfillcolor = //Dark fill color
-      Color.fromARGB(255, 66, 66, 66);
+  static const darkprjectCardColor =
+      Color(0Xff210f29); // Light theme card color
+  static const darkfillcolor = //Dark fill color
+      Color(0xFf294543);
 
   // New Additions for Consistency
 
