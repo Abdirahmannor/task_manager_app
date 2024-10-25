@@ -4,9 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   // Define centralized color scheme
   static const Color primaryColor =
-      Color.fromARGB(255, 5, 80, 48); // Main Color
+      Color.fromARGB(255, 144, 145, 144); // Main Color
   static const Color accentColor =
-      Color.fromARGB(255, 27, 17, 85); // Accent Color
+      Color.fromARGB(255, 5, 20, 219); // Accent Color
 
   // Light Mode Colors
   static const Color backgroundColor =
@@ -24,45 +24,61 @@ class AppTheme {
   static const Color sidebarInactiveIconColor =
       Color(0xFFB0BEC5); // Light Mode Inactive icon color
   static const Color sidebarTextColor =
-      Color.fromARGB(255, 22, 2, 2); // Light Mode Sidebar text color
+      Color.fromARGB(255, 233, 230, 230); // Light Mode Sidebar text color
   static const Color lighticoncolor = textColor;
   static const Color buttonColor = Color(0xFF1A73E8); // Button Color
   static const Color textColor =
-      Color.fromARGB(255, 14, 7, 7); // Main Text Color
+      Color.fromARGB(255, 230, 225, 225); // Main Text Color
   static const Color cardBackgroundColor =
-      Color.fromARGB(255, 221, 19, 19); // Card Background Color
+      Color.fromARGB(255, 238, 226, 226); // Card Background Color
   static const Color LightIsHover =
       Color.fromARGB(255, 22, 107, 33); // Light Hover
-
+  static const Color lightCardBorderColor =
+      Color.fromARGB(255, 119, 107, 107); // Light theme border color
+  static const Color lightprjectCardColor =
+      Color.fromARGB(255, 114, 113, 113); // Light theme card color
+  static const Color dialogBackgroundColorLight =
+      Color.fromARGB(255, 199, 194, 194); // Light Mode Dialog Background
+  static const Color lightfillcolor = // light fill color
+      Color.fromARGB(255, 199, 194, 194);
   // Dark Mode Colors
-  static const Color darkBackgroundColor =
-      Color(0XFFf041955); // Dark Background
+  static const Color darkBackgroundColor = Color(0xff050539); // Dark Background
   static const Color darkTextColor =
-      Color.fromARGB(255, 238, 236, 237); // Light Text Color
+      Color.fromARGB(255, 211, 208, 208); // Light Text Color
   static const Color darksidebarArrowColor =
       Color.fromARGB(255, 90, 122, 15); // Light Mode Sidebar Arrow icon
   static const Color darkCardColor =
-      Color.fromARGB(255, 212, 90, 8); // Dark Card Background
+      Color.fromARGB(255, 71, 69, 70); // Dark Card Background
   static const Color darkSidebarBackgroundColor =
-      Color.fromARGB(255, 8, 25, 122); // Dark Sidebar Background
+      Color(0xff15202B); // Dark Sidebar Background
   static const Color darkSidebarProfileBackgroundColor =
       Color.fromARGB(255, 6, 160, 121); // Dark Mode Profile section background
   static const Color darkSidebarSelectedColor =
-      Color(0XFFf041955); // Dark Mode Active tab color (green)
+      Color.fromARGB(255, 126, 127, 133); // Dark Mode Active tab color (green)
   static const Color darkSidebarIconColor =
       Color.fromARGB(255, 69, 38, 126); // Dark Mode Icon color
   static const Color darkSidebarInactiveIconColor =
-      Color.fromARGB(255, 2, 78, 116); // Dark Mode Inactive icon color
+      Color.fromARGB(255, 204, 130, 20); // Dark Mode Inactive icon color
   static const Color darkSidebarTextColor =
-      Color.fromARGB(255, 226, 222, 222); // Dark Mode Sidebar text color
+      Color.fromARGB(255, 219, 20, 37); // Dark Mode Sidebar text color
   static const Color darkIsHover = Color.fromARGB(255, 25, 9, 63); // Dark Hover
+  static const Color darkCardBorderColor =
+      Color.fromARGB(255, 15, 53, 40); // Dark theme border color
   static const Color darkiconcolor = darkTextColor;
+  static const Color darkprjectCardColor =
+      Color.fromARGB(255, 2, 2, 49); // Light theme card color
+  static const Color darkfillcolor = //Dark fill color
+      Color.fromARGB(255, 66, 66, 66);
 
   // New Additions for Consistency
-  static const Color dialogBackgroundColorLight =
-      Color(0xFFF2F2F2); // Light Mode Dialog Background
+
   static const Color dialogBackgroundColorDark =
-      Color(0xFF2D2D2D); // Dark Mode Dialog Background
+      Color.fromARGB(255, 4, 28, 53); // Dark Mode Dialog Background
+  static Color get cardBorderColor {
+    return Brightness.light == Brightness.light
+        ? lightCardBorderColor
+        : darkCardBorderColor;
+  }
 
   // Font Styles for Sidebar
   static final TextStyle sidebarTextStyle = GoogleFonts.poppins(

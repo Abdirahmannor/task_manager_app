@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_manager_app/data/database/database_helper.dart';
 import 'package:task_manager_app/data/models/project_model.dart';
+import 'package:task_manager_app/theme/theme_manager.dart';
 import 'package:task_manager_app/ui/widgets/custom_title_bar.dart';
 import 'package:intl/intl.dart';
 import '../../../theme/app_theme.dart';
+// Import your new ProjectListCard
 
 class ProjectsScreen extends StatefulWidget {
   const ProjectsScreen({super.key});
@@ -25,6 +28,14 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   String _selectedPriority = 'Medium';
   String _selectedStatus = 'Active';
   DateTime? _selectedStartDate;
+
+  // Define priority colors
+  static const Map<String, Color> priorityColors = {
+    'Low': Colors.green,
+    'Medium': Colors.yellow,
+    'High': Colors.orange,
+    'Critical': Colors.red,
+  };
 
   @override
   void initState() {
@@ -49,6 +60,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     _selectedStatus = project?.status ?? 'Active';
     _selectedStartDate = project?.startDate ?? DateTime.now();
 
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -57,7 +69,9 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
             borderRadius: BorderRadius.circular(16.0),
           ),
           elevation: 16,
-          backgroundColor: Colors.white.withOpacity(0.95),
+          backgroundColor: isDarkMode
+              ? AppTheme.darkCardColor.withOpacity(0.85)
+              : AppTheme.cardBackgroundColor.withOpacity(0.85),
           child: Container(
             padding: const EdgeInsets.all(20.0),
             child: SingleChildScrollView(
@@ -251,7 +265,10 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Delete Project"),
+          title: const Text(
+            "Delete Project",
+            style: TextStyle(color: Colors.white),
+          ),
           content: const Text("Are you sure you want to delete this project?"),
           actions: [
             TextButton(
@@ -277,12 +294,19 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Projects'),
-      ),
+      backgroundColor:
+          isDarkMode ? AppTheme.darkBackgroundColor : AppTheme.backgroundColor,
       body: Column(
         children: [
+          const CustomTitleBar(showIcons: false),
+          Text(
+            'Projects',
+            style: TextStyle(
+                color:
+                    isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor),
+          ),
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
@@ -299,20 +323,59 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
               itemBuilder: (context, index) {
                 final project = filteredProjects[index];
                 return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
+                  color: isDarkMode
+                      ? AppTheme.darkprjectCardColor.withOpacity(0.85)
+                      : AppTheme.lightprjectCardColor.withOpacity(0.85),
+                  margin: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20),
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: isDarkMode
+                            ? AppTheme.darkCardBorderColor
+                            : AppTheme.lightCardBorderColor,
+                        width: 2), // Use app theme color
+                    borderRadius: BorderRadius.circular(20),
+                  ),
                   child: ListTile(
-                    title: Text(project.name),
-                    subtitle: Text(project.description),
+                    title: Text(
+                      project.name,
+                      style: TextStyle(
+                          color: isDarkMode
+                              ? AppTheme.darkTextColor
+                              : AppTheme.textColor),
+                    ),
+                    subtitle: Text(
+                      project.description,
+                      style: TextStyle(
+                          color: isDarkMode
+                              ? AppTheme.darkTextColor
+                              : AppTheme.textColor),
+                    ),
+                    leading: CircleAvatar(
+                      radius: 13,
+                      backgroundColor: priorityColors[project.priority],
+                      child: Text(
+                        project.priority[0], // Show first letter of priority
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 22, 22, 22)),
+                      ),
+                    ),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         IconButton(
-                          icon: const Icon(Icons.edit),
+                          icon: Icon(Icons.edit,
+                              color: isDarkMode
+                                  ? AppTheme.darkTextColor
+                                  : AppTheme.textColor),
                           onPressed: () =>
                               _createOrEditProject(project: project),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.delete),
+                          icon: Icon(Icons.delete,
+                              color: isDarkMode
+                                  ? AppTheme.darkTextColor
+                                  : AppTheme.textColor),
                           onPressed: () => _deleteProject(project),
                         ),
                       ],

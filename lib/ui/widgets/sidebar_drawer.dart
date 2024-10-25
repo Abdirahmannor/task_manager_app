@@ -125,10 +125,16 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
                       },
                       decoration: InputDecoration(
                         hintText: 'Search...',
+                        hintStyle: TextStyle(
+                            color: isDarkMode
+                                ? AppTheme.darkTextColor
+                                : AppTheme.textColor),
+                        focusColor: Colors.red,
+                        hoverColor: const Color.fromARGB(255, 131, 129, 129),
                         filled: true,
                         fillColor: isDarkMode
-                            ? AppTheme.darkSidebarIconColor
-                            : AppTheme.lightsidebarIconColor,
+                            ? AppTheme.darkfillcolor
+                            : AppTheme.lightfillcolor,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide.none,
