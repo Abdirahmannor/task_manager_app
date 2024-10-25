@@ -24,7 +24,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   late TextEditingController descriptionController;
   late TextEditingController durationController;
 
-  String _selectedPriority = 'Medium';
+  String _selectedPriority = 'All'; // Set default value to 'All'
   String _selectedStatus = 'Active';
   DateTime? _selectedStartDate;
 
@@ -40,13 +40,27 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   void initState() {
     super.initState();
     _refreshProjectList();
+    _searchController.addListener(_filterProjects); // Add listener
+  }
+
+  void _filterProjects() {
+    final query = _searchController.text.toLowerCase();
+    final selectedPriority = _selectedPriority;
+
+    setState(() {
+      filteredProjects = userProjects.where((project) {
+        final matchesQuery = project.name.toLowerCase().contains(query) ||
+            project.description.toLowerCase().contains(query);
+        final matchesPriority =
+            selectedPriority == 'All' || project.priority == selectedPriority;
+        return matchesQuery && matchesPriority;
+      }).toList();
+    });
   }
 
   void _refreshProjectList() async {
     userProjects = await _projectManager.getAllProjects();
-    setState(() {
-      filteredProjects = List.from(userProjects);
-    });
+    _filterProjects(); // Call filter after refreshing the list
   }
 
   void _createOrEditProject({Project? project}) {
@@ -127,8 +141,9 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                       setState(() {
                         _selectedPriority = newValue!;
                       });
+                      _filterProjects(); // Filter projects when priority changes
                     },
-                    items: ['Low', 'Medium', 'High', 'Critical']
+                    items: ['All', 'Low', 'Medium', 'High', 'Critical']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
@@ -264,8 +279,10 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("Delete Project",
-              style: TextStyle(color: Colors.white)),
+          title: const Text(
+            "Delete Project",
+            style: TextStyle(color: Colors.white),
+          ),
           content: const Text("Are you sure you want to delete this project?"),
           actions: [
             TextButton(
@@ -280,9 +297,13 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                 _projectManager.deleteProject(project.id);
                 _refreshProjectList(); // Refresh the project list
                 Navigator.of(context).pop(); // Close the dialog after deletion
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                // Show snackbar after deletion
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
                     content: const Text('Project deleted successfully!'),
-                    backgroundColor: Colors.red));
+                    backgroundColor: Colors.red, // Customize color if needed
+                  ),
+                );
               },
               child: const Text("Delete"),
             ),
@@ -307,50 +328,38 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
                 color:
                     isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _searchController,
-                    decoration: InputDecoration(
-                      hintText: 'Search Projects...',
-                      filled: true,
-                      fillColor: isDarkMode
-                          ? AppTheme.darkfillcolor
-                          : AppTheme.lightfillcolor,
-                      hintStyle: TextStyle(
-                          color: isDarkMode
-                              ? AppTheme.darkTextColor
-                              : AppTheme.textColor),
-                      prefixIcon: const Icon(Icons.search),
-                    ),
-                    onChanged: (value) {
-                      // Implement search functionality if required
-                    },
-                  ),
-                ),
-                const SizedBox(width: 10),
-                DropdownButton<String>(
-                  value: _selectedPriority,
-                  icon: const Icon(Icons.filter_list),
-                  items: ['All', 'Low', 'Medium', 'High', 'Critical']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      _selectedPriority = newValue!;
-                      // Implement filter functionality based on selected priority
-                    });
-                  },
-                ),
-              ],
+          TextField(
+            controller: _searchController,
+            decoration: InputDecoration(
+              hintText: 'Search Projects...',
+              filled: true,
+              fillColor:
+                  isDarkMode ? AppTheme.darkfillcolor : AppTheme.lightfillcolor,
+              hintStyle: TextStyle(
+                  color:
+                      isDarkMode ? AppTheme.darkTextColor : AppTheme.textColor),
+              prefixIcon: const Icon(Icons.search),
             ),
+            onChanged: (value) {
+              // Implement search functionality if required
+            },
+          ),
+          DropdownButton<String>(
+            value: _selectedPriority,
+            icon: const Icon(Icons.arrow_downward),
+            onChanged: (String? newValue) {
+              setState(() {
+                _selectedPriority = newValue!;
+              });
+              _filterProjects(); // Add this line to filter when dropdown changes
+            },
+            items: <String>['All', 'Low', 'Medium', 'High', 'Critical']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
           ),
           Expanded(
             child: ListView.builder(
