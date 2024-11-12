@@ -1,22 +1,26 @@
 class Project {
-  final int? id;
-  final String name;
-  final String description;
-  final String priority;
-  final String status;
-  final int duration; // Duration in days
-  final DateTime startDate; // Start date
-  final DateTime lastDate; // Last date calculated
+  int? id;
+  String name;
+  String description;
+  String category;
+  String status;
+  String priority;
+  int duration;
+  String startDate;
+  String lastDate;
+  List<String> checklist;
 
   Project({
     this.id,
     required this.name,
-    this.description = '',
-    required this.priority,
+    required this.description,
+    required this.category,
     required this.status,
+    required this.priority,
     required this.duration,
     required this.startDate,
     required this.lastDate,
+    required this.checklist,
   });
 
   Map<String, dynamic> toMap() {
@@ -24,24 +28,28 @@ class Project {
       'id': id,
       'name': name,
       'description': description,
-      'priority': priority,
+      'category': category,
       'status': status,
+      'priority': priority,
       'duration': duration,
-      'startDate': startDate.toIso8601String(),
-      'lastDate': lastDate.toIso8601String(),
+      'startDate': startDate,
+      'lastDate': lastDate,
+      'checklist': checklist.join(','),
     };
   }
 
-  static Project fromMap(Map<String, dynamic> map) {
+  factory Project.fromMap(Map<String, dynamic> map) {
     return Project(
       id: map['id'],
       name: map['name'],
       description: map['description'],
-      priority: map['priority'],
+      category: map['category'],
       status: map['status'],
+      priority: map['priority'],
       duration: map['duration'],
-      startDate: DateTime.parse(map['startDate']),
-      lastDate: DateTime.parse(map['lastDate']),
+      startDate: map['startDate'],
+      lastDate: map['lastDate'],
+      checklist: map['checklist']?.split(',') ?? [],
     );
   }
 }

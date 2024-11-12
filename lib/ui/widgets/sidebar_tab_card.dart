@@ -8,12 +8,12 @@ class SidebarTabCard extends StatefulWidget {
   final VoidCallback onTap;
 
   const SidebarTabCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.icon,
     required this.isActive,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   _SidebarTabCardState createState() => _SidebarTabCardState();

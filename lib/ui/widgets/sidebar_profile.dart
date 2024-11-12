@@ -7,11 +7,11 @@ class SidebarProfile extends StatelessWidget {
   final String userRole;
 
   const SidebarProfile({
-    Key? key,
+    super.key,
     required this.userInitials,
     required this.userName,
     required this.userRole,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

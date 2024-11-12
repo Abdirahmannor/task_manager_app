@@ -1,8 +1,10 @@
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:sqflite/sqflite.dart';
+import 'dart:io';
 import '../models/task_model.dart';
-import '../models/user_model.dart'; // Import your user model
-import '../models/project_model.dart'; // Import your project model
+import '../models/user_model.dart';
+import '../models/project_model.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -18,12 +20,18 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
+    // Initialize FFI for desktop platforms
+    if (Platform.isWindows || Platform.isLinux) {
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+    }
+
     String path = join(await getDatabasesPath(), 'tasks.db');
-    print('Database Path: $path'); // Log the path to the console
+    print('Database Path: $path');
 
     return await openDatabase(
       path,
-      version: 3, // Incremented database version
+      version: 4,
       onCreate: (db, version) async {
         await db.execute('''CREATE TABLE tasks (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +39,8 @@ class DatabaseHelper {
           description TEXT,
           date TEXT,
           isCompleted INTEGER,
-          category TEXT
+          category TEXT,
+          priority TEXT
         )''');
 
         await db.execute('''CREATE TABLE users (
@@ -40,7 +49,7 @@ class DatabaseHelper {
           email TEXT UNIQUE,
           password TEXT,
           name TEXT,
-          role TEXT // Ensure the role field exists
+          role TEXT
         )''');
 
         await db.execute('''CREATE TABLE projects (
@@ -51,18 +60,14 @@ class DatabaseHelper {
           status TEXT,
           duration INTEGER,
           startDate TEXT,
-          lastDate TEXT
-        )'''); // Ensuring the projects table includes new fields
+          lastDate TEXT,
+          category TEXT
+        )''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 3) {
-          await db.execute('''ALTER TABLE projects ADD COLUMN priority TEXT''');
-          await db.execute('''ALTER TABLE projects ADD COLUMN status TEXT''');
-          await db
-              .execute('''ALTER TABLE projects ADD COLUMN duration INTEGER''');
-          await db
-              .execute('''ALTER TABLE projects ADD COLUMN startDate TEXT''');
-          await db.execute('''ALTER TABLE projects ADD COLUMN lastDate TEXT''');
+        if (oldVersion < 4) {
+          await db.execute(
+              '''ALTER TABLE tasks ADD COLUMN priority TEXT DEFAULT "Medium"''');
         }
       },
     );
@@ -81,6 +86,7 @@ class DatabaseHelper {
         date: maps[i]['date'],
         isCompleted: maps[i]['isCompleted'] == 1,
         category: maps[i]['category'],
+        priority: maps[i]['priority'],
       );
     });
   }
@@ -134,6 +140,44 @@ class DatabaseHelper {
     final db = await database;
     return await db.delete(
       'projects',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // Insert a new task
+  Future<int> insertTask(Task task) async {
+    final db = await database;
+    return await db.insert('tasks', task.toMap());
+  }
+
+  // Update an existing task
+  Future<int> updateTask(Task task) async {
+    final db = await database;
+    return await db.update(
+      'tasks',
+      task.toMap(),
+      where: 'id = ?',
+      whereArgs: [task.id],
+    );
+  }
+
+  // Delete a task
+  Future<int> deleteTask(int? id) async {
+    final db = await database;
+    return await db.delete(
+      'tasks',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
+  // Update task completion status
+  Future<int> updateTaskCompletion(int? id, bool isCompleted) async {
+    final db = await database;
+    return await db.update(
+      'tasks',
+      {'isCompleted': isCompleted ? 1 : 0},
       where: 'id = ?',
       whereArgs: [id],
     );

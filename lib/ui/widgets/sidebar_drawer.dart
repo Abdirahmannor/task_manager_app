@@ -27,7 +27,7 @@ class _SidebarDrawerState extends State<SidebarDrawer> {
   String userName = "";
   String userRole = "";
 
-  DatabaseHelper _dbHelper = DatabaseHelper();
+  final DatabaseHelper _dbHelper = DatabaseHelper();
 
   @override
   void initState() {

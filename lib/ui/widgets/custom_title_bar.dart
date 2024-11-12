@@ -54,5 +54,5 @@ class CustomTitleBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Size get preferredSize =>
-      Size.fromHeight(40.0); // Set the height of the title bar
+      const Size.fromHeight(40.0); // Set the height of the title bar
 }
